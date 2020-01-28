@@ -2,4 +2,4 @@
 
 | name | eID | GitHub Username | Email |
 |------|-----|-----------------|-------|
-| First Last | eID | mygit | eID@colostate.edu |
+| Kevin Schroeder | kmschr | Kmschr | kmschr@rams.colostate.edu |
