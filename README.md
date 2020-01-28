@@ -1,5 +1,5 @@
 # t11 - rip juice wrld
-![cabbage man](atla.jpeg)
+![cabbage man](/images/atla.jpeg)
 
 | name | eID | GitHub Username | Email |
 |------|-----|-----------------|-------|
