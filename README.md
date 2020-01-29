@@ -1,4 +1,4 @@
-# t11 - rip juice wrld
+# t11 - [hip, hip]
 ![dream team](/images/team.png)
 teamwork makes the **dreamwork**
 
