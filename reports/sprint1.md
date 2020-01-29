@@ -1,9 +1,9 @@
-# Sprint # - *your team number* - *your team name*
+# Sprint 1 - *t11* - *[hip, hip]*
 
 ## Goal
 
 ### Where Am I?
-### Sprint Leader: *firstname lastname*
+### Sprint Leader: *Jackie Clotfelter*
 
 ## Definition of Done
 
