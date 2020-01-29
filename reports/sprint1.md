@@ -22,17 +22,19 @@
 
 Epics planned for this release.
 
-* *## title*
-*
+* #26 Where am I?
+* #27 About
+* #28 Where is?
+* #46 Server Support
 
 
 ## Metrics
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *count* | *count* |
-| Tasks |  *count*   | *count* | 
-| Story Points |  *count*  | *count* | 
+| Epics | 4 | *count* |
+| Tasks |  16   | *count* | 
+| Story Points |  1  | *count* | 
 
 
 ## Scrums
