@@ -1,5 +1,6 @@
 # t11 - rip juice wrld
-![cabbage man](/images/atla.jpeg)
+![dream team](/images/team.png)
+teamwork makes the **dreamwork**
 
 | last name | first name | eID | GitHub Username | Email |
 |------|-----|-----------------|-------|-------|
