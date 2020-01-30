@@ -24,6 +24,7 @@ Epics planned for this release.
 
 * #26 Where am I?
 * #27 About
+* #52 Set team name
 * #28 Where is?
 * #46 Server Support
 
@@ -32,7 +33,7 @@ Epics planned for this release.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | 4 | *count* |
+| Epics | 5 | *count* |
 | Tasks |  16   | *count* | 
 | Story Points |  1  | *count* | 
 
