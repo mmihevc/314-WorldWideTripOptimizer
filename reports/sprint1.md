@@ -34,7 +34,7 @@ Epics planned for this release.
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
 | Epics | 5 | *count* |
-| Tasks |  16   | *count* | 
+| Tasks |  18   | *count* | 
 | Story Points |  1  | *count* | 
 
 
