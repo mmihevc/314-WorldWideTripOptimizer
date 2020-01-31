@@ -34,15 +34,15 @@ Epics planned for this release.
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
 | Epics | 5 | *count* |
-| Tasks |  18   | *count* | 
-| Story Points |  17  | *count* | 
+| Tasks |  19   | *count* | 
+| Story Points |  19  | *count* | 
 
 
 ## Scrums
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* | *none* | 
+| 1-31-20 |  |  |  | 
 
 
 
