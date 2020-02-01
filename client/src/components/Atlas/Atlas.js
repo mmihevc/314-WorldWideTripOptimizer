@@ -30,7 +30,6 @@ export default class Atlas extends Component {
       markerPosition: null,
     };
 
-    this.getGeolocation();
   }
 
   render() {
@@ -68,7 +67,7 @@ export default class Atlas extends Component {
 
 
   getGeolocation() {
-      let currPosition;
+      let currPosition = '';
       if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition (function(position) {
               currPosition = position;
