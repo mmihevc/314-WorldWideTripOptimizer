@@ -29,6 +29,7 @@ export default class Atlas extends Component {
     this.state = {
       markerPosition: null,
     };
+
   }
 
   render() {
@@ -62,6 +63,19 @@ export default class Atlas extends Component {
 
   addMarker(mapClickInfo) {
     this.setState({markerPosition: mapClickInfo.latlng});
+  }
+
+
+  getGeolocation() {
+      let currPosition = '';
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition (function(position) {
+              currPosition = position;
+          });
+      } else {
+          status.textContent = 'Geolocation is not supported by your browser';
+      }
+      return currPosition;
   }
 
   getMarkerPosition() {
