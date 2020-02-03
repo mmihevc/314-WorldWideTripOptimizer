@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Row} from 'reactstrap';
+import {Col, Container, Row, Button} from 'reactstrap';
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -25,11 +25,11 @@ export default class Atlas extends Component {
     super(props);
 
     this.addMarker = this.addMarker.bind(this);
+    this.markAndFlyHome = this.markAndFlyHome.bind(this);
 
     this.state = {
-      markerPosition: null,
+      markerPosition: null
     };
-
   }
 
   render() {
@@ -39,6 +39,7 @@ export default class Atlas extends Component {
             <Row>
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
+                {this.renderHomeButton()}
               </Col>
             </Row>
           </Container>
@@ -48,7 +49,8 @@ export default class Atlas extends Component {
 
   renderLeafletMap() {
     return (
-        <Map center={MAP_CENTER_DEFAULT}
+        <Map ref={map => {this.leafletMap = map;}}
+             center={MAP_CENTER_DEFAULT}
              zoom={MAP_ZOOM_MIN}
              minZoom={MAP_ZOOM_MIN}
              maxZoom={MAP_ZOOM_MAX}
@@ -61,10 +63,31 @@ export default class Atlas extends Component {
     )
   }
 
+  renderHomeButton() {
+    return (
+        <Button className="mt-1"
+                onClick={this.markAndFlyHome}>
+           Home
+        </Button>
+      )
+  }
+
+  markAndFlyHome() {
+    let homeLat = 40.559200;
+    let homeLng = -105.114944;
+
+    this.setState({
+      markerPosition: {
+        lat: homeLat,
+        lng: homeLng
+    }});
+
+    this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
+  }
+
   addMarker(mapClickInfo) {
     this.setState({markerPosition: mapClickInfo.latlng});
   }
-
 
   getGeolocation() {
       let currPosition = '';
