@@ -5,7 +5,7 @@ import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
-import {setPosition} from "leaflet/src/dom/DomUtil";
+import Button from "reactstrap/es/Button";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -20,30 +20,6 @@ const MARKER_ICON = L.icon({
   iconAnchor: [12, 40]  // for proper placement
 });
 
-//let currentPosition = '';
-
-let currentPosition = {
-    getCurrentPos : function(callback) {
-        let updateLocation = function (position) {
-            this.latitude = position.coords.latitude;
-            this.longitude = position.coords.longitude;
-            callback(this);
-        };
-
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(updateLocation);
-        }
-        else {
-            alert("Error");
-        }
-    }
-};
-
-currentPosition.getCurrentPos(function (currentPosition) {
-    alert(currentPosition.latitude);
-    alert(currentPosition.longitude);
-});
-
 
 
 export default class Atlas extends Component {
@@ -52,11 +28,12 @@ export default class Atlas extends Component {
     super(props);
 
     this.addMarker = this.addMarker.bind(this);
+    this.markCurrentLocation = this.markCurrentLocation.bind(this);
 
     this.state = {
-      markerPosition: null,
+        markerPosition : null
     };
-    //this.getGeolocation();
+    this.getCurrentLocation();
   }
 
   render() {
@@ -66,6 +43,7 @@ export default class Atlas extends Component {
             <Row>
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
+                <Button onClick={() => this.markCurrentLocation()}>Where Am I?</Button>
               </Col>
             </Row>
           </Container>
@@ -116,33 +94,15 @@ export default class Atlas extends Component {
     }
   }
 
-  /*getGeolocation(callback) {
-      if (navigator.geolocation) {
-          /*navigator.geolocation.getCurrentPosition(
-              function (position) {
-                  let currentLocation = {
-                      latitude: position.coords.latitude,
-                      longitude: position.coords.longitude
-                  }
-                  callback(currentLocation);
-              }
-          ) //end inner comment
-          navigator.geolocation.getCurrentPosition(success,error)
-      } else {
-          status.textContent = 'Geolocation is not supported by your browser';
-      }
+  markCurrentLocation() {
+      this.setState({markerPosition : this.getCurrentLocation()});
+  }
 
-      function success(position) {
-          let currentLocation = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude
-          }
-          alert(currentLocation);
-      }
-      function error(error) {
-          alert("Error!" + error);
-      }
-  }*/
-
-
+    getCurrentLocation(anything) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => anything([position.coords.latitude, position.coords.longitude]));
+        } else {
+            alert("Geolocation is not supported by your browser");
+        }
+    }
 }
