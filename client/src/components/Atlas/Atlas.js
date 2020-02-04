@@ -5,7 +5,6 @@ import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
-import {setPosition} from "leaflet/src/dom/DomUtil";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -20,32 +19,6 @@ const MARKER_ICON = L.icon({
   iconAnchor: [12, 40]  // for proper placement
 });
 
-//let currentPosition = '';
-
-let currentPosition = {
-    getCurrentPos : function(callback) {
-        let updateLocation = function (position) {
-            this.latitude = position.coords.latitude;
-            this.longitude = position.coords.longitude;
-            callback(this);
-        };
-
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(updateLocation);
-        }
-        else {
-            alert("Error");
-        }
-    }
-};
-
-currentPosition.getCurrentPos(function (currentPosition) {
-    alert(currentPosition.latitude);
-    alert(currentPosition.longitude);
-});
-
-
-
 export default class Atlas extends Component {
 
   constructor(props) {
@@ -56,7 +29,7 @@ export default class Atlas extends Component {
     this.state = {
       markerPosition: null,
     };
-    //this.getGeolocation();
+
   }
 
   render() {
@@ -93,6 +66,18 @@ export default class Atlas extends Component {
   }
 
 
+  getGeolocation() {
+      let currPosition = '';
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition (function(position) {
+              currPosition = position;
+          });
+      } else {
+          status.textContent = 'Geolocation is not supported by your browser';
+      }
+      return currPosition;
+  }
+
   getMarkerPosition() {
     let markerPosition = '';
     if (this.state.markerPosition) {
@@ -115,34 +100,4 @@ export default class Atlas extends Component {
       );
     }
   }
-
-  /*getGeolocation(callback) {
-      if (navigator.geolocation) {
-          /*navigator.geolocation.getCurrentPosition(
-              function (position) {
-                  let currentLocation = {
-                      latitude: position.coords.latitude,
-                      longitude: position.coords.longitude
-                  }
-                  callback(currentLocation);
-              }
-          ) //end inner comment
-          navigator.geolocation.getCurrentPosition(success,error)
-      } else {
-          status.textContent = 'Geolocation is not supported by your browser';
-      }
-
-      function success(position) {
-          let currentLocation = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude
-          }
-          alert(currentLocation);
-      }
-      function error(error) {
-          alert("Error!" + error);
-      }
-  }*/
-
-
 }
