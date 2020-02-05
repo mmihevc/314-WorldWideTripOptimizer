@@ -52,23 +52,27 @@ Epics planned for this release.
 
 #### Completed epics in Sprint Backlog 
 * *epic number and name*:  comments
-* 
+* #52 Set Team Name: We were able to set the team name easily and without any issues.
+* #26 Where am I?: 
+* #27 About: 
 
 #### Incomplete epics in Sprint Backlog 
 * *epic number and name*: explanation
-*
+* #28 Where is?: We were unable to complete this epic because we did not reserve enough time to get it done.
+* #46 Server Support: We were unable to complete this epic because we did not reserve enough time to get it done.
 
 #### What went well
 * 
 *
 
 #### Problems encountered and resolutions
-* 
+* It was difficult to figure out how to utilize the Geolocation API, however we were able to figure how it works as a team.
 *
 
 ## Retrospective
 
 #### What went well
+The team was able to communicate effectively and offer help to each other in order to figure out how to complete the tasks.  
 
 #### Potential improvements
 
