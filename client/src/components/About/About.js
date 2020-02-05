@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {Container, Row, Col, Button} from 'reactstrap';
+import {Card, CardImg, CardTitle} from 'reactstrap';
 import {CLIENT_TEAM_NAME} from "../Constants";
 import '../tcowebstyle.css';
+import kevinImage from './images/kevin.jpg';
 
 export default class About extends Component {
 
@@ -19,6 +21,17 @@ export default class About extends Component {
                 Close
               </Button>
             </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Card>
+                <CardImg top width="100%" src={kevinImage} />
+                <CardTitle className="mt-3 font-weight-bold">Kevin Schroeder</CardTitle>
+              </Card>
+            </Col>
+            <Col></Col>
+            <Col></Col>
+            <Col></Col>
           </Row>
         </Container>
       )
