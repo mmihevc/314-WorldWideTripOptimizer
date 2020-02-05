@@ -19,8 +19,6 @@ const MARKER_ICON = L.icon({
   iconAnchor: [12, 40]  // for proper placement
 });
 
-
-
 export default class Atlas extends Component {
 
   constructor(props) {
@@ -68,6 +66,18 @@ export default class Atlas extends Component {
   }
 
 
+  getGeolocation() {
+      let currPosition = '';
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition (function(position) {
+              currPosition = position;
+          });
+      } else {
+          status.textContent = 'Geolocation is not supported by your browser';
+      }
+      return currPosition;
+  }
+
   getMarkerPosition() {
     let markerPosition = '';
     if (this.state.markerPosition) {
@@ -98,4 +108,5 @@ export default class Atlas extends Component {
           alert("Geolocation is not supported by your browser");
       }
   }
+
 }
