@@ -5,6 +5,7 @@ import {CLIENT_TEAM_NAME} from "../Constants";
 import '../tcowebstyle.css';
 import kevinImage from './images/kevin.jpg';
 import maddieImage from './images/maddie.jpg';
+import kaiImage from './images/kai.jpg';
 
 export default class About extends Component {
 
@@ -36,7 +37,12 @@ export default class About extends Component {
                   <CardTitle className="mt-3 font-weight-bold">Maddie Mihevc</CardTitle>
               </Card>
             </Col>
-            <Col></Col>
+            <Col>
+              <Card>
+                <CardImg top width="100" src={kaiImage}  />
+                <CardTitle className="mt-3 font-weight-bold">Kai Griem</CardTitle>
+              </Card>
+            </Col>
             <Col></Col>
           </Row>
         </Container>
