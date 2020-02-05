@@ -26,10 +26,12 @@ export default class Atlas extends Component {
 
     this.addMarker = this.addMarker.bind(this);
     this.markAndFlyHome = this.markAndFlyHome.bind(this);
+    this.markCurrentLocation = this.markCurrentLocation.bind(this);
 
     this.state = {
       markerPosition: null
     };
+
   }
 
   render() {
@@ -89,18 +91,6 @@ export default class Atlas extends Component {
     this.setState({markerPosition: mapClickInfo.latlng});
   }
 
-  getGeolocation() {
-      let currPosition = '';
-      if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition (function(position) {
-              currPosition = position;
-          });
-      } else {
-          status.textContent = 'Geolocation is not supported by your browser';
-      }
-      return currPosition;
-  }
-
   getMarkerPosition() {
     let markerPosition = '';
     if (this.state.markerPosition) {
@@ -123,4 +113,13 @@ export default class Atlas extends Component {
       );
     }
   }
+
+  getCurrentLocation(anything) {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(position => anything([position.coords.latitude, position.coords.longitude]));
+      } else {
+          alert("Geolocation is not supported by your browser");
+      }
+  }
+
 }
