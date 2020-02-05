@@ -5,7 +5,6 @@ import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
-import Button from "reactstrap/es/Button";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -33,7 +32,6 @@ export default class Atlas extends Component {
     this.state = {
         markerPosition : null
     };
-    this.getCurrentLocation();
   }
 
   render() {
@@ -43,7 +41,6 @@ export default class Atlas extends Component {
             <Row>
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
-                <Button onClick={() => this.markCurrentLocation()}>Where Am I?</Button>
               </Col>
             </Row>
           </Container>
@@ -94,15 +91,11 @@ export default class Atlas extends Component {
     }
   }
 
-  markCurrentLocation() {
-      this.setState({markerPosition : this.getCurrentLocation()});
+  getCurrentLocation(anything) {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(position => anything([position.coords.latitude, position.coords.longitude]));
+      } else {
+          alert("Geolocation is not supported by your browser");
+      }
   }
-
-    getCurrentLocation(anything) {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => anything([position.coords.latitude, position.coords.longitude]));
-        } else {
-            alert("Geolocation is not supported by your browser");
-        }
-    }
 }
