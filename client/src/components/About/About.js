@@ -25,6 +25,11 @@ export default class About extends Component {
           </Row>
           <Row>
             <Col>
+                <h5>Team [hip, hip] aims to work together combining our unique talents to provide exceptional work all while doing it with a smile!</h5>
+            </Col>
+        </Row>
+          <Row>
+            <Col>
               <Card>
                 <CardImg top width="100%" src={kevinImage} />
                 <CardTitle className="mt-3 font-weight-bold">Kevin Schroeder</CardTitle>
