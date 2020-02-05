@@ -26,7 +26,6 @@ export default class Atlas extends Component {
 
     this.addMarker = this.addMarker.bind(this);
     this.markAndFlyHome = this.markAndFlyHome.bind(this);
-    this.markCurrentLocation = this.markCurrentLocation.bind(this);
 
     this.state = {
       markerPosition: null
@@ -68,23 +67,10 @@ export default class Atlas extends Component {
   renderHomeButton() {
     return (
         <Button className="mt-1"
-                onClick={this.markAndFlyHome}>
-           Home
+                onClick={() => this.getCurrentLocation(this.markAndFlyHome)}>
+           Where Am I?
         </Button>
       )
-  }
-
-  markAndFlyHome() {
-    let homeLat = 40.559200;
-    let homeLng = -105.114944;
-
-    this.setState({
-      markerPosition: {
-        lat: homeLat,
-        lng: homeLng
-    }});
-
-    this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
   }
 
   addMarker(mapClickInfo) {
@@ -120,6 +106,19 @@ export default class Atlas extends Component {
       } else {
           alert("Geolocation is not supported by your browser");
       }
+  }
+
+  markAndFlyHome(homeLocation) {
+    let homeLat = homeLocation[0];
+    let homeLng = homeLocation[1];
+
+    this.setState({
+      markerPosition: {
+        lat: homeLat,
+        lng: homeLng
+      }});
+
+    this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
   }
 
 }
