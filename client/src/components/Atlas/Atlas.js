@@ -25,11 +25,11 @@ export default class Atlas extends Component {
     super(props);
 
     this.addMarker = this.addMarker.bind(this);
+    this.markCurrentLocation = this.markCurrentLocation.bind(this);
 
     this.state = {
-      markerPosition: null,
+        markerPosition : null
     };
-
   }
 
   render() {
@@ -100,4 +100,13 @@ export default class Atlas extends Component {
       );
     }
   }
+
+  getCurrentLocation(anything) {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(position => anything([position.coords.latitude, position.coords.longitude]));
+      } else {
+          alert("Geolocation is not supported by your browser");
+      }
+  }
+
 }
