@@ -4,6 +4,7 @@ import {Card, CardImg, CardTitle} from 'reactstrap';
 import {CLIENT_TEAM_NAME} from "../Constants";
 import '../tcowebstyle.css';
 import kevinImage from './images/kevin.jpg';
+import maddieImage from './images/maddie.jpg';
 
 export default class About extends Component {
 
@@ -29,7 +30,12 @@ export default class About extends Component {
                 <CardTitle className="mt-3 font-weight-bold">Kevin Schroeder</CardTitle>
               </Card>
             </Col>
-            <Col></Col>
+            <Col>
+              <Card>
+                  <CardImg top width="100%" src={maddieImage} />
+                  <CardTitle className="mt-3 font-weight-bold">Maddie Mihevc</CardTitle>
+              </Card>
+            </Col>
             <Col></Col>
             <Col></Col>
           </Row>
