@@ -17,6 +17,14 @@ const KEVIN_BIO = 'Kevin is a mechanical engineering student in his fourth year 
                   'hobbies such as downhill skiing, indoor bouldering, binging online TV series, and playing classic ' +
                   'World of Warcraft. Kevin is originally from Maryland where he grew up and went to high school, ' +
                   'but is now a full blown Coloradan who loves the state.';
+const JACKIE_BIO ='Jackie is a senior at Colorado State University majoring in Applied Computing Technology.' +
+                  'She believes when we support each other we can accomplish great things and thrives in team ' +
+                  'settings. Coming into the major with little to no experience in the field, her knowledge of ' +
+                  'computer science is constantly growing as she is eager to learn. She has experience working in ' +
+                  'an industry setting with two summer internships at Webroot Cyber Security where she interned ' +
+                  'under a product owner working with Salesforce and Oracle teams. Originally born in the bay area ' +
+                  'of California, her family moved to Colorado when she was a young age to pursue their love for ' +
+                  'the skiing and the outdoors. She loves plants, pugs, and painting and despises being cold.';
 
 export default class About extends Component {
 
@@ -69,7 +77,7 @@ export default class About extends Component {
               </Card>
             </Col>
             <Col>
-              <Card>
+              <Card onClick={() => {this.setBio(JACKIE_BIO)}}>
                 <CardImg top width="100%" src={jackieImage} />
                 <CardTitle className="mt-3 font-weight-bold">Jackie Clotfelter</CardTitle>
               </Card>
