@@ -7,7 +7,25 @@ import kevinImage from './images/kevin.jpg';
 import maddieImage from './images/maddie.jpg';
 import kaiImage from './images/kai.jpg';
 
+const TEAM_STATEMENT = 'Team [hip, hip] aims to work together combining our unique talents to provide exceptional ' +
+                       'work all while doing it with a smile!';
+const KEVIN_BIO = 'Kevin is a mechanical engineering student in his fourth year at Colorado State University. ' +
+                  'He is pursuing a minor in computer science and has a passion for all things tech. Currently he ' +
+                  'works at Spirae in old town Fort Collins, where he is helping to prototype a control and ' +
+                  'monitoring application for a cloud-connected portable microgrid electric system. He enjoys ' +
+                  'hobbies such as downhill skiing, indoor bouldering, binging online TV series, and playing classic ' +
+                  'World of Warcraft. Kevin is originally from Maryland where he grew up and went to high school, ' +
+                  'but is now a full blown Coloradan who loves the state.';
+
 export default class About extends Component {
+
+    constructor(props) {
+      super(props);
+
+      this.state = {
+        bio: TEAM_STATEMENT
+      }
+    }
 
     render() {
       return (
@@ -26,12 +44,13 @@ export default class About extends Component {
           </Row>
           <Row>
             <Col>
-                <h5>Team [hip, hip] aims to work together combining our unique talents to provide exceptional work all while doing it with a smile!</h5>
+                <h5>{this.state.bio}</h5>
             </Col>
-        </Row>
+          </Row>
+          <hr color="black" />
           <Row>
             <Col>
-              <Card>
+              <Card onClick={() => {this.setBio(KEVIN_BIO)}}>
                 <CardImg top width="100%" src={kevinImage} />
                 <CardTitle className="mt-3 font-weight-bold">Kevin Schroeder</CardTitle>
               </Card>
@@ -52,5 +71,21 @@ export default class About extends Component {
           </Row>
         </Container>
       )
+    }
+
+    setBio(newBio) {
+      if (this.strCompare(newBio, this.state.bio)) {
+        this.setState({
+          bio: TEAM_STATEMENT
+        })
+      } else {
+        this.setState({
+          bio: newBio
+        })
+      }
+    }
+
+    strCompare(str1, str2) {
+      return (str1.localeCompare(str2) === 0);
     }
 }
