@@ -6,6 +6,7 @@ import '../tcowebstyle.css';
 import kevinImage from './images/kevin.jpg';
 import maddieImage from './images/maddie.jpg';
 import kaiImage from './images/kai.jpg';
+import jackieImage from './images/Jackie.jpg';
 
 const TEAM_STATEMENT = 'Team [hip, hip] aims to work together combining our unique talents to provide exceptional ' +
                        'work all while doing it with a smile!';
@@ -67,7 +68,12 @@ export default class About extends Component {
                 <CardTitle className="mt-3 font-weight-bold">Kai Griem</CardTitle>
               </Card>
             </Col>
-            <Col></Col>
+            <Col>
+              <Card>
+                <CardImg top width="100%" src={jackieImage} />
+                <CardTitle className="mt-3 font-weight-bold">Jackie Clotfelter</CardTitle>
+              </Card>
+            </Col>
           </Row>
         </Container>
       )
