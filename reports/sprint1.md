@@ -62,7 +62,7 @@ Epics planned for this release.
 * #46 Server Support: We were unable to complete this epic because we did not reserve enough time to get it done.
 
 #### What went well
-* 
+* Communication came very easy to us. We all get along and are very helpful towards each other creating a really fun environment to work in. Communicating through slack has been great and there is almost always a team member online that can instantly reply. We have already got together outside of the classroom and are planning more team bonding gatherings in the future.
 *
 
 #### Problems encountered and resolutions
