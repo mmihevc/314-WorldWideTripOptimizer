@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Button} from 'reactstrap';
+import {Col, Container, Row} from 'reactstrap';
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -25,14 +25,11 @@ export default class Atlas extends Component {
     super(props);
 
     this.addMarker = this.addMarker.bind(this);
-    this.markAndFlyHome = this.markAndFlyHome.bind(this);
-    this.markInitialLocation=this.markInitialLocation.bind(this);
+    this.markCurrentLocation = this.markCurrentLocation.bind(this);
+    this.getCurrentLocation();
     this.state = {
-      markerPosition: null ,
-      centerPosition: [0,0]
-    }
-    ;
-    this.getCurrentLocation(this.markInitialLocation);
+        markerPosition : {lat: this.position.coords.latitude, lng: this.position.coords.longitude}
+    };
   }
 
   render() {
@@ -42,7 +39,6 @@ export default class Atlas extends Component {
             <Row>
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
-                {this.renderHomeButton()}
               </Col>
             </Row>
           </Container>
@@ -52,8 +48,7 @@ export default class Atlas extends Component {
 
   renderLeafletMap() {
     return (
-        <Map ref={map => {this.leafletMap = map;}}
-             center={this.state.centerPosition}
+        <Map center={MAP_CENTER_DEFAULT}
              zoom={MAP_ZOOM_MAX}
              minZoom={MAP_ZOOM_MIN}
              maxZoom={MAP_ZOOM_MAX}
@@ -66,17 +61,21 @@ export default class Atlas extends Component {
     )
   }
 
-  renderHomeButton() {
-    return (
-        <Button className="mt-1"
-                onClick={() => this.getCurrentLocation(this.markAndFlyHome)}>
-           Where Am I?
-        </Button>
-      )
-  }
-
   addMarker(mapClickInfo) {
     this.setState({markerPosition: mapClickInfo.latlng});
+  }
+
+
+  getGeolocation() {
+      let currPosition = '';
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition (function(position) {
+              currPosition = position;
+          });
+      } else {
+          status.textContent = 'Geolocation is not supported by your browser';
+      }
+      return currPosition;
   }
 
   getMarkerPosition() {
@@ -108,26 +107,6 @@ export default class Atlas extends Component {
       } else {
           alert("Geolocation is not supported by your browser");
       }
-  }
-  markInitialLocation(homeLocation){
-      let homelat = homeLocation[0];
-      let homelng = homeLocation[1];
-      this.setState({
-          markerPosition:{lat:homelat, lng:homelng},
-          centerPosition:{lat:homelat, lng:homelng}
-      });
-  }
-  markAndFlyHome(homeLocation) {
-    let homeLat = homeLocation[0];
-    let homeLng = homeLocation[1];
-
-    this.setState({
-      markerPosition: {
-        lat: homeLat,
-        lng: homeLng
-      }});
-
-    this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
   }
 
 }
