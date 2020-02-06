@@ -63,7 +63,7 @@ Epics planned for this release.
 
 #### What went well
 * Communication came very easy to us. We all get along and are very helpful towards each other creating a really fun environment to work in. Communicating through slack has been great and there is almost always a team member online that can instantly reply. We have already got together outside of the classroom and are planning more team bonding gatherings in the future.
-*
+* We were able to complete the main goal for the Sprint as well as the About Epic. We did a lot of this without outside help or before the solutions were explained in class, which shows that we have the capability to problem solve as a group and stick it out through difficult tasks.
 
 #### Problems encountered and resolutions
 * It was difficult to figure out how to utilize the Geolocation API, however we were able to figure how it works as a team.
@@ -77,3 +77,4 @@ The team was able to communicate effectively and offer help to each other in ord
 #### Potential improvements
 
 #### What we will change next time
+In the future we know to not take on as many tasks and epics within a small timeframe. We are also now more familiar with the tools being used and will be less prone to making errors while using GitHub, ZenHub, and IntelliJ. We will be more careful about merging and making pull requests, and ensuring that merge conflicts are resolved appropiately.
