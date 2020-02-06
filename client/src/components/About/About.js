@@ -25,6 +25,11 @@ const JACKIE_BIO ='Jackie is a senior at Colorado State University majoring in A
                   'under a product owner working with Salesforce and Oracle teams. Originally born in the bay area ' +
                   'of California, her family moved to Colorado when she was a young age to pursue their love for ' +
                   'the skiing and the outdoors. She loves plants, pugs, and painting and despises being cold.';
+const KAIS_BIO =  'Kai was born in Virginia Mason hospital on April 5th, 1999 to Michelle and Torsten. He had' +
+                  'no choice in the matter and remains annoyed by this fact. He probably went to high school or' +
+                  'something. Kai started college as an electrical engineering major before switching to computer' +
+                  'science to pursue programming. He most recently worked demolition for a small construction'+
+                  'company. He recommends "The Sparrow" by Maria Doria Russell.';
 
 export default class About extends Component {
 
@@ -71,7 +76,7 @@ export default class About extends Component {
               </Card>
             </Col>
             <Col>
-              <Card>
+              <Card onClick={() => {this.setBio(KAIS_BIO)}}>
                 <CardImg top width="100" src={kaiImage}  />
                 <CardTitle className="mt-3 font-weight-bold">Kai Griem</CardTitle>
               </Card>
