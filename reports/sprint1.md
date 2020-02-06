@@ -67,7 +67,7 @@ Epics planned for this release.
 
 #### Problems encountered and resolutions
 * It was difficult to figure out how to utilize the Geolocation API, however we were able to figure how it works as a team.
-*
+* A problem we encountered was navigating the user interfaces for all the new tools we used. IntelliJ is easy to use after being walked through it a few times and getting familiar to the feel of the layout. One of the resolutions the team used was communicating over slack and getting feedback on the correct way to use the interfaces or the location of a specific button. Another resolution the team used was going into the TAs office hours in order to receive clarification on how to use the tools or how to solve any bugs encountered when trying to use them. Now That we are familiar with these tools we feel confident in our ability to complete tasks with less interface complications in the future.
 
 ## Retrospective
 
