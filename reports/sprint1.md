@@ -62,7 +62,7 @@ without much hassle.
 * #46 Server Support: We were unable to complete this epic because we did not reserve enough time to get it done.
 
 #### What went well
-* We were able to complete the main goal for the Sprint as well as the About Epic and the Set Team Name epic. We did a lot of this without outside help or before the solutions were explained in class, which shows that we have the capability to problem solve as a group and stick it out through difficult tasks.
+* We were able to complete the main goal for the Sprint as well as the About Epic and the Set Team Name epic. We did a lot of this without outside help or before the solutions were explained in class, which shows that we have the capability to problem solve as a group and stick it out through difficult tasks. 
 
 #### Problems encountered and resolutions
 * A problem we encountered was navigating the user interfaces for all the new tools we used. IntelliJ is easy to use after being walked through it a few times and getting familiar to the feel of the layout. One of the resolutions the team used was communicating over slack and getting feedback on the correct way to use the interfaces or the location of a specific button. Another resolution the team used was going into the TAs office hours in order to receive clarification on how to use the tools or how to solve any bugs encountered when trying to use them. Now That we are familiar with these tools we feel confident in our ability to complete tasks with less interface complications in the future.
@@ -73,7 +73,7 @@ without much hassle.
 * Communication came very easy to us. We all get along and are very helpful towards each other creating a really fun environment to work in. Communicating through slack has been great and there is almost always a team member online that can instantly reply. We have already got together outside of the classroom and are planning more team bonding gatherings in the future.
 
 #### Potential improvements
-* In the future it would be beneficial to start working on the epics sooner so we can get more epics done in the allotted time. 
+* Even though this sprint was shorter than the rest, in the future we should try our best to get more of a head start on our work. We were able to accomplish many tasks over this sprint but not as many as we committed to. We completed only a few tasks each time before scrum therefore we were able to discuss the added features with our teammates so we all had a clear understanding. In the future we will try to close out tasks more quickly to make our roadmap more linear throughout the sprint. In addition it would be an improvement to have more team meetings because it can be difficult to ask and answer every question over slack. Having more team meetings would allow us to work together more easily to figure out how to complete tasks.
 
 #### What we will change next time
 * In the future we know to not take on as many tasks and epics within a small timeframe. We are also now more familiar with the tools being used and will be less prone to making errors while using GitHub, ZenHub, and IntelliJ. We will be more careful about merging and making pull requests, and ensuring that merge conflicts are resolved appropiately.
