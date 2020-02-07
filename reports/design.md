@@ -58,11 +58,9 @@ Whenever a user clicks on the map, the client should display a marker with latit
 We only maintain a single marker at this point displaying the most recently clicked location.
 
 #### Clicking on the team name should tell me more about the team.
-Whenever a user clicks the team name in the header, a collapsible section should appear under the header with information about the team.
-The collapsible map should disappear so only the about or map are displayed.
-A close button / icon in the top right corner of the about will close the about and return the map to display.
-A simple toggle in state should be able to control this rendering.
-The about page should contain the team name as a heading, but be otherwise blank in base. 
+![base](images/aboutDiagram.jpg)
+
+Whenever a user clicks the team name in the header, a collapsible section should appear under the header with information about the team.The collapsible map should disappear so only the about or map are displayed.A close button / icon in the top right corner of the about will close the about and return the map to display.A simple toggle in state should be able to control this rendering.The about page should contain the team name as a heading, but be otherwise blank in base. 
 
 #### Clicking on the URL in the footer should let me change the server.
 Whenever a user clicks on the URL a popup should open showing the team name, the URL in an input text box, and a Cancel button.
