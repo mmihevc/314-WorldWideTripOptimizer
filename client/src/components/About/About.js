@@ -34,10 +34,10 @@ const MADDIE_BIO = 'Maddie is an Applied Computing Technology major in her third
                    'in computer science, especially girls. She enjoys numerous outdoor activities including slacklining,' +
                    'mountain biking and rafting. She is from Littleton, Colorado and does not ever plan on living in any other state.';
 
-const KAIS_BIO =  'Kai was born in Virginia Mason hospital on April 5th, 1999 to Michelle and Torsten. He had' +
-                  'no choice in the matter and remains annoyed by this fact. He probably went to high school or' +
-                  'something. Kai started college as an electrical engineering major before switching to computer' +
-                  'science to pursue programming. He most recently worked demolition for a small construction'+
+const KAIS_BIO =  'Kai was born in Virginia Mason hospital on April 5th, 1999 to Michelle and Torsten. He had ' +
+                  'no choice in the matter and remains annoyed by this fact. He probably went to high school or ' +
+                  'something. Kai started college as an electrical engineering major before switching to computer ' +
+                  'science to pursue programming. He most recently worked demolition for a small construction '+
                   'company. He recommends "The Sparrow" by Maria Doria Russell.';
 export default class About extends Component {
 
