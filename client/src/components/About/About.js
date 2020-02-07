@@ -10,6 +10,7 @@ import jackieImage from './images/Jackie.jpg';
 
 const TEAM_STATEMENT = 'Team [hip, hip] aims to work together combining our unique talents to provide exceptional ' +
                        'work all while doing it with a smile!';
+
 const KEVIN_BIO = 'Kevin is a mechanical engineering student in his fourth year at Colorado State University. ' +
                   'He is pursuing a minor in computer science and has a passion for all things tech. Currently he ' +
                   'works at Spirae in old town Fort Collins, where he is helping to prototype a control and ' +
@@ -25,6 +26,13 @@ const JACKIE_BIO ='Jackie is a senior at Colorado State University majoring in A
                   'under a product owner working with Salesforce and Oracle teams. Originally born in the bay area ' +
                   'of California, her family moved to Colorado when she was a young age to pursue their love for ' +
                   'the skiing and the outdoors. She loves plants, pugs, and painting and despises being cold.';
+
+const MADDIE_BIO = 'Maddie is an Applied Computing Technology major in her third year at Colorado State University. ' +
+                   'She is currently the lead TA for CS150 and wants to take the knowledge she has learned in that ' +
+                   'position to become a computer science high school teacher or professor. She enjoys learning about and working ' +
+                   'towards improving computer science education and is very passionate about getting students involved ' +
+                   'in computer science, especially girls. She enjoys numerous outdoor activities including slacklining,' +
+                   'mountain biking and rafting. She is from Littleton, Colorado and does not ever plan on living in any other state.';
 
 export default class About extends Component {
 
@@ -65,7 +73,7 @@ export default class About extends Component {
               </Card>
             </Col>
             <Col>
-              <Card>
+              <Card onClick={() => {this.setBio(MADDIE_BIO)}}>
                   <CardImg top width="100%" src={maddieImage} />
                   <CardTitle className="mt-3 font-weight-bold">Maddie Mihevc</CardTitle>
               </Card>
