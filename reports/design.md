@@ -106,6 +106,12 @@ Often there are several related classes but we've listed only one to simplify th
 ![base](images/aboutDiagram.jpg)
 
 When a user clicks on the team name in the header a collapsable window will drop down displaying the team statement, team picture's, and names. To the right of the window is a close button that will collapse the window and once again display the map. Clicking on the images for a team member will replace the team statment with the individial team members biography. Clickling the team members image agin will replace the members biography with the team statement once again. 
+
+#### The homepage map should be able to show the user where they are.
+![base](images/sprint1map.png)
+
+When the user first visits the page a pop-up appears asking them to allow the use of their location. If the user accepts, then the map will show a marker for their location, and center to their whereabouts. If the user doesnt allow the browser to use their location, then the map will center at coordinates (0, 0). The Where Am I? button will be shown to the user regardless, but is only functional when the user accepts geolocation features. When functional, the button will recenter the map to the users current geolocation, and the marker will go back to that geolocation aswell. The map will always be at its maximum zoom-in level when the page is first loaded, and also when the Where Am I? button is pressed.
+
 # Sprint 2
 # Sprint 3
 # Sprint 4 
