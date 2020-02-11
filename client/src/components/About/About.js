@@ -73,25 +73,25 @@ export default class About extends Component {
           <Row>
             <Col>
               <Card onClick={() => {this.setBio(KEVIN_BIO)}}>
-                <CardImg top width="100%" src={kevinImage} />
+                <CardImg src={kevinImage} />
                 <CardTitle className="mt-3 font-weight-bold">Kevin Schroeder</CardTitle>
               </Card>
             </Col>
             <Col>
               <Card onClick={() => {this.setBio(MADDIE_BIO)}}>
-                  <CardImg top width="100%" src={maddieImage} />
+                  <CardImg src={maddieImage} />
                   <CardTitle className="mt-3 font-weight-bold">Maddie Mihevc</CardTitle>
               </Card>
             </Col>
             <Col>
               <Card onClick={() => {this.setBio(KAIS_BIO)}}>
-                <CardImg top width="100" src={kaiImage}  />
+                <CardImg src={kaiImage}  />
                 <CardTitle className="mt-3 font-weight-bold">Kai Griem</CardTitle>
               </Card>
             </Col>
             <Col>
               <Card onClick={() => {this.setBio(JACKIE_BIO)}}>
-                <CardImg top width="100%" src={jackieImage} />
+                <CardImg src={jackieImage} />
                 <CardTitle className="mt-3 font-weight-bold">Jackie Clotfelter</CardTitle>
               </Card>
             </Col>

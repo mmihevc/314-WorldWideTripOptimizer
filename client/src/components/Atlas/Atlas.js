@@ -102,11 +102,15 @@ export default class Atlas extends Component {
     }
   }
 
+  error() {
+      alert("This application needs access to your location to work.");
+  }
+
   getCurrentLocation(anything) {
       if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(position => anything([position.coords.latitude, position.coords.longitude]));
+          navigator.geolocation.getCurrentPosition(position => anything([position.coords.latitude, position.coords.longitude]), this.error);
       } else {
-          alert("Geolocation is not supported by your browser");
+          alert("Geolocation is not supported by your browser.");
       }
   }
   markInitialLocation(homeLocation){
