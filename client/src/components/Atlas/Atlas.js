@@ -27,11 +27,12 @@ export default class Atlas extends Component {
     this.addMarker = this.addMarker.bind(this);
     this.markAndFlyHome = this.markAndFlyHome.bind(this);
     this.markInitialLocation=this.markInitialLocation.bind(this);
+
     this.state = {
-      markerPosition: null ,
-      centerPosition: [0,0]
-    }
-    ;
+      markerPosition: null,
+      centerPosition: MAP_CENTER_DEFAULT
+    };
+
     this.getCurrentLocation(this.markInitialLocation);
   }
 
