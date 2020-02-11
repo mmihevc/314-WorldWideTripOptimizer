@@ -110,7 +110,7 @@ export default class Atlas extends Component {
       if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(position => anything([position.coords.latitude, position.coords.longitude]), this.error);
       } else {
-          alert("Geolocation is not supported by your browser.");
+         console.log("Geolocation is not supported by your browser.")
       }
   }
   markInitialLocation(homeLocation){

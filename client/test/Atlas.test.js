@@ -9,7 +9,7 @@ function testInitialAppState() {
   const app = shallow(<Atlas />);
 
   let actualMarkerPosition = app.state().markerPosition;
-  let actualMapCenter = app.state().mapCenter;
+  let actualMapCenter = app.state().centerPosition;
 
   let expectedMarkerPosition = null;
   let expectedMapCenter = [0, 0];
