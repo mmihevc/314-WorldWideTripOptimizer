@@ -59,8 +59,8 @@ This epic relates to the distance epic. We will scale the map to show both point
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
 | Epics | *6* | *count* |
-| Tasks |  *13*   | *count* | 
-| Story Points |  *7*  | *sum* | 
+| Tasks |  *21*   | *count* | 
+| Story Points |  *15*  | *sum* | 
 
 In the last sprint we completed 3 epics and put 2 epics on the icebox. However, two of these epics were completed relatively quickly. Sprint 2 will last roughly twice as long and we have 6 epics planned, each of which should take longer than the two simple epics from sprint1. We will aim to complete all 6 epics but by this estimate we might realistically complete 4-5 epics, giving us plenty to work on during the sprint. 
 
@@ -70,6 +70,7 @@ In the last sprint we completed 3 epics and put 2 epics on the icebox. However, 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
 | *date* | *#task, ...* | *#task, ...* |  | 
+| 2/12 | none | none | |
 
 
 ## Review
