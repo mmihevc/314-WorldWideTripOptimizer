@@ -1,5 +1,6 @@
 package com.tco.server;
 
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,9 @@ import java.util.List;
  */
 public class RequestConfig extends RequestHeader {
   private String serverName;
+  private String[] supportedRequests;
+
+  private final static String[] SUPPORTED_REQUESTS_V2 = {"config", "distance"};
 
   private final transient Logger log = LoggerFactory.getLogger(RequestConfig.class);
 
@@ -34,11 +38,29 @@ public class RequestConfig extends RequestHeader {
   @Override
   public void buildResponse() {
     this.serverName = "t11 [hip, hip]";
+    this.buildSupportedRequests();
     log.trace("buildResponse -> {}", this);
+  }
+
+  private void buildSupportedRequests() {
+    if (this.requestVersion == 2)
+      this.supportedRequests = SUPPORTED_REQUESTS_V2;
   }
 
 
   String getServerName() {
     return this.serverName;
+  }
+
+  String getType() {
+    return this.requestType;
+  }
+
+  Integer getVersion() {
+    return this.requestVersion;
+  }
+
+  String[] getSupportedRequests() {
+    return this.supportedRequests;
   }
 }
