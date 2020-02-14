@@ -19,6 +19,7 @@ const MARKER_ICON = L.icon({
   iconAnchor: [12, 40]  // for proper placement
 });
 
+
 export default class Atlas extends Component {
 
   constructor(props) {
@@ -34,6 +35,8 @@ export default class Atlas extends Component {
     };
 
     this.getCurrentLocation(this.markInitialLocation);
+
+
   }
 
   render() {
@@ -44,6 +47,7 @@ export default class Atlas extends Component {
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
                 {this.renderHomeButton()}
+                {this.renderLongitudeLatitudeBox()}
               </Col>
             </Row>
           </Container>
@@ -75,6 +79,29 @@ export default class Atlas extends Component {
         </Button>
       )
   }
+
+
+  renderLongitudeLatitudeBox() {
+      return (
+          <form>
+              <label> <br/> <b>Enter Longitude and Latitude Here </b> </label>
+              <input type="text" id="longitudeLatitude" size="40" onKeyPress={() => this.getUserInput()}/>
+          </form>
+      )
+  }
+
+  getUserInput() {
+      let userInput = document.getElementById('longitudeLatitude').value;
+      let userInputArray;
+      if (userInput.includes(" ")) {
+          userInputArray = userInput.split(" ");
+      }
+      else if (userInput.includes(", ") || userInput.includes(",")) {
+        userInputArray = userInput.split(",");
+      }
+      return userInputArray;
+  }
+
 
   addMarker(mapClickInfo) {
     this.setState({markerPosition: mapClickInfo.latlng});
