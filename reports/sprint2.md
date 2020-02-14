@@ -40,18 +40,23 @@
 ## Planned Epics
 
 *Where Is*
+
 We plan to create a service for the user to enter a coordinate and plot it on the map. This function should take an entered latitude longitude value or take one copy and pasted from the internet. If the given value is illegitimate the user should be notified in some way. This epic must be completed to proceed to the distance and map epics. 
 
 *Support Protocol Standard v2*
+
 We are reponsible for maintaining a standardized object format and client/server interaction. This mainly applies to server configuration and the distance object, allowing for standardized testing and grading. 
 
 *Server Support*
+
 We will display the server information on our webpage. This will be available through a clickable footer. We will need to complete this epic in order to comply with Support Protocol. 
 
 *Distance*
+
 The user should be able to enter two coordinate points on the map. We will calculate the distance between the points and present the data to the user. 
 
 *Map*
+
 This epic relates to the distance epic. We will scale the map to show both points plotted in the distance epic. We will illustrate the linear distance between these points with a visible line. 
 
 ## Metrics
