@@ -30,13 +30,12 @@ export default class Atlas extends Component {
     this.markInitialLocation=this.markInitialLocation.bind(this);
 
     this.state = {
-      markerPosition: null,
-      centerPosition: MAP_CENTER_DEFAULT
+        markerPosition: null,
+        centerPosition: MAP_CENTER_DEFAULT,
+        userInput: null
     };
 
     this.getCurrentLocation(this.markInitialLocation);
-
-
   }
 
   render() {
@@ -84,22 +83,15 @@ export default class Atlas extends Component {
   renderLongitudeLatitudeBox() {
       return (
           <form>
-              <label> <br/> <b>Enter Longitude and Latitude Here </b> </label>
-              <input type="text" id="longitudeLatitude" size="40" onKeyPress={() => this.getUserInput()}/>
+              <label> <br/> <b>Enter Longitude and Latitude Here:</b> </label>
+              <input type="text" id="longitudeLatitude" size="40"/>
+              <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
           </form>
       )
   }
 
   getUserInput() {
-      let userInput = document.getElementById('longitudeLatitude').value;
-      let userInputArray;
-      if (userInput.includes(" ")) {
-          userInputArray = userInput.split(" ");
-      }
-      else if (userInput.includes(", ") || userInput.includes(",")) {
-        userInputArray = userInput.split(",");
-      }
-      return userInputArray;
+      this.state.userInput = document.getElementById('longitudeLatitude').value;
   }
 
 
