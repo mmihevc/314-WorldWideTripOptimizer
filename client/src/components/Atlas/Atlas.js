@@ -1,16 +1,11 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Button} from 'reactstrap';
+import {Col, Container, Row, Button, InputGroup,Input,Form,InputGroupAddon,InputGroupText} from 'reactstrap';
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import Coordinates from 'coordinate-parser';
-import InputGroup from "reactstrap/es/InputGroup";
-import Input from "reactstrap/es/Input";
-import Form from "reactstrap/es/Form";
-import InputGroupAddon from "reactstrap/es/InputGroupAddon";
-import InputGroupText from "reactstrap/es/InputGroupText";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
