@@ -18,6 +18,7 @@ const KEVIN_BIO = 'Kevin is a mechanical engineering student in his fourth year 
                   'hobbies such as downhill skiing, indoor bouldering, binging online TV series, and playing classic ' +
                   'World of Warcraft. Kevin is originally from Maryland where he grew up and went to high school, ' +
                   'but is now a full blown Coloradan who loves the state.';
+
 const JACKIE_BIO ='Jackie is a senior at Colorado State University majoring in Applied Computing Technology.' +
                   'She believes when we support each other we can accomplish great things and thrives in team ' +
                   'settings. Coming into the major with little to no experience in the field, her knowledge of ' +
@@ -34,11 +35,13 @@ const MADDIE_BIO = 'Maddie is an Applied Computing Technology major in her third
                    'in computer science, especially girls. She enjoys numerous outdoor activities including slacklining,' +
                    'mountain biking and rafting. She is from Littleton, Colorado and does not ever plan on living in any other state.';
 
-const KAIS_BIO =  'Kai was born in Virginia Mason hospital on April 5th, 1999 to Michelle and Torsten. He had' +
-                  'no choice in the matter and remains annoyed by this fact. He probably went to high school or' +
-                  'something. Kai started college as an electrical engineering major before switching to computer' +
-                  'science to pursue programming. He most recently worked demolition for a small construction'+
+const KAIS_BIO =  'Kai was born in Virginia Mason hospital on April 5th, 1999 to Michelle and Torsten. He had ' +
+                  'no choice in the matter and remains annoyed by this fact. He probably went to high school or ' +
+                  'something. Kai started college as an electrical engineering major before switching to computer ' +
+                  'science to pursue programming. He most recently worked demolition for a small construction '+
                   'company. He recommends "The Sparrow" by Maria Doria Russell.';
+
+const NAME_FORMAT = 'mt-3 font-weight-bold';
 
 export default class About extends Component {
 
@@ -65,39 +68,42 @@ export default class About extends Component {
               </Button>
             </Col>
           </Row>
-          <Row>
-            <Col>
-                <h5>{this.state.bio}</h5>
-            </Col>
-          </Row>
+          {this.renderBio()}
           <hr color="black" />
-          <Row>
-            <Col>
-              <Card onClick={() => {this.setBio(KEVIN_BIO)}}>
-                <CardImg top width="100%" src={kevinImage} />
-                <CardTitle className="mt-3 font-weight-bold">Kevin Schroeder</CardTitle>
-              </Card>
-            </Col>
-            <Col>
-              <Card onClick={() => {this.setBio(MADDIE_BIO)}}>
-                  <CardImg top width="100%" src={maddieImage} />
-                  <CardTitle className="mt-3 font-weight-bold">Maddie Mihevc</CardTitle>
-              </Card>
-            </Col>
-            <Col>
-              <Card onClick={() => {this.setBio(KAIS_BIO)}}>
-                <CardImg top width="100" src={kaiImage}  />
-                <CardTitle className="mt-3 font-weight-bold">Kai Griem</CardTitle>
-              </Card>
-            </Col>
-            <Col>
-              <Card onClick={() => {this.setBio(JACKIE_BIO)}}>
-                <CardImg top width="100%" src={jackieImage} />
-                <CardTitle className="mt-3 font-weight-bold">Jackie Clotfelter</CardTitle>
-              </Card>
-            </Col>
-          </Row>
+          {this.renderTeam()}
         </Container>
+      )
+    }
+
+    renderBio() {
+      return (
+        <Row>
+          <Col>
+            <h5>{this.state.bio}</h5>
+          </Col>
+        </Row>
+      )
+    }
+
+    renderTeam() {
+      return (
+        <Row>
+          {this.renderPerson(KEVIN_BIO, kevinImage, 'Kevin Schroeder')}
+          {this.renderPerson(MADDIE_BIO, maddieImage, 'Maddie Mihevc')}
+          {this.renderPerson(KAIS_BIO, kaiImage, 'Kai Griem')}
+          {this.renderPerson(JACKIE_BIO, jackieImage, 'Jackie Clotfelter')}
+        </Row>
+      )
+    }
+
+    renderPerson(bio, img, name) {
+      return (
+        <Col>
+          <Card onClick={() => {this.setBio(bio)}}>
+            <CardImg src={img} />
+            <CardTitle className={NAME_FORMAT}>{name}</CardTitle>
+          </Card>
+        </Col>
       )
     }
 

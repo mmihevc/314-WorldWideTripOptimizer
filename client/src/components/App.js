@@ -13,7 +13,7 @@ import Footer from "./Margins/Footer";
 import { getOriginalServerPort, sendServerRequest } from "../utils/restfulAPI";
 import { isJsonResponseValid } from "../utils/restfulAPI";
 import log from "../utils/globals";
-import * as configSchema from "../../schemas/TIPConfigResponseSchema";
+import * as configSchema from "../../schemas/TIPConfigResponseSchemaV2";
 import { HTTP_BAD_REQUEST, HTTP_OK } from "./Constants";
 
 export default class App extends Component {

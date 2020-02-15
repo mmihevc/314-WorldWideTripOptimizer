@@ -19,6 +19,7 @@ const MARKER_ICON = L.icon({
   iconAnchor: [12, 40]  // for proper placement
 });
 
+
 export default class Atlas extends Component {
 
   constructor(props) {
@@ -27,12 +28,15 @@ export default class Atlas extends Component {
     this.addMarker = this.addMarker.bind(this);
     this.markAndFlyHome = this.markAndFlyHome.bind(this);
     this.markInitialLocation=this.markInitialLocation.bind(this);
+
     this.state = {
-      markerPosition: null ,
-      centerPosition: [0,0]
-    }
-    ;
+      markerPosition: null,
+      centerPosition: MAP_CENTER_DEFAULT
+    };
+
     this.getCurrentLocation(this.markInitialLocation);
+
+
   }
 
   render() {
@@ -43,6 +47,7 @@ export default class Atlas extends Component {
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
                 {this.renderHomeButton()}
+                {this.renderLongitudeLatitudeBox()}
               </Col>
             </Row>
           </Container>
@@ -75,6 +80,29 @@ export default class Atlas extends Component {
       )
   }
 
+
+  renderLongitudeLatitudeBox() {
+      return (
+          <form>
+              <label> <br/> <b>Enter Longitude and Latitude Here </b> </label>
+              <input type="text" id="longitudeLatitude" size="40" onKeyPress={() => this.getUserInput()}/>
+          </form>
+      )
+  }
+
+  getUserInput() {
+      let userInput = document.getElementById('longitudeLatitude').value;
+      let userInputArray;
+      if (userInput.includes(" ")) {
+          userInputArray = userInput.split(" ");
+      }
+      else if (userInput.includes(", ") || userInput.includes(",")) {
+        userInputArray = userInput.split(",");
+      }
+      return userInputArray;
+  }
+
+
   addMarker(mapClickInfo) {
     this.setState({markerPosition: mapClickInfo.latlng});
   }
@@ -102,11 +130,15 @@ export default class Atlas extends Component {
     }
   }
 
+  error() {
+      alert("This application needs access to your location to work.");
+  }
+
   getCurrentLocation(anything) {
       if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(position => anything([position.coords.latitude, position.coords.longitude]));
+          navigator.geolocation.getCurrentPosition(position => anything([position.coords.latitude, position.coords.longitude]), this.error);
       } else {
-          alert("Geolocation is not supported by your browser");
+         console.log("Geolocation is not supported by your browser.")
       }
   }
   markInitialLocation(homeLocation){
