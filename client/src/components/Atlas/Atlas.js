@@ -6,6 +6,11 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import Coordinates from 'coordinate-parser';
+import InputGroup from "reactstrap/es/InputGroup";
+import Input from "reactstrap/es/Input";
+import Form from "reactstrap/es/Form";
+import InputGroupAddon from "reactstrap/es/InputGroupAddon";
+import InputGroupText from "reactstrap/es/InputGroupText";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -84,11 +89,16 @@ export default class Atlas extends Component {
 
   renderLongitudeLatitudeBox() {
       return (
-          <form>
-              <label> <br/> <b>Enter Longitude and Latitude Here:</b> </label>
-              <input type="text" id="longitudeLatitude" size="40"/>
-              <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
-          </form>
+          <Form onSubmit={e => {e.preventDefault();}}>
+              <br/>
+              <InputGroup size="md">
+                  <InputGroupAddon addonType="prepend">
+                      <InputGroupText>🌎</InputGroupText>
+                  </InputGroupAddon>
+                  <Input id="longitudeLatitude" placeholder="Enter Longitude and Latitude Here" />
+                  <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
+              </InputGroup>
+          </Form>
       )
   }
 
@@ -101,7 +111,7 @@ export default class Atlas extends Component {
     getUserMarker(){
       if (this.state.userInput) {
           let userPosition;
-          try {userPosition = new Coordinates(this.state.userInput);}//this.state.userInput
+          try {userPosition = new Coordinates(this.state.userInput);}
           catch (error){
               return;
           }
