@@ -177,5 +177,12 @@ export default class Atlas extends Component {
 
     this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
   }
-
+  getDistance(long1, lat1, long2, lat2){
+        let L1=lat1 * Math.PI/180;
+        let L2=lat2 * Math.PI/180;
+        let DY=Math.abs(long1-long2) * Math.PI/180;
+        let distance=Math.acos(Math.sin(L1)*Math.sin(L2)+Math.cos(L1)*Math.cos(L2)*Math.cos(DY))*3959;
+        alert("thedistance between your points is: " + distance);
+        return distance;
+  }
 }
