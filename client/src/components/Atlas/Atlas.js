@@ -19,6 +19,8 @@ const MARKER_ICON = L.icon({
   iconAnchor: [12, 40]  // for proper placement
 });
 
+let userInput = '';
+
 
 export default class Atlas extends Component {
 
@@ -35,7 +37,6 @@ export default class Atlas extends Component {
     };
 
     this.getCurrentLocation(this.markInitialLocation);
-
 
   }
 
@@ -86,21 +87,15 @@ export default class Atlas extends Component {
           <form>
               <label> <br/> <b>Enter Longitude and Latitude Here </b> </label>
               <input type="text" id="longitudeLatitude" size="40" onKeyPress={() => this.getUserInput()}/>
+              <input type='submit' value="Submit"/>
           </form>
       )
   }
 
   getUserInput() {
-      let userInput = document.getElementById('longitudeLatitude').value;
-      let userInputArray;
-      if (userInput.includes(" ")) {
-          userInputArray = userInput.split(" ");
-      }
-      else if (userInput.includes(", ") || userInput.includes(",")) {
-        userInputArray = userInput.split(",");
-      }
-      return userInputArray;
+      userInput = document.getElementById('longitudeLatitude').value;
   }
+
 
 
   addMarker(mapClickInfo) {
