@@ -5,6 +5,7 @@ import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
+import Coordinates from 'coordinate-parser';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -66,6 +67,7 @@ export default class Atlas extends Component {
              style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.getMarker(this.getMarkerPosition(), this.state.markerPosition)}
+          {this.getUserMarker()}
         </Map>
     )
   }
@@ -96,6 +98,26 @@ export default class Atlas extends Component {
       });
   }
 
+    getUserMarker(){
+      if (this.state.userInput) {
+          let userPosition;
+          try {userPosition = new Coordinates(this.state.userInput);}//this.state.userInput
+          catch (error){
+              return;
+          }
+          let markerPosition = {lat:userPosition.getLatitude(), lng:userPosition.getLongitude()};
+          const initMarker = ref => {
+              if (ref) {
+                  ref.leafletElement.openPopup()
+              }
+          };
+          return (
+              <Marker ref={initMarker} position={markerPosition} icon={MARKER_ICON}>
+                  <Popup offset={[0, -18]} className="font-weight-bold">{this.state.userInput}</Popup>
+              </Marker>
+          );
+      }
+  }
 
   addMarker(mapClickInfo) {
     this.setState({markerPosition: mapClickInfo.latlng});
