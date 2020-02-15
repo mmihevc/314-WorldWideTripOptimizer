@@ -161,7 +161,7 @@ export default class Atlas extends Component {
       let L2=lat2 * Math.PI/180;
       let DY=Math.abs(long1-long2) * Math.PI/180;
       let distance=Math.acos(Math.sin(L1)*Math.sin(L2)+Math.cos(L1)*Math.cos(L2)*Math.cos(DY))*3959;
-      alert("the distance between your points is: " + distance);
+      alert("The distance between your points is: " + distance);
       return distance;
   }
 }
