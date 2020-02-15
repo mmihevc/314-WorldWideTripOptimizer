@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Button} from 'reactstrap';
+import {Col, Container, Row, Button, InputGroup,Input,Form,InputGroupAddon,InputGroupText} from 'reactstrap';
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -84,11 +84,16 @@ export default class Atlas extends Component {
 
   renderLongitudeLatitudeBox() {
       return (
-          <form>
-              <label> <br/> <b>Enter Longitude and Latitude Here:</b> </label>
-              <input type="text" id="longitudeLatitude" size="40"/>
-              <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
-          </form>
+          <Form onSubmit={e => {e.preventDefault();}}>
+              <br/>
+              <InputGroup size="md">
+                  <InputGroupAddon addonType="prepend">
+                      <InputGroupText>🌎</InputGroupText>
+                  </InputGroupAddon>
+                  <Input id="longitudeLatitude" placeholder="Enter Longitude and Latitude Here" />
+                  <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
+              </InputGroup>
+          </Form>
       )
   }
 
@@ -101,7 +106,7 @@ export default class Atlas extends Component {
     getUserMarker(){
       if (this.state.userInput) {
           let userPosition;
-          try {userPosition = new Coordinates(this.state.userInput);}//this.state.userInput
+          try {userPosition = new Coordinates(this.state.userInput);}
           catch (error){
               return;
           }
