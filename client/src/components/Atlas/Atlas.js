@@ -157,15 +157,12 @@ export default class Atlas extends Component {
   }
 
   getDistance(long1, lat1, long2, lat2){
-      let L1=lat1.toRadians();
-      let L2=lat2.toRadians();
-      let DY=Math.abs(long1-long2).toRadians();
-      let radius=3959;
-      let distance=Math.acos(Math.sin(L1)*Math.sin(L2)+Math.cos(L1)*Math.cos(L2)*Math.cos(DY))*radius;
+      let L1=lat1 * Math.PI/180;
+      let L2=lat2 * Math.PI/180;
+      let DY=Math.abs(long1-long2) * Math.PI/180;
+      let distance=Math.acos(Math.sin(L1)*Math.sin(L2)+Math.cos(L1)*Math.cos(L2)*Math.cos(DY))*3959;
       alert("the distance between your points is: " + distance);
       return distance;
   }
-  Number.prototype.toRadians=function(){
-      return this*Math.PI/180;
-    }
 }
+
