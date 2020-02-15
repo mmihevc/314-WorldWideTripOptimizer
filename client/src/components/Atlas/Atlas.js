@@ -91,7 +91,9 @@ export default class Atlas extends Component {
   }
 
   getUserInput() {
-      this.state.userInput = document.getElementById('longitudeLatitude').value;
+      this.setState({
+          userInput : document.getElementById('longitudeLatitude').value
+      });
   }
 
 
