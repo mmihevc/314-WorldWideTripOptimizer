@@ -106,21 +106,28 @@ export default class Atlas extends Component {
     getUserMarker(){
       if (this.state.userInput) {
           let userPosition;
-          try {userPosition = new Coordinates(this.state.userInput);}
-          catch (error){
+          try {
+              userPosition = new Coordinates(this.state.userInput);
+          } catch (error) {
               return;
           }
-          let markerPosition = {lat:userPosition.getLatitude(), lng:userPosition.getLongitude()};
-          const initMarker = ref => {
-              if (ref) {
-                  ref.leafletElement.openPopup()
-              }
-          };
-          return (
-              <Marker ref={initMarker} position={markerPosition} icon={MARKER_ICON}>
-                  <Popup offset={[0, -18]} className="font-weight-bold">{this.state.userInput}</Popup>
-              </Marker>
-          );
+          let latitude = userPosition.getLatitude();
+          let longitude = userPosition.getLongitude();
+          if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180 ){
+              return;
+          } else {
+              let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
+              const initMarker = ref => {
+                  if (ref) {
+                      ref.leafletElement.openPopup()
+                  }
+              };
+              return (
+                  <Marker ref={initMarker} position={markerPosition} icon={MARKER_ICON}>
+                      <Popup offset={[0, -18]} className="font-weight-bold">{this.state.userInput}</Popup>
+                  </Marker>
+              );
+          }
       }
   }
 
