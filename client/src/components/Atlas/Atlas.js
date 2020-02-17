@@ -6,6 +6,7 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import Coordinates from 'coordinate-parser';
+import isValidCoordinates from 'is-valid-coordinates';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -108,6 +109,11 @@ export default class Atlas extends Component {
           let userPosition;
           try {userPosition = new Coordinates(this.state.userInput);}
           catch (error){
+              return;
+          }
+          let lat = userPosition.getLatitude();
+          let lon = userPosition.getLongitude();
+          if (! isValidCoordinates(lon, lat)){
               return;
           }
           let markerPosition = {lat:userPosition.getLatitude(), lng:userPosition.getLongitude()};
