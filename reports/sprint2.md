@@ -77,6 +77,7 @@ In the last sprint we completed 3 epics and put 2 epics on the icebox. However, 
 | *date* | *#task, ...* | *#task, ...* |  | 
 | 2/12 | none | none | |
 | 2/14 | 119, 121, 120 | 31, 118, 36 |  |
+| 2/17 | 35, 36, 106, 128, 133, 118, 122, 31, 119 | 139, 47, 110, 105, 107 |  |
 
 
 ## Review
