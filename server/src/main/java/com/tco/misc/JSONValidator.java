@@ -3,6 +3,8 @@ package com.tco.misc;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.List;
+
 import org.everit.json.schema.SchemaException;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.loader.SchemaLoader;
@@ -32,7 +34,11 @@ public class JSONValidator {
       JSONObject request = new JSONObject(requestBody);
       schema.validate(request);
     } catch (ValidationException e) {
-      throw new IOException(e.getMessage());
+      List<ValidationException> exceptionList = e.getCausingExceptions();
+      String exceptionMsg = "";
+      for (ValidationException ve : exceptionList)
+        exceptionMsg += ve.getMessage() + '\n';
+      throw new IOException(exceptionMsg);
     }
   }
 
