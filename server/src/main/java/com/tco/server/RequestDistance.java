@@ -19,7 +19,7 @@ public class RequestDistance extends RequestHeader {
     @Override
     public void buildResponse() {
         Utility util = new Utility();
-        this.distance = (int) util.getDistance(place1.longitude, place1.latitude, place2.longitude, place2.latitude);
+        this.distance = (int) util.getDistance(place1.longitude, place1.latitude, place2.longitude, place2.latitude, (int) earthRadius);
         log.trace("buildResponse -> {}", this);
     }
 
