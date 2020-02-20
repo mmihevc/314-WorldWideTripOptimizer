@@ -113,12 +113,6 @@ export default class Footer extends Component {
         }
     }
 
-    getServerConfig() {
-        if (this.props.serverSettings.serverConfig) {
-            alert(this.props.serverSettings.serverConfig.serverName);
-        }
-    }
-
     getSymbolFromConnectionStatus() {
         return this.connectedToValidServer() ? UNICODE_LINK_SYMBOL : UNICODE_WARNING_SIGN;
     }
