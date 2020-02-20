@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Modal, ModalHeader, Button, ModalBody, ModalFooter} from "reactstrap";
+import { Container, Modal, ModalHeader, Button, ModalBody, ModalFooter, Table} from "reactstrap";
 
 import ServerSettings from "./ServerSettings";
 
@@ -61,7 +61,7 @@ export default class Footer extends Component {
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}> Server Configuration </ModalHeader>
                     <ModalBody>
-
+                        {this.renderConfigTable()}
                     </ModalBody>
                     <ModalFooter>
                         <Button onClick={this.toggle}>Close</Button>
@@ -70,6 +70,47 @@ export default class Footer extends Component {
                 </Modal>
             </div>
         );
+    }
+
+    renderConfigTable() {
+        let configInfo = this.props.serverSettings.serverConfig;
+        if (configInfo) {
+          return (
+            <div>
+            <Table striped>
+              <tbody>
+              <tr>
+                <td>Server Name</td>
+                <td>{configInfo.serverName}</td>
+              </tr>
+              <tr>
+                <td>Protocol Version</td>
+                <td>{configInfo.requestVersion}</td>
+              </tr>
+              </tbody>
+            </Table>
+            {this.getSupportedRequests(configInfo)}
+            </div>
+        );
+        }
+    }
+
+    getSupportedRequests(configInfo) {
+        if (configInfo.supportedRequests) {
+          let supportedRequests = configInfo.supportedRequests.map((request) =>
+            <tr key={request}><td>{request}</td></tr>
+          );
+          return (
+            <Table striped>
+              <thead>
+              <tr><th>Supported Requests</th></tr>
+              </thead>
+              <tbody>
+                {supportedRequests}
+              </tbody>
+            </Table>
+          );
+        }
     }
 
     getSymbolFromConnectionStatus() {
