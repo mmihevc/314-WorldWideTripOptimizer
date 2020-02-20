@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { Container, Modal, ModalHeader, Button} from "reactstrap";
+import { Container, Modal, ModalHeader, Button, ModalBody, ModalFooter} from "reactstrap";
 
 import ServerSettings from "./ServerSettings";
 
 import "./header-footer.css";
-import ModalBody from "reactstrap/es/ModalBody";
-import ModalFooter from "reactstrap/es/ModalFooter";
+
 
 const UNICODE_LINK_SYMBOL = "\uD83D\uDD17";
 const UNICODE_WARNING_SIGN = "\u26A0";
