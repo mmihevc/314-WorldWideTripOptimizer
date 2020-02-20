@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Col, Container, Row, Button, InputGroup,Input,Form,InputGroupAddon,InputGroupText} from 'reactstrap';
-
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -29,11 +28,13 @@ export default class Atlas extends Component {
     this.addMarker = this.addMarker.bind(this);
     this.markAndFlyHome = this.markAndFlyHome.bind(this);
     this.markInitialLocation=this.markInitialLocation.bind(this);
+   // this.handleInputChange=this.handleInputChange.bind(this);
 
     this.state = {
         markerPosition: null,
         centerPosition: MAP_CENTER_DEFAULT,
-        userInput: null
+        userInput: null,
+        valueError: ''
     };
 
     this.getCurrentLocation(this.markInitialLocation);
@@ -67,7 +68,7 @@ export default class Atlas extends Component {
              style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.getMarker(this.getMarkerPosition(), this.state.markerPosition)}
-          {this.getUserMarker()}
+          {/*{this.getMarker(this.getMarkerPosition(), this.state.valueError)}*/}
         </Map>
     )
   }
@@ -85,17 +86,55 @@ export default class Atlas extends Component {
   renderLongitudeLatitudeBox() {
       return (
           <Form onSubmit={e => {e.preventDefault();}}>
+              {/*e => {e.preventDefault();}*/}
               <br/>
               <InputGroup size="md">
                   <InputGroupAddon addonType="prepend">
                       <InputGroupText>🌎</InputGroupText>
                   </InputGroupAddon>
-                  <Input id="longitudeLatitude" placeholder="Enter Longitude and Latitude Here" />
+                  <Input id="longitudeLatitude" placeholder="Enter Longitude and Latitude Here" onChange={this.handleInputChange}/>
+                  {/*invalid={this.validateValue.} valid={this.validateValue()}*/}
+                  {/*className={`form-control ${this.state.valueError ? 'is-invalid' : ''}`}*/}
+                  {/*value={this.state.userInput}*/}
+                  {/*{ this.state.valueError? null: <div className='invalid-feedback'>Name must be longer than 3 characters</div> }*/}
                   <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
               </InputGroup>
           </Form>
       )
+
   }
+  handleInputChange (event) {
+      this.setState({userInput: event.target.value}, () => {
+          this.validateValue(event.target.value);
+      });
+  };
+
+  validateValue (v) {
+      //let userPosition;
+      //let error;
+
+      let isValid;
+          try {
+              isValid = true;
+              new Coordinates(v);
+              //this.getMarker(v);
+              //this.setState({
+               //   valueError: ""
+             // });
+              return isValid;
+          } catch (error) {
+              isValid = false;
+              return isValid;
+              //this.setState({
+               //   valueError: "Invalid Latitude or Longitude."
+              //});
+          }
+  };
+  // handleSubmit (event) {
+  //     event.preventDefault();
+  //     const {userInput} = this.state;
+  //     alert('Your state values: \n userInput: ${userInput}');
+  // };
 
   getUserInput() {
       this.setState({
@@ -103,33 +142,22 @@ export default class Atlas extends Component {
       });
   }
 
-    getUserMarker(){
+/*    getUserMarker(){
         if (this.state.userInput) {
-            let userPosition;
-            try {
-                userPosition = new Coordinates(this.state.userInput);
-            } catch (error) {
-                return;
-            }
-            let latitude = userPosition.getLatitude();
-            let longitude = userPosition.getLongitude();
-            if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
-                return;
-            } else {
-                let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
-                const initMarker = ref => {
-                    if (ref) {
-                        ref.leafletElement.openPopup()
-                    }
-                };
-                return (
-                    <Marker ref={initMarker} position={markerPosition} icon={MARKER_ICON}>
-                        <Popup offset={[0, -18]} className="font-weight-bold">{this.state.userInput}</Popup>
-                    </Marker>
-                );
-            }
+            let userPosition = new Coordinates(this.state.userInput);
+            let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
+            const initMarker = ref => {
+                if (ref) {
+                    ref.leafletElement.openPopup()
+                }
+            };
+            return (
+                <Marker ref={initMarker} position={markerPosition} icon={MARKER_ICON}>
+                    <Popup offset={[0, -18]} className="font-weight-bold">{this.state.userInput}</Popup>
+                </Marker>
+            );
         }
-    }
+  }*/
 
   addMarker(mapClickInfo) {
     this.setState({markerPosition: mapClickInfo.latlng});
