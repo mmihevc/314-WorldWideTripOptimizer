@@ -23,7 +23,7 @@ export default class App extends Component {
 
         this.state = {
             showAbout: false,
-            serverSettings: {serverPort: getOriginalServerPort(), serverConfig: null},
+            serverSettings: {serverPort: getOriginalServerPort(), serverConfig: null, supportedRequests: null},
             errorMessage: null
         };
 
