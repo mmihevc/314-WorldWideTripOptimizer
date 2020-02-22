@@ -34,7 +34,8 @@ export default class Atlas extends Component {
         markerPosition: null,
         centerPosition: MAP_CENTER_DEFAULT,
         userInput: null,
-        valueError: ''
+        valueError: '',
+        isSubmit: false
     };
 
     this.getCurrentLocation(this.markInitialLocation);
@@ -64,11 +65,12 @@ export default class Atlas extends Component {
              minZoom={MAP_ZOOM_MIN}
              maxZoom={MAP_ZOOM_MAX}
              maxBounds={MAP_BOUNDS}
-             onClick={this.addMarker}
+             onClick={this.addMarker} //addMarker
+            // onSubmit={this.getUserMarker()}
              style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.getMarker(this.getMarkerPosition(), this.state.markerPosition)}
-          {this.getUserMarker}
+          {this.getUserMarker()}
         </Map>
     )
   }
@@ -93,6 +95,7 @@ export default class Atlas extends Component {
                   </InputGroupAddon>
                   <Input valid={this.state.valueError} invalid={!this.state.valueError && this.state.userInput} onChange={this.handleInputChange} id="longitudeLatitude" placeholder="Enter Longitude and Latitude Here"/>
                   <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
+                  {/*this.getUserInput(this.state.userInput)*/}
               </InputGroup>
           </Form>
       )
@@ -100,41 +103,57 @@ export default class Atlas extends Component {
   }
   getUserMarker(){
       let userPosition;
-      if(this.state.userInput) {
-          userPosition = new Coordinates(this.state.userInput);
+      try {
+          if (this.state.isSubmit) {
+              userPosition = new Coordinates(this.state.userInput);
               let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
               return this.getMarker(this.state.userInput, markerPosition);
           }
+      }catch(error){
+          return;
+      }
   };
 
   handleInputChange (event) {
       this.setState({userInput: event.target.value});
+      //  this.setState({
+      //      userInput : document.getElementById('longitudeLatitude').value
+      //  });
       this.validateValue(this.state.userInput);
   };
 
   validateValue (v) {
-      let isValid;
+      let isValid= false;
+      let userPosition;
           try {
-              new Coordinates(v);
-
-              isValid = true;
-              this.setState({
-                  valueError: isValid
-              });
-              this.addMarker(v);
+              userPosition = new Coordinates(v);
+              let latitude = userPosition.getLatitude();
+              let longitude = userPosition.getLongitude();
+              alert(latitude);
+              if (((latitude > -90 && latitude < 90 )&&( longitude > -180 && longitude < 180))) {
+                  isValid = true;
+              }
+                  this.setState({
+                      valueError: isValid,
+                      isSubmit: false
+                  });
+                  this.addMarker(v);
           } catch (error) {
               isValid = false;
               this.setState({
                   valueError: isValid
               });
-              this.addMarker(null);
+
           }
   };
 
   getUserInput() {
       this.setState({
           userInput : document.getElementById('longitudeLatitude').value
+
       });
+      this.setState({isSubmit: true});
+      //this.validateValue(this.state.userInput);
   }
 
    addMarker(mapClickInfo) {
