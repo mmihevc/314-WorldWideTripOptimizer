@@ -35,7 +35,7 @@ export default class Atlas extends Component {
         centerPosition: MAP_CENTER_DEFAULT,
         userInput: null,
         valueError: null,
-        isSubmit: null
+        isSubmit: false
     };
 
     this.getCurrentLocation(this.markInitialLocation);
