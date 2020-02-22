@@ -95,7 +95,6 @@ export default class Atlas extends Component {
                   </InputGroupAddon>
                   <Input valid={this.state.valueError} invalid={!this.state.valueError && this.state.userInput} onChange={this.handleInputChange} id="longitudeLatitude" placeholder="Enter Longitude and Latitude Here"/>
                   <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
-                  {/*this.getUserInput(this.state.userInput)*/}
               </InputGroup>
           </Form>
       )
@@ -106,8 +105,11 @@ export default class Atlas extends Component {
       try {
           if (this.state.isSubmit) {
               userPosition = new Coordinates(this.state.userInput);
+              let latitude = userPosition.getLatitude();
+              let longitude = userPosition.getLongitude();
+              let coord = latitude.toFixed(2) +", " +  longitude.toFixed(2) ;
               let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
-              return this.getMarker(this.state.userInput, markerPosition);
+              return this.getMarker(coord, markerPosition);
           }
       }catch(error){
           return;
@@ -116,28 +118,19 @@ export default class Atlas extends Component {
 
   handleInputChange (event) {
       this.setState({userInput: event.target.value});
-      //  this.setState({
-      //      userInput : document.getElementById('longitudeLatitude').value
-      //  });
       this.validateValue(this.state.userInput);
   };
 
   validateValue (v) {
       let isValid= false;
-      let userPosition;
           try {
-              userPosition = new Coordinates(v);
-              let latitude = userPosition.getLatitude();
-              let longitude = userPosition.getLongitude();
-              alert(latitude);
-              if (((latitude > -90 && latitude < 90 )&&( longitude > -180 && longitude < 180))) {
-                  isValid = true;
-              }
-                  this.setState({
-                      valueError: isValid,
-                      isSubmit: false
-                  });
-                  this.addMarker(v);
+              new Coordinates(v);
+              isValid = true;
+              this.setState({
+                  valueError: isValid,
+                  isSubmit: false
+              });
+              this.addMarker(v);
           } catch (error) {
               isValid = false;
               this.setState({
@@ -150,10 +143,8 @@ export default class Atlas extends Component {
   getUserInput() {
       this.setState({
           userInput : document.getElementById('longitudeLatitude').value
-
       });
       this.setState({isSubmit: true});
-      //this.validateValue(this.state.userInput);
   }
 
    addMarker(mapClickInfo) {
