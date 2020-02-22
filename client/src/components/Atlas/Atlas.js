@@ -34,7 +34,7 @@ export default class Atlas extends Component {
         markerPosition: null,
         centerPosition: MAP_CENTER_DEFAULT,
         userInput: null,
-        valueError: '',
+        valueError: null,
         isSubmit: false
     };
 
