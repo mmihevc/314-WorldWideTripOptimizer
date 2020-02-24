@@ -30,6 +30,7 @@ export default class Atlas extends Component {
     this.markInitialLocation=this.markInitialLocation.bind(this);
     this.handleInputChange=this.handleInputChange.bind(this);
 
+
     this.state = {
         markerPosition: null,
         centerPosition: MAP_CENTER_DEFAULT,
@@ -49,8 +50,7 @@ export default class Atlas extends Component {
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
                 {this.renderHomeButton()}
-                {this.renderLongitudeLatitudeBoxPlace1()}
-                {this.renderLongitudeLatitudeBoxPlace2()}
+                {this.renderLongitudeLatitudeBoxes()}
               </Col>
             </Row>
           </Container>
@@ -85,35 +85,28 @@ export default class Atlas extends Component {
   }
 
 
-  renderLongitudeLatitudeBoxPlace1() {
+  renderLongitudeLatitudeBoxes() {
       return (
           <Form onSubmit={e => {e.preventDefault();}}>
               <br/>
               <InputGroup size="md">
                   <InputGroupAddon addonType="prepend">
-                      <InputGroupText>🌎</InputGroupText>
+                      <InputGroupText>🌎 Marker 1</InputGroupText>
                   </InputGroupAddon>
-                  <Input valid={this.state.valueError} invalid={!this.state.valueError && this.state.userInput} onChange={this.handleInputChange} id="longitudeLatitude1" placeholder="Enter Longitude and Latitude Here"/>
+                  <Input valid={this.state.valueError} invalid={!this.state.valueError && this.state.userInput} onChange={this.handleInputChange} name="place1" id="longitudeLatitude1" placeholder="Enter Longitude and Latitude Here"/>
+                  <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
+              </InputGroup>
+          <br/>
+              <InputGroup size="md">
+                  <InputGroupAddon addonType="prepend">
+                      <InputGroupText>🌍 Marker 2</InputGroupText>
+                  </InputGroupAddon>
+                  <Input valid={this.state.valueError} invalid={!this.state.valueError && this.state.userInput} onChange={this.handleInputChange} name="place2" id="longitudeLatitude2" placeholder="Enter Longitude and Latitude Here"/>
                   <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
               </InputGroup>
           </Form>
-      )
+      );
   }
-
-    renderLongitudeLatitudeBoxPlace2() {
-        return (
-            <Form onSubmit={e => {e.preventDefault();}}>
-                <br/>
-                <InputGroup size="md">
-                    <InputGroupAddon addonType="prepend">
-                        <InputGroupText>🌎</InputGroupText>
-                    </InputGroupAddon>
-                    <Input valid={this.state.valueError} invalid={!this.state.valueError && this.state.userInput} onChange={this.handleInputChange} id="longitudeLatitude2" placeholder="Enter Longitude and Latitude Here"/>
-                    <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
-                </InputGroup>
-            </Form>
-        )
-    }
 
   getUserMarker(){
       let userPosition;
@@ -131,7 +124,7 @@ export default class Atlas extends Component {
       }
   };
 
-  handleInputChange (event) {
+  handleInputChange(event) {
       this.setState({userInput: event.target.value});
       this.validateValue(this.state.userInput);
   };
