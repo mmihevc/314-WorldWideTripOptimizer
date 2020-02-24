@@ -203,6 +203,7 @@ export default class Atlas extends Component {
          console.log("Geolocation is not supported by your browser.")
       }
   }
+
   markInitialLocation(homeLocation){
       let homelat = homeLocation[0];
       let homelng = homeLocation[1];
@@ -211,6 +212,7 @@ export default class Atlas extends Component {
           centerPosition:{lat:homelat, lng:homelng}
       });
   }
+
   markAndFlyHome(homeLocation) {
     let homeLat = homeLocation[0];
     let homeLng = homeLocation[1];
@@ -222,6 +224,21 @@ export default class Atlas extends Component {
       }});
 
     this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
+  }
+
+  getCenterOfMarkers(markers) {
+      let center = {
+          lat: 0,
+          lng: 0
+      };
+      let marker;
+      for (marker of markers) {
+          center.lat += marker.lat;
+          center.lng += marker.lng;
+      }
+      center.lat /= markers.length;
+      center.lng /= markers.length;
+      return center;
   }
 
 }
