@@ -33,9 +33,9 @@ export default class Atlas extends Component {
     this.state = {
         markerPosition: null,
         centerPosition: MAP_CENTER_DEFAULT,
-        userInput: null,
-        valueError: null,
-        isSubmit: false,
+        userInput: [],
+        valueError: [],
+        isSubmit: [],
         inputTwo: false
     };
 
@@ -50,8 +50,8 @@ export default class Atlas extends Component {
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
                 {this.renderHomeButton()}
-                {this.renderLongitudeLatitudeBoxPlace1()}
-                {this.renderLongitudeLatitudeBoxPlace2()}
+                {this.renderLongitudeLatitudeBoxes()}
+                {this.renderLongitudeLatitudeBoxes()}
               </Col>
             </Row>
           </Container>
@@ -86,22 +86,26 @@ export default class Atlas extends Component {
   }
 
 
-  renderLongitudeLatitudeBoxPlace1() {
+  renderLongitudeLatitudeBoxes() {
       return (
-          <Form onSubmit={e => {e.preventDefault();}}>
+          <Form onSubmit={this.handleSubmit}>
               <br/>
               <InputGroup size="md">
                   <InputGroupAddon addonType="prepend">
                       <InputGroupText>🌎</InputGroupText>
                   </InputGroupAddon>
-                  <Input valid={this.state.valueError} invalid={!this.state.valueError && this.state.userInput} onChange={this.handleInputChange} id="longitudeLatitude1" placeholder="Enter Longitude and Latitude Here"/>
-                  <Button type='button' onClick={() => this.getUserInput1()}>Submit</Button>
+                  <Input valid={this.state.valueError} invalid={!this.state.valueError && (this.state.userInput != null)} onChange={this.handleInputChange} id="longitudeLatitude" placeholder="Enter Longitude and Latitude Here"/>
+                  <Button onClick={() => this.getUserInput()}>Submit</Button>
               </InputGroup>
           </Form>
       )
   }
 
-    renderLongitudeLatitudeBoxPlace2() {
+  handleSubmit(event) {
+      event.preventDefault();
+  }
+
+    /*renderLongitudeLatitudeBoxPlace2() {
         return (
             <Form onSubmit={e => {e.preventDefault();}}>
                 <br/>
@@ -114,22 +118,27 @@ export default class Atlas extends Component {
                 </InputGroup>
             </Form>
         )
-    }
+    }*/
 
   getUserMarker(){
       let userPosition;
       try {
           if (this.state.isSubmit) {
-              userPosition = new Coordinates(this.state.userInput);
+              if (this.state.inputTwo) {
+                  userPosition = new Coordinates(this.state.userInput[1]);
+                  this.setState({inputTwo: false});
+              }
+              userPosition = new Coordinates(this.state.userInput[0]);
               let latitude = userPosition.getLatitude();
               let longitude = userPosition.getLongitude();
               let coord = latitude.toFixed(2) +", " +  longitude.toFixed(2) ;
               let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
-              if(this.state.inputTwo){
+              /*if(this.state.inputTwo){
                    return this.getMarker2(coord, markerPosition);
               }else {
                   return this.getMarker(coord, markerPosition);
-              }
+              }*/
+              return this.getMarker(coord, markerPosition);
           }
       }catch(error){
           return;
@@ -137,7 +146,10 @@ export default class Atlas extends Component {
   };
 
   handleInputChange (event) {
-      this.setState({userInput: event.target.value});
+      //what is the point of this line versus the getUserInput method?
+      this.setState({
+          userInput: this.state.userInput.concat(event.target.value),
+      });
       this.validateValue(this.state.userInput);
   };
 
@@ -147,26 +159,30 @@ export default class Atlas extends Component {
               new Coordinates(v);
               isValid = true;
               this.setState({
-                  valueError: isValid,
-                  isSubmit: false
+                  valueError: this.state.valueError.concat(isValid),
+                  isSubmit: this.state.isSubmit.concat(false)
               });
               this.addMarker(v);
           } catch (error) {
               isValid = false;
               this.setState({
-                  valueError: isValid
+                  valueError: this.state.valueError.concat(isValid)
               });
 
           }
   };
 
-  getUserInput1() {
+  getUserInput() {
       this.setState({
-          userInput : document.getElementById('longitudeLatitude1').value
+          userInput : this.state.userInput.concat(document.getElementById('longitudeLatitude').value)
       });
-      this.setState({isSubmit: true});
+      this.setState({isSubmit: this.state.isSubmit.concat(true)});
+
+      if (this.state.userInput[1] != null) {
+          this.setState({inputTwo: true});
+      }
   }
-    getUserInput2() {
+    /*getUserInput2() {
         this.setState({
             userInput : document.getElementById('longitudeLatitude2').value
         });
@@ -174,7 +190,7 @@ export default class Atlas extends Component {
             isSubmit: true,
             inputTwo: true
         });
-    }
+    }*/
 
    addMarker(mapClickInfo) {
      this.setState({markerPosition: mapClickInfo.latlng});
@@ -202,7 +218,7 @@ export default class Atlas extends Component {
       );
     }
   }
-    getMarker2(bodyJSX, position) {
+  /* getMarker2(bodyJSX, position) {
         const initMarker2 = ref => {
             if (ref) {
                 ref.leafletElement.openPopup()
@@ -215,7 +231,7 @@ export default class Atlas extends Component {
                 </Marker>
             );
         }
-    }
+    }*/
 
   error() {
       alert("This application needs access to your location to work.");
