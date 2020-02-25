@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 public class RequestDistance extends RequestHeader {
     private Place place1;
     private Place place2;
-    private double earthRadius;
-    private int distance;
+    private Double earthRadius;
+    private Integer distance;
 
     private final transient Logger log = LoggerFactory.getLogger(RequestDistance.class);
 
@@ -18,16 +18,21 @@ public class RequestDistance extends RequestHeader {
 
     @Override
     public void buildResponse() {
+        double lng1 = Double.parseDouble(this.place1.longitude);
+        double lat1 = Double.parseDouble(this.place1.latitude);
+        double lng2 = Double.parseDouble(this.place2.longitude);
+        double lat2 = Double.parseDouble(this.place2.latitude);
+        int radius = this.earthRadius.intValue();
         Utility util = new Utility();
-        this.distance = (int) util.getDistance(place1.longitude, place1.latitude, place2.longitude, place2.latitude, (int) earthRadius);
+        this.distance = (int) util.getDistance(lng1, lat1, lng2, lat2, radius);
         log.trace("buildResponse -> {}", this);
     }
 
     private class Place {
-        private double latitude;
-        private double longitude;
+        private String latitude;
+        private String longitude;
 
-        Place(double latitude, double longitude) {
+        Place(String latitude, String longitude) {
             this.latitude = latitude;
             this.longitude = longitude;
         }
