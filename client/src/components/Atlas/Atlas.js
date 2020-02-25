@@ -5,6 +5,9 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import Coordinates from 'coordinate-parser';
+import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
+import {HTTP_OK} from "../Constants";
+import * as distanceSchema from "../../../schemas/DistanceResponse";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -109,6 +112,11 @@ export default class Atlas extends Component {
               let longitude = userPosition.getLongitude();
               let coord = latitude.toFixed(2) +", " +  longitude.toFixed(2) ;
               let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
+              /*if(this.state.inputTwo){
+                   return this.getMarker2(coord, markerPosition);
+              }else {
+                  return this.getMarker(coord, markerPosition);
+              }*/
               return this.getMarker(coord, markerPosition);
           }
       }catch(error){
@@ -138,7 +146,7 @@ export default class Atlas extends Component {
               });
 
           }
-  };
+  }
 
   getUserInput() {
       this.setState({
@@ -173,6 +181,20 @@ export default class Atlas extends Component {
       );
     }
   }
+  /* getMarker2(bodyJSX, position) {
+        const initMarker2 = ref => {
+            if (ref) {
+                ref.leafletElement.openPopup()
+            }
+        };
+        if (position) {
+            return (
+                <Marker ref={initMarker2} position={position} icon={MARKER_ICON}>
+                    <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
+                </Marker>
+            );
+        }
+    }*/
 
   error() {
       alert("This application needs access to your location to work.");
@@ -185,6 +207,7 @@ export default class Atlas extends Component {
          console.log("Geolocation is not supported by your browser.")
       }
   }
+
   markInitialLocation(homeLocation){
       let homelat = homeLocation[0];
       let homelng = homeLocation[1];
@@ -193,6 +216,7 @@ export default class Atlas extends Component {
           centerPosition:{lat:homelat, lng:homelng}
       });
   }
+
   markAndFlyHome(homeLocation) {
     let homeLat = homeLocation[0];
     let homeLng = homeLocation[1];
@@ -204,6 +228,48 @@ export default class Atlas extends Component {
       }});
 
     this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
+  }
+  distancecall(){
+        const values = {
+            requestVersion: 2,
+            requestType: 'distance',
+            place1 : {
+                longitude: '90',
+                latitude: '90'
+            },
+            place2 : {
+                longitude: '45',
+                latitude: '45'
+            },
+            earthRadius: 3959
+        };
+        sendServerRequestWithBody('distance', values).then(
+            adistance=>{this.processDistanceResponse(adistance);
+                console.log(adistance.body);}
+        );
+  }
+  processDistanceResponse(adistance){
+      if(isJsonResponseValid(adistance.body, distanceSchema)){
+          alert('error fetching distance')
+      }
+      else if(adistance.statusCode === HTTP_OK){
+          return adistance;
+      }
+  }
+
+  getCenterOfMarkers(markers) {
+      let center = {
+          lat: 0,
+          lng: 0
+      };
+      let marker;
+      for (marker of markers) {
+          center.lat += marker.lat;
+          center.lng += marker.lng;
+      }
+      center.lat /= markers.length;
+      center.lng /= markers.length;
+      return center;
   }
 
 }
