@@ -35,7 +35,8 @@ export default class Atlas extends Component {
         centerPosition: MAP_CENTER_DEFAULT,
         userInput: null,
         valueError: null,
-        isSubmit: false
+        isSubmit: false,
+        inputTwo: false
     };
 
     this.getCurrentLocation(this.markInitialLocation);
@@ -94,7 +95,7 @@ export default class Atlas extends Component {
                       <InputGroupText>🌎</InputGroupText>
                   </InputGroupAddon>
                   <Input valid={this.state.valueError} invalid={!this.state.valueError && this.state.userInput} onChange={this.handleInputChange} id="longitudeLatitude1" placeholder="Enter Longitude and Latitude Here"/>
-                  <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
+                  <Button type='button' onClick={() => this.getUserInput1()}>Submit</Button>
               </InputGroup>
           </Form>
       )
@@ -109,7 +110,7 @@ export default class Atlas extends Component {
                         <InputGroupText>🌎</InputGroupText>
                     </InputGroupAddon>
                     <Input valid={this.state.valueError} invalid={!this.state.valueError && this.state.userInput} onChange={this.handleInputChange} id="longitudeLatitude2" placeholder="Enter Longitude and Latitude Here"/>
-                    <Button type='button' onClick={() => this.getUserInput()}>Submit</Button>
+                    <Button type='button' onClick={() => this.getUserInput2()}>Submit</Button>
                 </InputGroup>
             </Form>
         )
@@ -124,7 +125,11 @@ export default class Atlas extends Component {
               let longitude = userPosition.getLongitude();
               let coord = latitude.toFixed(2) +", " +  longitude.toFixed(2) ;
               let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
-              return this.getMarker(coord, markerPosition);
+              if(this.state.inputTwo){
+                   return this.getMarker2(coord, markerPosition);
+              }else {
+                  return this.getMarker(coord, markerPosition);
+              }
           }
       }catch(error){
           return;
@@ -155,15 +160,21 @@ export default class Atlas extends Component {
           }
   };
 
-  getUserInput() {
+  getUserInput1() {
       this.setState({
           userInput : document.getElementById('longitudeLatitude1').value
       });
-      this.setState({
-          userInput : document.getElementById('longitudeLatitude2').value
-      });
       this.setState({isSubmit: true});
   }
+    getUserInput2() {
+        this.setState({
+            userInput : document.getElementById('longitudeLatitude2').value
+        });
+        this.setState({
+            isSubmit: true,
+            inputTwo: true
+        });
+    }
 
    addMarker(mapClickInfo) {
      this.setState({markerPosition: mapClickInfo.latlng});
@@ -191,6 +202,20 @@ export default class Atlas extends Component {
       );
     }
   }
+    getMarker2(bodyJSX, position) {
+        const initMarker2 = ref => {
+            if (ref) {
+                ref.leafletElement.openPopup()
+            }
+        };
+        if (position) {
+            return (
+                <Marker ref={initMarker2} position={position} icon={MARKER_ICON}>
+                    <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
+                </Marker>
+            );
+        }
+    }
 
   error() {
       alert("This application needs access to your location to work.");
