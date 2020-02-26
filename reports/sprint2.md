@@ -87,7 +87,11 @@ In the last sprint we completed 3 epics and put 2 epics on the icebox. However, 
 
 ### Epics done  
 
+Distance, Map
+
 ### Epics not done 
+
+Custom Units
 
 ### What went well
 
