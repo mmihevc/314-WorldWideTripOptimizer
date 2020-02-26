@@ -33,10 +33,9 @@ export default class Atlas extends Component {
     this.state = {
         markerPosition: null,
         centerPosition: MAP_CENTER_DEFAULT,
-        userInput: [],
+        userInput: ['', ''],
         valueError: [],
-        isSubmit: [],
-        inputTwo: false
+        isSubmit: []
     };
 
     this.getCurrentLocation(this.markInitialLocation);
@@ -50,8 +49,8 @@ export default class Atlas extends Component {
               <Col sm={12} md={{size: 6, offset: 3}}>
                 {this.renderLeafletMap()}
                 {this.renderHomeButton()}
-                {this.renderLongitudeLatitudeBoxes()}
-                {this.renderLongitudeLatitudeBoxes()}
+                {this.renderLongitudeLatitudeBoxes(0)}
+                {this.renderLongitudeLatitudeBoxes(1)}
               </Col>
             </Row>
           </Container>
@@ -71,7 +70,7 @@ export default class Atlas extends Component {
              style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.getMarker(this.getMarkerPosition(), this.state.markerPosition)}
-          {this.getUserMarker()}
+          {this.getUserMarker(0)}
         </Map>
     )
   }
@@ -86,7 +85,7 @@ export default class Atlas extends Component {
   }
 
 
-  renderLongitudeLatitudeBoxes() {
+  renderLongitudeLatitudeBoxes(index) {
       return (
           <Form onSubmit={this.handleSubmit}>
               <br/>
@@ -94,8 +93,12 @@ export default class Atlas extends Component {
                   <InputGroupAddon addonType="prepend">
                       <InputGroupText>🌎</InputGroupText>
                   </InputGroupAddon>
-                  <Input valid={this.state.valueError} invalid={!this.state.valueError && (this.state.userInput != null)} onChange={this.handleInputChange} id="longitudeLatitude" placeholder="Enter Longitude and Latitude Here"/>
-                  <Button onClick={() => this.getUserInput()}>Submit</Button>
+                  <Input valid={this.state.valueError[index]}
+                         invalid={!this.state.valueError[index] && (this.state.userInput[index])}
+                         id={"longitudeLatitude"+index}
+                         placeholder="Enter Longitude and Latitude Here"
+                  />
+                  <Button onClick={() => this.handleInputChange(index)}>Submit</Button>
               </InputGroup>
           </Form>
       )
@@ -105,92 +108,50 @@ export default class Atlas extends Component {
       event.preventDefault();
   }
 
-    /*renderLongitudeLatitudeBoxPlace2() {
-        return (
-            <Form onSubmit={e => {e.preventDefault();}}>
-                <br/>
-                <InputGroup size="md">
-                    <InputGroupAddon addonType="prepend">
-                        <InputGroupText>🌎</InputGroupText>
-                    </InputGroupAddon>
-                    <Input valid={this.state.valueError} invalid={!this.state.valueError && this.state.userInput} onChange={this.handleInputChange} id="longitudeLatitude2" placeholder="Enter Longitude and Latitude Here"/>
-                    <Button type='button' onClick={() => this.getUserInput2()}>Submit</Button>
-                </InputGroup>
-            </Form>
-        )
-    }*/
-
-  getUserMarker(){
+  getUserMarker(index){
       let userPosition;
       try {
           if (this.state.isSubmit) {
-              if (this.state.inputTwo) {
-                  userPosition = new Coordinates(this.state.userInput[1]);
-                  this.setState({inputTwo: false});
-              }
-              userPosition = new Coordinates(this.state.userInput[0]);
+              userPosition = new Coordinates(this.state.userInput[index]);
+              //it is currently entering the if but userPosition is getting set to an empty string
               let latitude = userPosition.getLatitude();
               let longitude = userPosition.getLongitude();
-              let coord = latitude.toFixed(2) +", " +  longitude.toFixed(2) ;
+              let cord = latitude.toFixed(2) +", " +  longitude.toFixed(2) ;
               let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
-              /*if(this.state.inputTwo){
-                   return this.getMarker2(coord, markerPosition);
-              }else {
-                  return this.getMarker(coord, markerPosition);
-              }*/
-              return this.getMarker(coord, markerPosition);
+              return this.getMarker(cord, markerPosition);
           }
       }catch(error){
           return;
       }
   };
 
-  handleInputChange (event) {
-      //what is the point of this line versus the getUserInput method?
+  handleInputChange (index) {
+      this.state.userInput[index] = document.getElementById('longitudeLatitude'+index).value;
+      this.state.isSubmit[index] = true;
       this.setState({
-          userInput: this.state.userInput.concat(event.target.value),
+          userInput: this.state.userInput,
+          isSubmit: this.state.isSubmit
       });
-      this.validateValue(this.state.userInput);
+      this.validateValue(this.state.userInput[index], index);
   };
 
-  validateValue (v) {
-      let isValid= false;
-          try {
-              new Coordinates(v);
-              isValid = true;
-              this.setState({
-                  valueError: this.state.valueError.concat(isValid),
-                  isSubmit: this.state.isSubmit.concat(false)
-              });
+  validateValue (v, index) {
+      try {
+          new Coordinates(v);
+          this.state.valueError[index] = true
+          this.state.isSubmit[index] = true
+          this.setState({
+              valueError: this.state.valueError,
+              isSubmit: this.state.isSubmit
+          });
               this.addMarker(v);
-          } catch (error) {
-              isValid = false;
-              this.setState({
-                  valueError: this.state.valueError.concat(isValid)
-              });
-
-          }
-  };
-
-  getUserInput() {
-      this.setState({
-          userInput : this.state.userInput.concat(document.getElementById('longitudeLatitude').value)
-      });
-      this.setState({isSubmit: this.state.isSubmit.concat(true)});
-
-      if (this.state.userInput[1] != null) {
-          this.setState({inputTwo: true});
+      } catch (error) {
+          this.state.valueError[index] = false
+          this.setState({
+              valueError: this.state.valueError
+          });
       }
-  }
-    /*getUserInput2() {
-        this.setState({
-            userInput : document.getElementById('longitudeLatitude2').value
-        });
-        this.setState({
-            isSubmit: true,
-            inputTwo: true
-        });
-    }*/
+  };
 
    addMarker(mapClickInfo) {
      this.setState({markerPosition: mapClickInfo.latlng});
@@ -218,20 +179,6 @@ export default class Atlas extends Component {
       );
     }
   }
-  /* getMarker2(bodyJSX, position) {
-        const initMarker2 = ref => {
-            if (ref) {
-                ref.leafletElement.openPopup()
-            }
-        };
-        if (position) {
-            return (
-                <Marker ref={initMarker2} position={position} icon={MARKER_ICON}>
-                    <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
-                </Marker>
-            );
-        }
-    }*/
 
   error() {
       alert("This application needs access to your location to work.");
