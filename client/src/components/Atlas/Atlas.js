@@ -74,7 +74,6 @@ export default class Atlas extends Component {
           <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
           {this.getMarker(this.getMarkerPosition(), this.state.markerPosition)}
           {this.getUserMarker(0)}
-          {this.getUserMarker(1)}
         </Map>
     )
   }
@@ -98,7 +97,7 @@ export default class Atlas extends Component {
                       <InputGroupText>🌎</InputGroupText>
                   </InputGroupAddon>
                   <Input valid={this.state.valueError[index]}
-                         invalid={!this.state.valueError[index] && (this.state.userInput[index] != "")}
+                         invalid={!this.state.valueError[index] && (this.state.userInput[index])}
                          id={"longitudeLatitude"+index}
                          placeholder="Enter Longitude and Latitude Here"
                   />
@@ -115,19 +114,14 @@ export default class Atlas extends Component {
   getUserMarker(index){
       let userPosition;
       try {
-          if (this.state.isSubmit[index]) {
+          if (this.state.isSubmit) {
               userPosition = new Coordinates(this.state.userInput[index]);
+              //it is currently entering the if but userPosition is getting set to an empty string
               let latitude = userPosition.getLatitude();
               let longitude = userPosition.getLongitude();
               let cord = latitude.toFixed(2) +", " +  longitude.toFixed(2) ;
               let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
-              if (markerPosition) {
-                  return (
-                      <Marker position={markerPosition} icon={MARKER_ICON}>
-                          <Popup offset={[0, -18]} className="font-weight-bold">{cord}</Popup>
-                      </Marker>
-                  );
-              }
+              return this.getMarker(cord, markerPosition);
           }
       }catch(error){
           return;
@@ -147,8 +141,8 @@ export default class Atlas extends Component {
   validateValue (v, index) {
       try {
           new Coordinates(v);
-          this.state.valueError[index] = true;
-          this.state.isSubmit[index] = true;
+          this.state.valueError[index] = true
+          this.state.isSubmit[index] = true
           this.setState({
               valueError: this.state.valueError,
               isSubmit: this.state.isSubmit
@@ -156,7 +150,7 @@ export default class Atlas extends Component {
               this.addMarker(v);
 
       } catch (error) {
-          this.state.valueError[index] = false;
+          this.state.valueError[index] = false
           this.setState({
               valueError: this.state.valueError
           });
