@@ -32,6 +32,8 @@ export default class Atlas extends Component {
         this.markAndFlyHome = this.markAndFlyHome.bind(this);
         this.markInitialLocation=this.markInitialLocation.bind(this);
         this.handleInputChange=this.handleInputChange.bind(this);
+        this.goToUserMarkers=this.goToUserMarkers.bind(this);
+        this.getCenterOfMarkers=this.getCenterOfMarkers.bind(this);
 
         this.state = {
             markerPosition: null,
@@ -116,25 +118,17 @@ export default class Atlas extends Component {
     }
 
     getUserMarker(index){
-        let userPosition;
-        try {
-            if (this.state.isSubmit[index]) {
-                userPosition = new Coordinates(this.state.userInput[index]);
-                let latitude = userPosition.getLatitude();
-                let longitude = userPosition.getLongitude();
-                let cord = latitude.toFixed(2) +", " +  longitude.toFixed(2) ;
-                let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
-                this.state.userMarkers[index]= markerPosition;
-                if (markerPosition) {
-                    return (
-                        <Marker position={markerPosition} icon={MARKER_ICON}>
-                            <Popup offset={[0, -18]} className="font-weight-bold">{cord}</Popup>
-                        </Marker>
-                    );
-                }
+        if (this.state.isSubmit[index]) {
+            let latitude = this.state.userMarkers[index].lat;
+            let longitude = this.state.userMarkers[index].lng;
+            let cord = latitude.toFixed(2) +", " +  longitude.toFixed(2) ;
+            if (this.state.userMarkers[index]) {
+                return (
+                    <Marker position={this.state.userMarkers[index]} icon={MARKER_ICON}>
+                        <Popup offset={[0, -18]} className="font-weight-bold">{cord}</Popup>
+                    </Marker>
+                );
             }
-        }catch(error){
-            return;
         }
     };
 
@@ -150,13 +144,18 @@ export default class Atlas extends Component {
 
     validateValue (v, index) {
         try {
-            new Coordinates(v);
+            let userPosition = new Coordinates(this.state.userInput[index]);
+            let latitude = userPosition.getLatitude();
+            let longitude = userPosition.getLongitude();
             this.state.valueError[index] = true;
             this.state.isSubmit[index] = true;
+            let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
+            this.state.userMarkers[index]= markerPosition;
             this.setState({
                 valueError: this.state.valueError,
-                isSubmit: this.state.isSubmit
-            });
+                isSubmit: this.state.isSubmit,
+                userMarkers: this.state.userMarkers
+            }, this.goToUserMarkers);
             this.addMarker(v);
 
         } catch (error) {
@@ -258,15 +257,22 @@ export default class Atlas extends Component {
         }
     }
 
+    goToUserMarkers() {
+        let center = this.getCenterOfMarkers(this.state.userMarkers);
+       this.setState({
+           centerPosition: center
+       });
+    }
+
     getCenterOfMarkers(markers) {
         let center = {
             lat: 0,
             lng: 0
         };
-        let marker;
-        for (marker of markers) {
-            center.lat += marker.lat;
-            center.lng += marker.lng;
+        let i;
+        for (i=0; i < markers.length; i++) {
+            center.lat += markers[i].lat;
+            center.lng += markers[i].lng;
         }
         center.lat /= markers.length;
         center.lng /= markers.length;
