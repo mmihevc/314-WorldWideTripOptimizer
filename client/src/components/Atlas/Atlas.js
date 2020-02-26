@@ -33,7 +33,6 @@ export default class Atlas extends Component {
         this.markInitialLocation=this.markInitialLocation.bind(this);
         this.handleInputChange=this.handleInputChange.bind(this);
         this.goToUserMarkers=this.goToUserMarkers.bind(this);
-        this.getCenterOfMarkers=this.getCenterOfMarkers.bind(this);
 
         this.state = {
             markerPosition: null,
@@ -82,7 +81,6 @@ export default class Atlas extends Component {
         )
     }
 
-
     renderHomeButton() {
         return (
             <Button className="mt-1"
@@ -91,7 +89,6 @@ export default class Atlas extends Component {
             </Button>
         )
     }
-
 
     renderLongitudeLatitudeBoxes(index) {
         return (
@@ -111,7 +108,6 @@ export default class Atlas extends Component {
             </Form>
         )
     }
-
 
     handleSubmit(event) {
         event.preventDefault();
@@ -145,8 +141,6 @@ export default class Atlas extends Component {
     validateValue (v, index) {
         try {
             let userPosition = new Coordinates(this.state.userInput[index]);
-            let latitude = userPosition.getLatitude();
-            let longitude = userPosition.getLongitude();
             this.state.valueError[index] = true;
             this.state.isSubmit[index] = true;
             let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
@@ -166,8 +160,6 @@ export default class Atlas extends Component {
 
         }
     }
-
-
 
     addMarker(mapClickInfo) {
         this.setState({markerPosition: mapClickInfo.latlng});
@@ -229,6 +221,7 @@ export default class Atlas extends Component {
 
         this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
     }
+
     distancecall(){
         const values = {
             requestVersion: 2,
@@ -248,6 +241,7 @@ export default class Atlas extends Component {
                 console.log(adistance.body);}
         );
     }
+
     processDistanceResponse(adistance){
         if(isJsonResponseValid(adistance.body, distanceSchema)){
             alert('error fetching distance')
@@ -258,25 +252,15 @@ export default class Atlas extends Component {
     }
 
     goToUserMarkers() {
-        let center = this.getCenterOfMarkers(this.state.userMarkers);
-       this.setState({
-           centerPosition: center
-       });
-    }
-
-    getCenterOfMarkers(markers) {
-        let center = {
-            lat: 0,
-            lng: 0
-        };
+        let markers = this.state.userMarkers;
+        let markerGroup = [];
         let i;
         for (i=0; i < markers.length; i++) {
-            center.lat += markers[i].lat;
-            center.lng += markers[i].lng;
+            if (markers[i]) {
+                markerGroup[i] = [markers[i].lat, markers[i].lng]
+            }
         }
-        center.lat /= markers.length;
-        center.lng /= markers.length;
-        return center;
+        this.leafletMap.leafletElement.fitBounds(markerGroup);
     }
 
 }
