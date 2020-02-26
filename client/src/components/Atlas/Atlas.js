@@ -263,19 +263,4 @@ export default class Atlas extends Component {
       return center;
   }
 
-  getCenterOfMarkers(markers) {
-      let center = {
-          lat: 0,
-          lng: 0
-      };
-      let marker;
-      for (marker of markers) {
-          center.lat += marker.lat;
-          center.lng += marker.lng;
-      }
-      center.lat /= markers.length;
-      center.lng /= markers.length;
-      return center;
-  }
-
 }
