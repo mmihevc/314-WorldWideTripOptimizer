@@ -38,7 +38,8 @@ export default class Atlas extends Component {
             centerPosition: MAP_CENTER_DEFAULT,
             userInput: ['', ''],
             valueError: [],
-            isSubmit: []
+            isSubmit: [],
+            userMarkers: []
         };
 
         this.getCurrentLocation(this.markInitialLocation);
@@ -123,6 +124,7 @@ export default class Atlas extends Component {
                 let longitude = userPosition.getLongitude();
                 let cord = latitude.toFixed(2) +", " +  longitude.toFixed(2) ;
                 let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
+                this.state.userMarkers[index]= markerPosition;
                 if (markerPosition) {
                     return (
                         <Marker position={markerPosition} icon={MARKER_ICON}>
