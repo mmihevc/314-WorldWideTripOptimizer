@@ -78,6 +78,7 @@ export default class Atlas extends Component {
     )
   }
 
+
   renderHomeButton() {
     return (
         <Button className="mt-1"
