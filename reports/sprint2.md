@@ -81,6 +81,7 @@ In the last sprint we completed 3 epics and put 2 epics on the icebox. However, 
 | 2/19 | none| 139, 47, 110, 107 |  |
 | 2/21 | 47 | 139, 110, 107, 109, 35 |  |
 | 2/24 | 35, 151, 109 | 155, 110, 148, 115, 153 |  |
+| 2/26 | 159, 115, 148, 160 | 116, 110 |  |
 
 
 ## Review
@@ -96,7 +97,6 @@ Custom Units
 ### What went well
 
 ### Problems encountered and resolutions
-
 
 ## Retrospective
 
