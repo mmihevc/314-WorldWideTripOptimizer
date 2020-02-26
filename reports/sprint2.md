@@ -104,6 +104,8 @@ Custom Units
 
 ### What went well
 
+For this Sprint we were much more consistent with task completion throughout the weeks, which is reflected by the consistent slope on our burndown chart. We spent more time getting together as a group and started asking more questions when we ran into issues. The team also had its first bonding event where we didn't do any work on the project. We handled problems we ran into as a team and kept communicating what was going on.
+
 ### Potential improvements
 
 ### What we will change next time
