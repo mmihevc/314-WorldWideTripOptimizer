@@ -146,6 +146,9 @@ export default class Atlas extends Component {
             isSubmit: this.state.isSubmit
         });
         this.validateValue(this.state.userInput[index], index);
+        if(this.state.userMarkers.length==2){
+            this.distancecall(""+this.state.userMarkers[0].lat, ""+this.state.userMarkers[0].lng, ""+this.state.userMarkers[1].lng, ""+this.state.userMarkers[1].lat, 3959);
+        }
     };
 
     validateValue (v, index) {
@@ -229,32 +232,31 @@ export default class Atlas extends Component {
                 lat: homeLat,
                 lng: homeLng
             }});
+    this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
+  }
 
-        this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
-    }
-
-    distancecall(){
+  distancecall(lat1, long1, lat2, long2, rad){
         const values = {
             requestVersion: 2,
             requestType: 'distance',
             place1 : {
-                longitude: '90',
-                latitude: '90'
+                longitude: long1,
+                latitude: lat1
             },
             place2 : {
-                longitude: '45',
-                latitude: '45'
+                longitude: long2,
+                latitude: lat2
             },
-            earthRadius: 3959
+            earthRadius: rad
         };
         sendServerRequestWithBody('distance', values).then(
             adistance=>{this.processDistanceResponse(adistance);
-                console.log(adistance.body);}
+                alert("the distance between your points is: "+adistance.body.distance);}
         );
     }
 
     processDistanceResponse(adistance){
-        if(isJsonResponseValid(adistance.body, distanceSchema)){
+        if(!isJsonResponseValid(adistance.body, distanceSchema)){
             alert('error fetching distance')
         }
         else if(adistance.statusCode === HTTP_OK){
