@@ -96,7 +96,11 @@ Custom Units
 
 ### What went well
 
+This sprint our team grew closer and were able to tackle obstacles together in a quicker fashion. In the beginning of the sprint we worked a little more individually and noticed that it was taking all of us a while to figure out and complete a task. By the middle of the sprint our team started to get together as a group more often and were able to complete tasks in a few hours instead of a few days.
+
 ### Problems encountered and resolutions
+
+The biggest challenge our team encountered this sprint was understanding state in react. This sprint the tasks were more challenging and in the first week we had to adjust and learn a lot about react and how the states work in order to complete the tasks. Another challenge we faced was breaking down our epics into tasks. When we noticed that some of us were working on the same thing we set up a meeting and cleared up all the confusion and were back on track. 
 
 ## Retrospective
 
