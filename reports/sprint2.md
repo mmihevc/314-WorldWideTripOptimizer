@@ -81,25 +81,39 @@ In the last sprint we completed 3 epics and put 2 epics on the icebox. However, 
 | 2/19 | none| 139, 47, 110, 107 |  |
 | 2/21 | 47 | 139, 110, 107, 109, 35 |  |
 | 2/24 | 35, 151, 109 | 155, 110, 148, 115, 153 |  |
+| 2/26 | 159, 115, 148, 160 | 116, 110 |  |
 
 
 ## Review
 
 ### Epics done  
 
+Where Is, Support Protocol Standard v2, Server Support, Map
+
 ### Epics not done 
+
+Standard Units, Distance
 
 ### What went well
 
+This sprint our team grew closer and were able to tackle obstacles together in a quicker fashion. In the beginning of the sprint we worked a little more individually and noticed that it was taking all of us a while to figure out and complete a task. By the middle of the sprint our team started to get together as a group more often and were able to complete tasks in a few hours instead of a few days.
+
 ### Problems encountered and resolutions
 
+The biggest challenge our team encountered this sprint was understanding state in react. This sprint the tasks were more challenging and in the first week we had to adjust and learn a lot about react and how the states work in order to complete the tasks. Another challenge we faced was breaking down our epics into tasks. When we noticed that some of us were working on the same thing we set up a meeting and cleared up all the confusion and were back on track. 
 
 ## Retrospective
 
 ### What we changed this sprint
+During planning for Sprint 2 we were more deliberate about the epics and tasks we undertook. We had experience from Sprint 1 which allowed us to make more accurate estimates about how many epics we could complete. Due to this we ended up putting less tasks in the icebox. We also had less difficulty using the various platforms and merging into github. Our ability to plan ahead and work on complementary tasks was also improved due to experience. 
 
 ### What went well
 
+For this Sprint we were much more consistent with task completion throughout the weeks, which is reflected by the consistent slope on our burndown chart. We spent more time getting together as a group and started asking more questions when we ran into issues. The team also had its first bonding event where we didn't do any work on the project. We handled problems we ran into as a team and kept communicating what was going on.
+
 ### Potential improvements
+There were several scrums over the Sprint where none of us had any new closed tasks to report. Next sprint we hope to have at 
+least one tasked closed by every sprint. We also discovered that we did not make enough tasks to begin with that actually covered all we needed to accomplish. Next sprint we plan on spending more time planning in order to completely understand what is being asked of us and to make tasks that fufill that understanding. 
 
 ### What we will change next time
+During the next sprint we will make sure to add tests when merging code in order to maintain a higher test coverage. We will also attempt to begin the sprint sooner so the Wednesday before the sprint is due we are not worried about completeing tasks. Our hope is to spend that Wednesday fixing small issues instead of implementing changes into the code. We will also contineue to be more careful about merging and making pull requests, and ensuring that merge conflicts are resolved appropiately.
