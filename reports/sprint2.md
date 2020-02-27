@@ -88,11 +88,11 @@ In the last sprint we completed 3 epics and put 2 epics on the icebox. However, 
 
 ### Epics done  
 
-Distance, Map
+Where Is, Support Protocol Standard v2, Server Support, Map
 
 ### Epics not done 
 
-Custom Units
+Standard Units, Distance
 
 ### What went well
 
