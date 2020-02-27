@@ -105,6 +105,7 @@ The biggest challenge our team encountered this sprint was understanding state i
 ## Retrospective
 
 ### What we changed this sprint
+During planning for Sprint 2 we were more deliberate about the epics and tasks we undertook. We had experience from Sprint 1 which allowed us to make more accurate estimates about how many epics we could complete. Due to this we ended up putting less tasks in the icebox. We also had less difficulty using the various platforms and merging into github. Our ability to plan ahead and work on complementary tasks was also improved due to experience. 
 
 ### What went well
 
