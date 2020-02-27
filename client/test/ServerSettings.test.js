@@ -69,7 +69,7 @@ test("onChangeEvent should update the component's state", testUpdateInputText);
 
 function testUpdateServerPort() {
     mockConfigResponse();
-
+    jest.mock('react-leaflet');
     const app = mount(<App />);
     const settings = shallow(
         <ServerSettings
