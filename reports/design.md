@@ -118,11 +118,6 @@ When the user first visits the page a pop-up appears asking them to allow the us
 
 When a user enters a valid Lattitude and Longitude the map will go to that location and display a Marker. A line will be drawn between the two valid coodinate markers.
 
-#### Cordinate Input Boxes are now rendered.
-![base](images/componentes.jpg)
-
-Two user input cordinate boxes are rendered and displayed underneath the map allowing users to enter cordinates. 
-
 # Sprint 3
 # Sprint 4 
 # Sprint 5
