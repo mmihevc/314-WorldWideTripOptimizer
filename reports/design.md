@@ -113,6 +113,16 @@ When a user clicks on the team name in the header a collapsable window will drop
 When the user first visits the page a pop-up appears asking them to allow the use of their location. If the user accepts, then the map will show a marker for their location, and center to their whereabouts. If the user doesnt allow the browser to use their location, then the map will center at coordinates (0, 0). The Where Am I? button will be shown to the user regardless, but is only functional when the user accepts geolocation features. When functional, the button will recenter the map to the users current geolocation, and the marker will go back to that geolocation aswell. The map will always be at its maximum zoom-in level when the page is first loaded, and also when the Where Am I? button is pressed.
 
 # Sprint 2
+#### Users can enter 2 different coordinates.
+![base](images/mapPage.jpg)
+
+When a user enters a valid Lattitude and Longitude the map will go to that location and display a Marker. A line will be drawn between the two valid coodinate markers.
+
+#### Cordinate Input Boxes are now rendered.
+![base](images/componentes.jpg)
+
+Two user input cordinate boxes are rendered and displayed underneath the map allowing users to enter cordinates. 
+
 # Sprint 3
 # Sprint 4 
 # Sprint 5
