@@ -107,5 +107,8 @@ Custom Units
 For this Sprint we were much more consistent with task completion throughout the weeks, which is reflected by the consistent slope on our burndown chart. We spent more time getting together as a group and started asking more questions when we ran into issues. The team also had its first bonding event where we didn't do any work on the project. We handled problems we ran into as a team and kept communicating what was going on.
 
 ### Potential improvements
+There were several scrums over the Sprint where none of us had any new closed tasks to report. Next sprint we hope to have at 
+least one tasked closed by every sprint. We also discovered that we did not make enough tasks to begin with that actually covered all we needed to accomplish. Next sprint we plan on spending more time planning in order to completely understand what is being asked of us and to make tasks that fufill that understanding. 
 
 ### What we will change next time
+During the next sprint we will make sure to add tests when merging code in order to maintain a higher test coverage. We will also attempt to begin the sprint sooner so the Wednesday before the sprint is due we are not worried about completeing tasks. Our hope is to spend that Wednesday fixing small issues instead of implementing changes into the code. We will also contineue to be more careful about merging and making pull requests, and ensuring that merge conflicts are resolved appropiately.
