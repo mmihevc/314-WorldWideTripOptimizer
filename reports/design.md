@@ -114,7 +114,7 @@ When the user first visits the page a pop-up appears asking them to allow the us
 
 # Sprint 2
 #### Users can enter 2 different coordinates.
-![base](images/mapPage.jpg)
+![base](images/mapLine.jpg)
 
 When a user enters a valid Lattitude and Longitude the map will go to that location and display a Marker. A line will be drawn between the two valid coodinate markers.
 
