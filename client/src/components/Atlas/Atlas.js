@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Col, Container, Row, Button, InputGroup,Input,Form,InputGroupAddon,InputGroupText} from 'reactstrap';
-import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
+import {Map, Marker, Polyline, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
@@ -33,6 +33,7 @@ export default class Atlas extends Component {
         this.markInitialLocation=this.markInitialLocation.bind(this);
         this.handleInputChange=this.handleInputChange.bind(this);
         this.goToUserMarkers=this.goToUserMarkers.bind(this);
+        this.getCoordinates=this.getCoordinates.bind(this);
 
         this.state = {
             markerPosition: null,
@@ -40,7 +41,8 @@ export default class Atlas extends Component {
             userInput: ['', ''],
             valueError: [],
             isSubmit: [],
-            userMarkers: []
+            userMarkers: [],
+            markerArray : []
         };
 
         this.getCurrentLocation(this.markInitialLocation);
@@ -77,9 +79,17 @@ export default class Atlas extends Component {
                 {this.getMarker(this.getMarkerPosition(), this.state.markerPosition)}
                 {this.getUserMarker(0)}
                 {this.getUserMarker(1)}
+                {this.getCoordinates()}
             </Map>
         )
     }
+
+    getCoordinates() {
+        if(this.state.userMarkers.length == 2) {
+            return <Polyline color="darkgreen" positions={this.state.markerArray}/>
+        }
+    }
+
 
     renderHomeButton() {
         return (
@@ -160,6 +170,7 @@ export default class Atlas extends Component {
 
         }
     }
+
 
     addMarker(mapClickInfo) {
         this.setState({markerPosition: mapClickInfo.latlng});
@@ -260,6 +271,7 @@ export default class Atlas extends Component {
                 markerGroup[i] = [markers[i].lat, markers[i].lng]
             }
         }
+        this.setState({markerArray : markerGroup})
         this.leafletMap.leafletElement.fitBounds(markerGroup);
     }
 
