@@ -92,7 +92,7 @@ In the last sprint we completed 3 epics and put 2 epics on the icebox. However, 
 * Support Protocol Standard v2 - We were able to complete this epic without any issues or impediments.
 * Server Support - When we first compeleted this epic we used primitive types which we modified but besides that we were able to complete this epic with any issues.
 * Map - This epic took a little while to complete because we did not understand in the beginning how to use arrays as state variables in order to store the input from the multiple boxes but besides that we were able to complete the epic without any issues.
-* Distance - 
+* Distance - Most of the time spent on this epic was consumed learning to make an API request. This epic was otherwise painless.  
 
 
 ### Epics not done 
