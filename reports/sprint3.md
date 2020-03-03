@@ -39,12 +39,35 @@
 
 ## Planned Epics
 
+*Protocol Version 3*
+
+We are reponsible for maintaining a standardized object format and client/server interaction. This protocol version update will require fixing mistakes we made in protocol version 2, making updates to the config request to include additional supported requests, and to add the trip request.
+
+*More Destinations*
+
+We will now let the user add any number of destinations in order to create a trip itinerary. The itinerary will be a round trip, and will show the round trip distance. We will also address the issue of legs where the line needs to wrap across the edges of the map.
+
+*Itinerary*
+
+The user will be able to see their planned trip itinerary, which will include the leg distances between each destination and the cumulative distance for the trip.
+
+*Load*
+
+We will allow the user to upload a trip file (in JSON or CSV format) that will load into the current itinerary being displayed.
+
+*Modify Itinerary*
+
+The user will be able to make modifications to the current itinerary. This includes changing the starting point, reversing the order of the destinations, reordering individual destinations, and deleting destinations.
+
+*Save*
+
+The user will be able to save their current map and current trip itinerary. The map can be saved in either KML or SVG format, and the itinerary can be saved in either JSON or CSV format.
 
 ## Metrics
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *count* | *count* |
+| Epics | *6* | *count* |
 | Tasks |  *count*   | *count* | 
 | Story Points |  *sum*  | *sum* | 
 
