@@ -1,8 +1,6 @@
 # Sprint # - *t11* - *[hip, hip]*
 
-## Goal
-
-### Build a trip!
+## Goal: Build a trip!
 ### Sprint Leader: *Kevin Schroeder*
 
 
@@ -30,7 +28,7 @@
 ### Test Driven Development
 * Write method headers, unit tests, and code in that order.
 * Unit tests are fully automated.
-* Maintain coverage at 40%.
+* Maintain coverage at 50%.
 
 ### Processes
 * Master is never broken. 
