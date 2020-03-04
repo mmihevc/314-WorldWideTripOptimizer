@@ -249,7 +249,7 @@ export default class Atlas extends Component {
             },
             earthRadius: rad
         };
-        sendServerRequestWithBody('distance', values).then(
+        sendServerRequestWithBody('distance', values, this.props.serverPort).then(
             adistance=>{this.processDistanceResponse(adistance);
                 alert("the distance between your points is: "+adistance.body.distance);}
         );
