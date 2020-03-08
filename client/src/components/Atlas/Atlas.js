@@ -42,7 +42,8 @@ export default class Atlas extends Component {
             valueError: [],
             isSubmit: [],
             userMarkers: [],
-            markerArray : []
+            markerArray : [],
+            numDestinations: 2
         };
 
         this.getCurrentLocation(this.markInitialLocation);
@@ -56,8 +57,7 @@ export default class Atlas extends Component {
                         <Col sm={12} md={{size: 6, offset: 3}}>
                             {this.renderLeafletMap()}
                             {this.renderHomeButton()}
-                            {this.renderLongitudeLatitudeBoxes(0)}
-                            {this.renderLongitudeLatitudeBoxes(1)}
+                            {this.renderLongitudeLatitudeBoxes(this.state.numDestinations)}
                         </Col>
                     </Row>
                 </Container>
@@ -100,7 +100,16 @@ export default class Atlas extends Component {
         )
     }
 
-    renderLongitudeLatitudeBoxes(index) {
+    renderLongitudeLatitudeBoxes(numBoxes) {
+        let i;
+        const boxes = [];
+        for (i=0; i < numBoxes; i++) {
+            boxes.push(this.renderLongitudeLatitudeBox(i));
+        }
+        return boxes;
+    }
+
+    renderLongitudeLatitudeBox(index) {
         return (
             <Form onSubmit={this.handleSubmit}>
                 <br/>
