@@ -34,6 +34,8 @@ export default class Atlas extends Component {
         this.handleInputChange=this.handleInputChange.bind(this);
         this.goToUserMarkers=this.goToUserMarkers.bind(this);
         this.getCoordinates=this.getCoordinates.bind(this);
+        this.renderLongitudeLatitudeBox = this.renderLongitudeLatitudeBox.bind(this);
+        this.getUserMarker = this.getUserMarker.bind(this);
 
         this.state = {
             markerPosition: null,
@@ -57,7 +59,7 @@ export default class Atlas extends Component {
                         <Col sm={12} md={{size: 6, offset: 3}}>
                             {this.renderLeafletMap()}
                             {this.renderHomeButton()}
-                            {this.renderLongitudeLatitudeBoxes(this.state.numDestinations)}
+                            {this.renderMultiple(this.state.numDestinations, this.renderLongitudeLatitudeBox)}
                         </Col>
                     </Row>
                 </Container>
@@ -77,8 +79,7 @@ export default class Atlas extends Component {
                  style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
                 {this.getMarker(this.getMarkerPosition(), this.state.markerPosition)}
-                {this.getUserMarker(0)}
-                {this.getUserMarker(1)}
+                {this.renderMultiple(this.state.numDestinations, this.getUserMarker)}
                 {this.getCoordinates()}
             </Map>
         )
@@ -100,13 +101,13 @@ export default class Atlas extends Component {
         )
     }
 
-    renderLongitudeLatitudeBoxes(numBoxes) {
+    renderMultiple(numRenders, renderFunction) {
         let i;
-        const boxes = [];
-        for (i=0; i < numBoxes; i++) {
-            boxes.push(this.renderLongitudeLatitudeBox(i));
+        const components = [];
+        for (i=0; i < numRenders; i++) {
+            components.push(<div key={i}>{renderFunction(i)}</div>);
         }
-        return boxes;
+        return components;
     }
 
     renderLongitudeLatitudeBox(index) {
@@ -118,7 +119,7 @@ export default class Atlas extends Component {
                         <InputGroupText>🌎</InputGroupText>
                     </InputGroupAddon>
                     <Input valid={this.state.valueError[index]}
-                           invalid={!this.state.valueError[index] && (this.state.userInput[index] != "")}
+                           invalid={!this.state.valueError[index] && (this.state.userInput[index] !== "")}
                            id={"longitudeLatitude"+index}
                            placeholder="Enter Longitude and Latitude Here"
                     />
@@ -241,10 +242,10 @@ export default class Atlas extends Component {
                 lat: homeLat,
                 lng: homeLng
             }});
-    this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
-  }
+        this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
+    }
 
-  distancecall(lat1, long1, lat2, long2, rad){
+    distancecall(lat1, long1, lat2, long2, rad){
         const values = {
             requestVersion: 2,
             requestType: 'distance',
