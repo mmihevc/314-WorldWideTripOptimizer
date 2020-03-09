@@ -36,7 +36,7 @@ public class TestJSONValidator {
 
     @Test
     public void testRequestDistancePass() {
-        test("{\"requestType\": \"distance\",\"requestVersion\" : 2," +
+        test("{\"requestType\": \"distance\",\"requestVersion\" : 3," +
                 "\"place1\": {\"latitude\": \"40.6\",\"longitude\": \"-105.1\"}," +
                 "\"place2\": {\"latitude\": \"-33.9\",\"longitude\": \"151.2\"}," +
                 "\"earthRadius\": 6371.0}", RequestDistance.class, true);
