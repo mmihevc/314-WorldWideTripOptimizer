@@ -38,9 +38,6 @@ public class TestRequestConfig {
   public void testSupportedRequests() {
     String[] supportedRequests = conf.getSupportedRequests();
     String assertMessage = "config supportedRequests";
-    if (conf.getVersion() == 1)
-      assertNull(assertMessage, supportedRequests);
-    else if (conf.getVersion() == 2)
-      assertArrayEquals(assertMessage, new String[]{"config", "distance"}, supportedRequests);
+    assertArrayEquals(assertMessage, new String[]{"config", "distance", "trip"}, supportedRequests);
   }
 }
