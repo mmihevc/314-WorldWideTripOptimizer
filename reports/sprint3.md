@@ -77,6 +77,7 @@ The user will be able to save their current map and current trip itinerary. The 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
 | *3/6* | *221, 222* | *225, 198, 202* |  | 
+| *3/9* | *202, 203, 199, 196, 198* | *206, 225, 231* |  | 
 
 
 ## Review
