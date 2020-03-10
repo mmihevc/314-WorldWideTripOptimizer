@@ -100,9 +100,38 @@ export default class Atlas extends Component {
     }
 
     getLine(markers, i) {
-        return <Polyline color="darkgreen" positions={[markers[i], markers[i+1]]}/>
+        let line = [markers[i], markers[i+1]];
+        if (!this.lineCrossesMeridian(line)) {
+            return <Polyline color="darkgreen" positions={line}/>;
+        } else {
+            let lat2 = this.calculateWrappingLat(markers, i);
+            let line1 = [markers[i], {lat: lat2, lng: 180}];
+            let line2 = [markers[i+1], {lat: lat2, lng: 180}];
+            if (markers[i].lng < 0)
+                line1[1].lng = -180;
+            if (markers[i+1].lng < 0)
+                line2[1].lng = -180;
+            let components = [];
+            components.push(<Polyline color="darkgreen" positions={line1} key="line1"/>);
+            components.push(<Polyline color="darkgreen" positions={line2} key="line2"/>);
+            return components;
+        }
     }
 
+    calculateWrappingLat(markers, i) {
+        let latDiff = (markers[i].lat - markers[i+1].lat)
+        let lngDiff1 = 180 - Math.abs(markers[i].lng);
+        let lngDiff2 = 180 - Math.abs(markers[i+1].lng);
+        let lat2 = markers[i].lat - (latDiff/2)*(lngDiff1 / ((lngDiff1 + lngDiff2)/2));
+        if (markers[i].lat === markers[i+1].lat) {
+            lat2 = markers[i].lat;
+        }
+        return lat2;
+    }
+
+    positionToCartesian(position) {
+        return [Math.cos(position.lng) * Math.sin(position.lat), Math.sin(position.lng) * Math.sin(position.lat), Math.cos(position.lat)];
+    }
 
     renderHomeButton() {
         return (
@@ -300,7 +329,7 @@ export default class Atlas extends Component {
     }
 
     lineCrossesMeridian(line) {
-
+        return Math.abs(line[0].lng - line[1].lng) >= 180;
     }
 
 }
