@@ -30,23 +30,26 @@ export default class Atlas extends Component {
 
         this.addMarker = this.addMarker.bind(this);
         this.markAndFlyHome = this.markAndFlyHome.bind(this);
-        this.markInitialLocation=this.markInitialLocation.bind(this);
-        this.handleInputChange=this.handleInputChange.bind(this);
-        this.goToUserMarkers=this.goToUserMarkers.bind(this);
-        this.getCoordinates=this.getCoordinates.bind(this);
+        this.markInitialLocation = this.markInitialLocation.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.goToUserMarkers = this.goToUserMarkers.bind(this);
         this.renderLongitudeLatitudeBox = this.renderLongitudeLatitudeBox.bind(this);
         this.getUserMarker = this.getUserMarker.bind(this);
 
         this.state = {
             markerPosition: null,
             centerPosition: MAP_CENTER_DEFAULT,
-            userInput: ['', ''],
+            userInput: [],
             valueError: [],
             isSubmit: [],
             userMarkers: [],
             markerArray : [],
-            numDestinations: 2
+            numDestinations: 3
         };
+
+        let i;
+        for (i=0; i < this.state.numDestinations; i++)
+            this.state.userInput[i] = '';
 
         this.getCurrentLocation(this.markInitialLocation);
     }
@@ -80,15 +83,24 @@ export default class Atlas extends Component {
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
                 {this.getMarker(this.getMarkerPosition(), this.state.markerPosition)}
                 {this.renderMultiple(this.state.numDestinations, this.getUserMarker)}
-                {this.getCoordinates()}
+                {this.getLines(this.state.userMarkers)}
             </Map>
         )
     }
 
-    getCoordinates() {
-        if(this.state.userMarkers.length == 2) {
-            return <Polyline color="darkgreen" positions={this.state.markerArray}/>
+    getLines(markers) {
+        if (markers.length < 2)
+            return;
+        let i;
+        const components = [];
+        for (i=0; i < markers.length-1; i++) {
+            components.push(<div key={i}>{this.getLine(markers, i)}</div>)
         }
+        return components;
+    }
+
+    getLine(markers, i) {
+        return <Polyline color="darkgreen" positions={[markers[i], markers[i+1]]}/>
     }
 
 
@@ -285,6 +297,10 @@ export default class Atlas extends Component {
         }
         this.setState({markerArray : markerGroup})
         this.leafletMap.leafletElement.fitBounds(markerGroup);
+    }
+
+    lineCrossesMeridian(line) {
+
     }
 
 }
