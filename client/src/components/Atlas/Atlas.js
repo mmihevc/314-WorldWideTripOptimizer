@@ -30,23 +30,26 @@ export default class Atlas extends Component {
 
         this.addMarker = this.addMarker.bind(this);
         this.markAndFlyHome = this.markAndFlyHome.bind(this);
-        this.markInitialLocation=this.markInitialLocation.bind(this);
-        this.handleInputChange=this.handleInputChange.bind(this);
-        this.goToUserMarkers=this.goToUserMarkers.bind(this);
-        this.getCoordinates=this.getCoordinates.bind(this);
+        this.markInitialLocation = this.markInitialLocation.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.goToUserMarkers = this.goToUserMarkers.bind(this);
         this.renderLongitudeLatitudeBox = this.renderLongitudeLatitudeBox.bind(this);
         this.getUserMarker = this.getUserMarker.bind(this);
 
         this.state = {
             markerPosition: null,
             centerPosition: MAP_CENTER_DEFAULT,
-            userInput: ['', ''],
+            userInput: [],
             valueError: [],
             isSubmit: [],
             userMarkers: [],
             markerArray : [],
-            numDestinations: 2
+            numDestinations: 3
         };
+
+        let i;
+        for (i=0; i < this.state.numDestinations; i++)
+            this.state.userInput[i] = '';
 
         this.getCurrentLocation(this.markInitialLocation);
     }
@@ -80,17 +83,55 @@ export default class Atlas extends Component {
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
                 {this.getMarker(this.getMarkerPosition(), this.state.markerPosition)}
                 {this.renderMultiple(this.state.numDestinations, this.getUserMarker)}
-                {this.getCoordinates()}
+                {this.getLines(this.state.userMarkers)}
             </Map>
         )
     }
 
-    getCoordinates() {
-        if(this.state.userMarkers.length == 2) {
-            return <Polyline color="darkgreen" positions={this.state.markerArray}/>
+    getLines(markers) {
+        if (markers.length < 2)
+            return;
+        let i;
+        const components = [];
+        for (i=0; i < markers.length-1; i++) {
+            components.push(<div key={i}>{this.getLine(markers, i)}</div>)
+        }
+        return components;
+    }
+
+    getLine(markers, i) {
+        let line = [markers[i], markers[i+1]];
+        if (!this.lineCrossesMeridian(line)) {
+            return <Polyline color="darkgreen" positions={line}/>;
+        } else {
+            let lat2 = this.calculateWrappingLat(markers, i);
+            let line1 = [markers[i], {lat: lat2, lng: 180}];
+            let line2 = [markers[i+1], {lat: lat2, lng: 180}];
+            if (markers[i].lng < 0)
+                line1[1].lng = -180;
+            if (markers[i+1].lng < 0)
+                line2[1].lng = -180;
+            let components = [];
+            components.push(<Polyline color="darkgreen" positions={line1} key="line1"/>);
+            components.push(<Polyline color="darkgreen" positions={line2} key="line2"/>);
+            return components;
         }
     }
 
+    calculateWrappingLat(markers, i) {
+        let latDiff = (markers[i].lat - markers[i+1].lat)
+        let lngDiff1 = 180 - Math.abs(markers[i].lng);
+        let lngDiff2 = 180 - Math.abs(markers[i+1].lng);
+        let lat2 = markers[i].lat - (latDiff/2)*(lngDiff1 / ((lngDiff1 + lngDiff2)/2));
+        if (markers[i].lat === markers[i+1].lat) {
+            lat2 = markers[i].lat;
+        }
+        return lat2;
+    }
+
+    positionToCartesian(position) {
+        return [Math.cos(position.lng) * Math.sin(position.lat), Math.sin(position.lng) * Math.sin(position.lat), Math.cos(position.lat)];
+    }
 
     renderHomeButton() {
         return (
@@ -285,6 +326,10 @@ export default class Atlas extends Component {
         }
         this.setState({markerArray : markerGroup})
         this.leafletMap.leafletElement.fitBounds(markerGroup);
+    }
+
+    lineCrossesMeridian(line) {
+        return Math.abs(line[0].lng - line[1].lng) >= 180;
     }
 
 }
