@@ -23,6 +23,14 @@ public class RequestTrip extends RequestHeader {
         log.trace("buildResponse -> {}", this);
     }
 
+    String getType() {
+        return this.requestType;
+    }
+
+    Integer getVersion() {
+        return this.requestVersion;
+    }
+
     public class Option {
         private Double earthRadius;
         private String title;
