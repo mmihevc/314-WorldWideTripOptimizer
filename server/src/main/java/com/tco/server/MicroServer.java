@@ -63,7 +63,7 @@ class MicroServer {
 
   private String processTripRequest(Request request, Response response){
     logRequest(request);
-    return processHttpRequest(RequestConfig.class, request.body(), response);
+    return processHttpRequest(RequestTrip.class, request.body(), response);
   }
 
   private String processConfigRequest(Request request, Response response) {
