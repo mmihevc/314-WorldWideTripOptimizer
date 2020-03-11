@@ -198,7 +198,7 @@ export default class Atlas extends Component {
         });
         this.validateValue(this.state.userInput[index], index);
         if(this.state.userMarkers.length==2){
-            this.distancecall(""+this.state.userMarkers[0].lat, ""+this.state.userMarkers[0].lng, ""+this.state.userMarkers[1].lng, ""+this.state.userMarkers[1].lat, 3959);
+            this.distancecall(""+this.state.userMarkers[0].lat, ""+this.state.userMarkers[0].lng, ""+this.state.userMarkers[1].lat, ""+this.state.userMarkers[1].lng, 3959);
         }
     };
 
