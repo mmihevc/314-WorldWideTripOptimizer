@@ -3,7 +3,7 @@ package com.tco.server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RequestDistance extends RequestHeader {
+public class RequestDistance extends RequestHeader  {
     private Place place1;
     private Place place2;
     private Double earthRadius;
@@ -28,15 +28,6 @@ public class RequestDistance extends RequestHeader {
         log.trace("buildResponse -> {}", this);
     }
 
-    private class Place {
-        private String latitude;
-        private String longitude;
-
-        Place(String latitude, String longitude) {
-            this.latitude = latitude;
-            this.longitude = longitude;
-        }
-    }
 
     String getType() {
         return this.requestType;
