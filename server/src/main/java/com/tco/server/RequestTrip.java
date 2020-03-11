@@ -3,13 +3,11 @@ package com.tco.server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class RequestTrip extends RequestHeader {
 
     private Option options;
     private Place[] places;
     private Integer[] distances;
-
 
     private final transient Logger log = LoggerFactory.getLogger(RequestTrip.class);
 
@@ -20,15 +18,26 @@ public class RequestTrip extends RequestHeader {
 
     @Override
     public void buildResponse() {
-        log.trace("buildResponse -> {}", this);
+        for (int i = 1; i < places.length; i++) {
+            getDistance(i);
+            log.trace("buildResponse -> {}", this);
+        }
     }
 
-    String getType() {
-        return this.requestType;
-    }
+    String getType() { return this.requestType; }
 
     Integer getVersion() {
         return this.requestVersion;
+    }
+
+    void getDistance(int index) {
+        double lng1 = Double.parseDouble(this.places[index - 1].longitude);
+        double lat1 = Double.parseDouble(this.places[index - 1].latitude);
+        double lng2 = Double.parseDouble(this.places[index].longitude);
+        double lat2 = Double.parseDouble(this.places[index].latitude);
+        int radius = options.earthRadius.intValue();
+        Utility util = new Utility();
+        this.distances[index - 1] = (int) util.getDistance(lng1, lat1, lng2, lat2, radius);
     }
 
     public class Option {
