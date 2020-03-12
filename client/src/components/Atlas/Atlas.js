@@ -44,7 +44,7 @@ export default class Atlas extends Component {
             isSubmit: [],
             userMarkers: [],
             markerArray : [],
-            numDestinations: 3
+            numDestinations: 1
         };
 
         let i;
@@ -63,6 +63,7 @@ export default class Atlas extends Component {
                             {this.renderLeafletMap()}
                             {this.renderHomeButton()}
                             {this.renderMultiple(this.state.numDestinations, this.renderLongitudeLatitudeBox)}
+                            {this.renderAddDestinationButton()}
                         </Col>
                     </Row>
                 </Container>
@@ -167,6 +168,23 @@ export default class Atlas extends Component {
                 </InputGroup>
             </Form>
         )
+    }
+
+    renderAddDestinationButton() {
+        return (
+            <Button title="Add Destination" className="mt-1"
+                    onClick={() => {this.addDestination()}}>
+                +
+            </Button>
+        )
+    }
+
+    addDestination() {
+        this.state.userInput[this.state.numDestinations] = ''
+        this.setState({
+            numDestinations: this.state.numDestinations+1,
+            userInput: this.state.userInput
+        });
     }
 
     handleSubmit(event) {
