@@ -7,7 +7,7 @@ public class RequestDistance extends RequestHeader  {
     private Place place1;
     private Place place2;
     private Double earthRadius;
-    private Integer distance;
+    private Long distance;
 
     private final transient Logger log = LoggerFactory.getLogger(RequestDistance.class);
 
@@ -24,7 +24,7 @@ public class RequestDistance extends RequestHeader  {
         double lat2 = Double.parseDouble(this.place2.latitude);
         int radius = this.earthRadius.intValue();
         Utility util = new Utility();
-        this.distance = (int) util.getDistance(lng1, lat1, lng2, lat2, radius);
+        this.distance = util.getDistance(lng1, lat1, lng2, lat2, radius);
         log.trace("buildResponse -> {}", this);
     }
 
