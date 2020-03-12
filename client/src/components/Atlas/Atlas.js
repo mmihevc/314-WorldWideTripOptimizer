@@ -174,10 +174,18 @@ export default class Atlas extends Component {
     renderAddDestinationButton() {
         return (
             <Button title="Add Destination" className="mt-1"
-                    onClick={() => {}}>
+                    onClick={() => {this.addDestination()}}>
                 +
             </Button>
         )
+    }
+
+    addDestination() {
+        this.state.userInput[this.state.numDestinations] = ''
+        this.setState({
+            numDestinations: this.state.numDestinations+1,
+            userInput: this.state.userInput
+        });
     }
 
     handleSubmit(event) {
