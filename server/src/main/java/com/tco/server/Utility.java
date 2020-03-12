@@ -2,7 +2,7 @@ package com.tco.server;
 import java.lang.Math;
 public class Utility {
 
-    double getDistance(double long1, double lat1, double long2, double lat2, int earthradius) {
+    long getDistance(double long1, double lat1, double long2, double lat2, int earthradius) {
         double f = 1 / 298.257223563;
         //System.out.println("long "+long1);
         //System.out.println("lat "+lat1);
