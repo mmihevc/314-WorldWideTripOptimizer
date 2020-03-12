@@ -365,7 +365,7 @@ export default class Atlas extends Component {
             atrip=>{this.processTripResponse(atrip);}
         );
     }
-    processTripResponse(){
+    processTripResponse(atrip){
         if(!isJsonResponseValid(atrip.body, tripSchema)){
             alert('error fetching trip')
         }
