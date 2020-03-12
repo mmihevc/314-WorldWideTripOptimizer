@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Button, InputGroup,Input,Form,InputGroupAddon,InputGroupText} from 'reactstrap';
+import {Col, Container, Row, Button, InputGroup,Input,Form,InputGroupAddon,InputGroupText, Alert} from 'reactstrap';
 import {Map, Marker, Polyline, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -44,7 +44,8 @@ export default class Atlas extends Component {
             isSubmit: [],
             userMarkers: [],
             markerArray : [],
-            numDestinations: 1
+            numDestinations: 1,
+            roundTripDistance: null
         };
 
         let i;
@@ -62,6 +63,7 @@ export default class Atlas extends Component {
                         <Col sm={12} md={{size: 6, offset: 3}}>
                             {this.renderLeafletMap()}
                             {this.renderHomeButton()}
+                            {this.renderRoundTripDistance()}
                             {this.renderMultiple(this.state.numDestinations, this.renderLongitudeLatitudeBox)}
                             {this.renderAddDestinationButton()}
                         </Col>
@@ -87,6 +89,14 @@ export default class Atlas extends Component {
                 {this.getLines(this.state.userMarkers)}
             </Map>
         )
+    }
+
+    renderRoundTripDistance() {
+        if (this.state.roundTripDistance) {
+            return (
+                <Alert color="info" className="mt-2">Round Trip Distance: {this.state.roundTripDistance} miles</Alert>
+            )
+        }
     }
 
     getLines(markers) {
