@@ -94,22 +94,25 @@ export default class Atlas extends Component {
         let i;
         const components = [];
         for (i=0; i < markers.length-1; i++) {
-            components.push(<div key={i}>{this.getLine(markers, i)}</div>)
+            components.push(<div key={i}>{this.getLine(markers, i, i+1)}</div>)
+        }
+        if (markers.length > 2) {
+            components.push(<div key="roundtrip">{this.getLine(markers, 0, markers.length - 1)}</div>)
         }
         return components;
     }
 
-    getLine(markers, i) {
-        let line = [markers[i], markers[i+1]];
+    getLine(markers, i1, i2) {
+        let line = [markers[i1], markers[i2]];
         if (!this.lineCrossesMeridian(line)) {
             return <Polyline color="darkgreen" positions={line}/>;
         } else {
-            let lat2 = this.calculateWrappingLat(markers, i);
-            let line1 = [markers[i], {lat: lat2, lng: 180}];
-            let line2 = [markers[i+1], {lat: lat2, lng: 180}];
-            if (markers[i].lng < 0)
+            let lat2 = this.calculateWrappingLat(markers, i1, i2);
+            let line1 = [markers[i1], {lat: lat2, lng: 180}];
+            let line2 = [markers[i2], {lat: lat2, lng: 180}];
+            if (markers[i1].lng < 0)
                 line1[1].lng = -180;
-            if (markers[i+1].lng < 0)
+            if (markers[i2].lng < 0)
                 line2[1].lng = -180;
             let components = [];
             components.push(<Polyline color="darkgreen" positions={line1} key="line1"/>);
@@ -118,19 +121,15 @@ export default class Atlas extends Component {
         }
     }
 
-    calculateWrappingLat(markers, i) {
-        let latDiff = (markers[i].lat - markers[i+1].lat)
-        let lngDiff1 = 180 - Math.abs(markers[i].lng);
-        let lngDiff2 = 180 - Math.abs(markers[i+1].lng);
-        let lat2 = markers[i].lat - (latDiff/2)*(lngDiff1 / ((lngDiff1 + lngDiff2)/2));
-        if (markers[i].lat === markers[i+1].lat) {
-            lat2 = markers[i].lat;
+    calculateWrappingLat(markers, i1, i2) {
+        let latDiff = (markers[i1].lat - markers[i2].lat)
+        let lngDiff1 = 180 - Math.abs(markers[i1].lng);
+        let lngDiff2 = 180 - Math.abs(markers[i2].lng);
+        let lat2 = markers[i1].lat - (latDiff/2)*(lngDiff1 / ((lngDiff1 + lngDiff2)/2));
+        if (markers[i1].lat === markers[i2].lat) {
+            lat2 = markers[i1].lat;
         }
         return lat2;
-    }
-
-    positionToCartesian(position) {
-        return [Math.cos(position.lng) * Math.sin(position.lat), Math.sin(position.lng) * Math.sin(position.lat), Math.cos(position.lat)];
     }
 
     renderHomeButton() {
