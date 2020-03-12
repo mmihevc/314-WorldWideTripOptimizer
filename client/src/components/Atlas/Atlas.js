@@ -8,6 +8,7 @@ import Coordinates from 'coordinate-parser';
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
 import {HTTP_OK} from "../Constants";
 import * as distanceSchema from "../../../schemas/DistanceResponse";
+import * as tripSchema from "../../../schemas/TripResponse";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -313,6 +314,7 @@ export default class Atlas extends Component {
         this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
     }
 
+
     distancecall(lat1, long1, lat2, long2, rad){
         const values = {
             requestVersion: 2,
@@ -339,6 +341,36 @@ export default class Atlas extends Component {
         }
         else if(adistance.statusCode === HTTP_OK){
             return adistance;
+        }
+    }
+    tripCall(name, lat, long, rad){
+        var values = {
+            requestVersion: 3,
+            requestType: 'trip',
+            options: {
+                earthRadius: rad,
+            },
+            places: [],
+            distances : [],
+        }
+        for(let i=0;i<name.size;i++){
+            values.places[i] = {
+                name : name[i],
+                latitude : lat[i],
+                longitude : long[i],
+            }
+        }
+        let distances=[]
+        sendServerRequestWithBody('trip', values, this.props.serverPort).then(
+            atrip=>{this.processTripResponse(atrip);}
+        );
+    }
+    processTripResponse(){
+        if(!isJsonResponseValid(atrip.body, tripSchema)){
+            alert('error fetching trip')
+        }
+        else if(atrip.statusCode === HTTP_OK){
+            return atrip;
         }
     }
 
