@@ -11,6 +11,10 @@ public class TestRequestDistance {
     @Before
     public void createDistanceRequestForTestCases(){
         dist = new RequestDistance();
+        dist.place1 = new Place("20.12", "30.14");
+        dist.place2 = new Place("20.12", "30.14");
+        dist.earthRadius = 1024.0;
+        dist.buildResponse();
     }
 
     @Test
@@ -23,5 +27,11 @@ public class TestRequestDistance {
     public void testVersion() {
         int version = dist.getVersion();
         assertEquals("distance requestVersion", RequestHeader.CURRENT_SUPPORTED_VERSION, version);
+    }
+
+    @Test
+    public void testDistance() {
+        Long expectedDistance = new Long(0);
+        assertEquals("distance distance", dist.distance, expectedDistance);
     }
 }

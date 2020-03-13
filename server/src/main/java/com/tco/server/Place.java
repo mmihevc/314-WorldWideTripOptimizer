@@ -8,4 +8,12 @@ public class Place {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    double getLat() {
+        return Double.parseDouble(this.latitude);
+    }
+
+    double getLng() {
+        return Double.parseDouble(this.longitude);
+    }
 }

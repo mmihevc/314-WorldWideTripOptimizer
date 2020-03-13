@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RequestDistance extends RequestHeader  {
-    private Place place1;
-    private Place place2;
-    private Double earthRadius;
-    private Long distance;
+    protected Place place1;
+    protected Place place2;
+    protected Double earthRadius;
+    protected Long distance;
 
     private final transient Logger log = LoggerFactory.getLogger(RequestDistance.class);
 
@@ -18,10 +18,10 @@ public class RequestDistance extends RequestHeader  {
 
     @Override
     public void buildResponse() {
-        double lng1 = Double.parseDouble(this.place1.longitude);
-        double lat1 = Double.parseDouble(this.place1.latitude);
-        double lng2 = Double.parseDouble(this.place2.longitude);
-        double lat2 = Double.parseDouble(this.place2.latitude);
+        double lng1 = place1.getLng();
+        double lat1 = place1.getLat();
+        double lng2 = place2.getLng();
+        double lat2 = place2.getLat();
         int radius = this.earthRadius.intValue();
         Utility util = new Utility();
         this.distance = util.getDistance(lng1, lat1, lng2, lat2, radius);
