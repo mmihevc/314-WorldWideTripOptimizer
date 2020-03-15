@@ -26,9 +26,13 @@ public class RequestTrip extends RequestHeader {
         log.trace("buildResponse -> {}", this);
     }
 
-    String getType() { return this.requestType; }
+    String getType() {
+        return this.requestType;
+    }
 
-    Integer getVersion() { return this.requestVersion; }
+    Integer getVersion() {
+        return this.requestVersion;
+    }
 
     void getDistance(int index) {
         double lng1 = Double.parseDouble(this.places[index - 1].longitude);
