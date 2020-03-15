@@ -7,7 +7,7 @@ public class RequestTrip extends RequestHeader {
 
     private Option options;
     private Place[] places;
-    private Integer[] distances;
+    private Long[] distances;
 
     private final transient Logger log = LoggerFactory.getLogger(RequestTrip.class);
 
@@ -37,7 +37,7 @@ public class RequestTrip extends RequestHeader {
         double lat2 = Double.parseDouble(this.places[index].latitude);
         int radius = options.earthRadius.intValue();
         Utility util = new Utility();
-        this.distances[index - 1] = (int) util.getDistance(lng1, lat1, lng2, lat2, radius);
+        this.distances[index - 1] = (long) util.getDistance(lng1, lat1, lng2, lat2, radius);
     }
 
     void distanceBetweenFirstAndLast() {
@@ -47,7 +47,7 @@ public class RequestTrip extends RequestHeader {
         double lat2 = Double.parseDouble(this.places[places.length - 1].latitude);
         int radius = options.earthRadius.intValue();
         Utility util = new Utility();
-        this.distances[distances.length - 1] = (int) util.getDistance(lng1, lat1, lng2, lat2, radius);
+        this.distances[distances.length - 1] = (long) util.getDistance(lng1, lat1, lng2, lat2, radius);
     }
 
     public class Option {
