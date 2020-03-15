@@ -47,7 +47,7 @@ public class RequestTrip extends RequestHeader {
         double lat2 = Double.parseDouble(this.places[places.length - 1].latitude);
         int radius = options.earthRadius.intValue();
         Utility util = new Utility();
-        this.distances[distances.length] = (int) util.getDistance(lng1, lat1, lng2, lat2, radius);
+        this.distances[distances.length - 1] = (int) util.getDistance(lng1, lat1, lng2, lat2, radius);
     }
 
     public class Option {
