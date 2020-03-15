@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Button, InputGroup,Input,Form,InputGroupAddon,InputGroupText} from 'reactstrap';
+import {Col, Container, Row, Button, InputGroup,Input,Form,InputGroupAddon,InputGroupText, Alert} from 'reactstrap';
 import {Map, Marker, Polyline, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -8,6 +8,7 @@ import Coordinates from 'coordinate-parser';
 import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
 import {HTTP_OK} from "../Constants";
 import * as distanceSchema from "../../../schemas/DistanceResponse";
+import * as tripSchema from "../../../schemas/TripResponse";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -44,7 +45,8 @@ export default class Atlas extends Component {
             isSubmit: [],
             userMarkers: [],
             markerArray : [],
-            numDestinations: 3
+            numDestinations: 1,
+            roundTripDistance: null
         };
 
         let i;
@@ -62,7 +64,9 @@ export default class Atlas extends Component {
                         <Col sm={12} md={{size: 6, offset: 3}}>
                             {this.renderLeafletMap()}
                             {this.renderHomeButton()}
+                            {this.renderRoundTripDistance()}
                             {this.renderMultiple(this.state.numDestinations, this.renderLongitudeLatitudeBox)}
+                            {this.renderAddDestinationButton()}
                         </Col>
                     </Row>
                 </Container>
@@ -88,28 +92,39 @@ export default class Atlas extends Component {
         )
     }
 
+    renderRoundTripDistance() {
+        if (this.state.roundTripDistance) {
+            return (
+                <Alert color="info" className="mt-2">Round Trip Distance: {this.state.roundTripDistance} miles</Alert>
+            )
+        }
+    }
+
     getLines(markers) {
         if (markers.length < 2)
             return;
         let i;
         const components = [];
         for (i=0; i < markers.length-1; i++) {
-            components.push(<div key={i}>{this.getLine(markers, i)}</div>)
+            components.push(<div key={i}>{this.getLine(markers, i, i+1)}</div>)
+        }
+        if (markers.length > 2) {
+            components.push(<div key="roundtrip">{this.getLine(markers, 0, markers.length - 1)}</div>)
         }
         return components;
     }
 
-    getLine(markers, i) {
-        let line = [markers[i], markers[i+1]];
+    getLine(markers, i1, i2) {
+        let line = [markers[i1], markers[i2]];
         if (!this.lineCrossesMeridian(line)) {
             return <Polyline color="darkgreen" positions={line}/>;
         } else {
-            let lat2 = this.calculateWrappingLat(markers, i);
-            let line1 = [markers[i], {lat: lat2, lng: 180}];
-            let line2 = [markers[i+1], {lat: lat2, lng: 180}];
-            if (markers[i].lng < 0)
+            let lat2 = this.calculateWrappingLat(markers, i1, i2);
+            let line1 = [markers[i1], {lat: lat2, lng: 180}];
+            let line2 = [markers[i2], {lat: lat2, lng: 180}];
+            if (markers[i1].lng < 0)
                 line1[1].lng = -180;
-            if (markers[i+1].lng < 0)
+            if (markers[i2].lng < 0)
                 line2[1].lng = -180;
             let components = [];
             components.push(<Polyline color="darkgreen" positions={line1} key="line1"/>);
@@ -118,19 +133,15 @@ export default class Atlas extends Component {
         }
     }
 
-    calculateWrappingLat(markers, i) {
-        let latDiff = (markers[i].lat - markers[i+1].lat)
-        let lngDiff1 = 180 - Math.abs(markers[i].lng);
-        let lngDiff2 = 180 - Math.abs(markers[i+1].lng);
-        let lat2 = markers[i].lat - (latDiff/2)*(lngDiff1 / ((lngDiff1 + lngDiff2)/2));
-        if (markers[i].lat === markers[i+1].lat) {
-            lat2 = markers[i].lat;
+    calculateWrappingLat(markers, i1, i2) {
+        let latDiff = (markers[i1].lat - markers[i2].lat)
+        let lngDiff1 = 180 - Math.abs(markers[i1].lng);
+        let lngDiff2 = 180 - Math.abs(markers[i2].lng);
+        let lat2 = markers[i1].lat - (latDiff/2)*(lngDiff1 / ((lngDiff1 + lngDiff2)/2));
+        if (markers[i1].lat === markers[i2].lat) {
+            lat2 = markers[i1].lat;
         }
         return lat2;
-    }
-
-    positionToCartesian(position) {
-        return [Math.cos(position.lng) * Math.sin(position.lat), Math.sin(position.lng) * Math.sin(position.lat), Math.cos(position.lat)];
     }
 
     renderHomeButton() {
@@ -170,6 +181,23 @@ export default class Atlas extends Component {
         )
     }
 
+    renderAddDestinationButton() {
+        return (
+            <Button title="Add Destination" className="mt-1"
+                    onClick={() => {this.addDestination()}}>
+                +
+            </Button>
+        )
+    }
+
+    addDestination() {
+        this.state.userInput[this.state.numDestinations] = ''
+        this.setState({
+            numDestinations: this.state.numDestinations+1,
+            userInput: this.state.userInput
+        });
+    }
+
     handleSubmit(event) {
         event.preventDefault();
     }
@@ -198,7 +226,7 @@ export default class Atlas extends Component {
         });
         this.validateValue(this.state.userInput[index], index);
         if(this.state.userMarkers.length==2){
-            this.distancecall(""+this.state.userMarkers[0].lat, ""+this.state.userMarkers[0].lng, ""+this.state.userMarkers[1].lng, ""+this.state.userMarkers[1].lat, 3959);
+            this.distancecall(""+this.state.userMarkers[0].lat, ""+this.state.userMarkers[0].lng, ""+this.state.userMarkers[1].lat, ""+this.state.userMarkers[1].lng, 3959);
         }
     };
 
@@ -286,6 +314,7 @@ export default class Atlas extends Component {
         this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
     }
 
+
     distancecall(lat1, long1, lat2, long2, rad){
         const values = {
             requestVersion: 2,
@@ -312,6 +341,36 @@ export default class Atlas extends Component {
         }
         else if(adistance.statusCode === HTTP_OK){
             return adistance;
+        }
+    }
+    tripCall(name, lat, long, rad){
+        var values = {
+            requestVersion: 3,
+            requestType: 'trip',
+            options: {
+                earthRadius: rad,
+            },
+            places: [],
+            distances : [],
+        }
+        for(let i=0;i<name.size;i++){
+            values.places[i] = {
+                name : name[i],
+                latitude : lat[i],
+                longitude : long[i],
+            }
+        }
+        let distances=[]
+        sendServerRequestWithBody('trip', values, this.props.serverPort).then(
+            atrip=>{this.processTripResponse(atrip);}
+        );
+    }
+    processTripResponse(atrip){
+        if(!isJsonResponseValid(atrip.body, tripSchema)){
+            alert('error fetching trip')
+        }
+        else if(atrip.statusCode === HTTP_OK){
+            return atrip;
         }
     }
 

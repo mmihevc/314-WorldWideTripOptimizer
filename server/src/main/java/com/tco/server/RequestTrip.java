@@ -35,10 +35,10 @@ public class RequestTrip extends RequestHeader {
     }
 
     void getDistance(int index) {
-        double lng1 = Double.parseDouble(this.places[index - 1].longitude);
-        double lat1 = Double.parseDouble(this.places[index - 1].latitude);
-        double lng2 = Double.parseDouble(this.places[index].longitude);
-        double lat2 = Double.parseDouble(this.places[index].latitude);
+        double lng1 = places[index - 1].getLng();
+        double lat1 = places[index - 1].getLat();
+        double lng2 = places[index].getLng();
+        double lat2 = places[index].getLat();
         int radius = options.earthRadius.intValue();
         Utility util = new Utility();
         this.distances[index - 1] = (long) util.getDistance(lng1, lat1, lng2, lat2, radius);
