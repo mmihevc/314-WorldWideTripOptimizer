@@ -22,9 +22,13 @@ public class RequestTrip extends RequestHeader {
             getDistance(i);
             log.trace("buildResponse -> {}", this);
         }
+        distanceBetweenFirstAndLast();
+        log.trace("buildResponse -> {}", this);
     }
 
-    String getType() { return this.requestType; }
+    String getType() {
+        return this.requestType;
+    }
 
     Integer getVersion() {
         return this.requestVersion;
@@ -37,7 +41,17 @@ public class RequestTrip extends RequestHeader {
         double lat2 = places[index].getLat();
         int radius = options.earthRadius.intValue();
         Utility util = new Utility();
-        this.distances[index - 1] = util.getDistance(lng1, lat1, lng2, lat2, radius);
+        this.distances[index - 1] = (long) util.getDistance(lng1, lat1, lng2, lat2, radius);
+    }
+
+    void distanceBetweenFirstAndLast() {
+        double lng1 = Double.parseDouble(this.places[0].longitude);
+        double lat1 = Double.parseDouble(this.places[0].latitude);
+        double lng2 = Double.parseDouble(this.places[places.length - 1].longitude);
+        double lat2 = Double.parseDouble(this.places[places.length - 1].latitude);
+        int radius = options.earthRadius.intValue();
+        Utility util = new Utility();
+        this.distances[distances.length - 1] = (long) util.getDistance(lng1, lat1, lng2, lat2, radius);
     }
 
     public class Option {
