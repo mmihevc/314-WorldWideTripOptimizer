@@ -225,8 +225,20 @@ export default class Atlas extends Component {
             isSubmit: this.state.isSubmit
         });
         this.validateValue(this.state.userInput[index], index);
-        if(this.state.userMarkers.length==2){
-            this.distancecall(""+this.state.userMarkers[0].lat, ""+this.state.userMarkers[0].lng, ""+this.state.userMarkers[1].lat, ""+this.state.userMarkers[1].lng, 3959);
+        //if(this.state.userMarkers.length==2){
+        //    this.distancecall(""+this.state.userMarkers[0].lat, ""+this.state.userMarkers[0].lng, ""+this.state.userMarkers[1].lat, ""+this.state.userMarkers[1].lng, 3959);
+        //}
+        if(this.state.userMarkers.length >= 2) {
+            let names = [];
+            let lats = [];
+            let lngs = [];
+            let i;
+            for (i=0; i < this.state.userMarkers.length; i++) {
+                names[i] = "place"+i;
+                lats[i] = this.state.userMarkers[i].lat+"";
+                lngs[i] = this.state.userMarkers[i].lng+"";
+            }
+            this.tripCall(names, lats, lngs, "3959");
         }
     };
 
@@ -314,6 +326,15 @@ export default class Atlas extends Component {
         this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
     }
 
+    updateRoundTripDistance(distances) {
+        let totalDist = 0;
+        let i;
+        for (i=0; i < distances.length; i++) {
+            totalDist += distances[i];
+        }
+        this.setState({roundTripDistance: totalDist});
+    }
+
 
     distancecall(lat1, long1, lat2, long2, rad){
         const values = {
@@ -353,7 +374,7 @@ export default class Atlas extends Component {
             places: [],
             distances : [],
         }
-        for(let i=0;i<name.size;i++){
+        for(let i=0;i<name.length;i++){
             values.places[i] = {
                 name : name[i],
                 latitude : lat[i],
@@ -362,7 +383,8 @@ export default class Atlas extends Component {
         }
         let distances=[]
         sendServerRequestWithBody('trip', values, this.props.serverPort).then(
-            atrip=>{this.processTripResponse(atrip);}
+            atrip=>{this.processTripResponse(atrip);
+                this.updateRoundTripDistance(atrip.body.distances);}
         );
     }
     processTripResponse(atrip){

@@ -18,6 +18,7 @@ public class RequestTrip extends RequestHeader {
 
     @Override
     public void buildResponse() {
+        this.distances = new Long[places.length];
         for (int i = 1; i < places.length; i++) {
             getDistance(i);
             log.trace("buildResponse -> {}", this);
