@@ -18,6 +18,7 @@ public class RequestTrip extends RequestHeader {
 
     @Override
     public void buildResponse() {
+        this.distances = new Long[places.length];
         for (int i = 1; i < places.length; i++) {
             getDistance(i);
             log.trace("buildResponse -> {}", this);
@@ -39,7 +40,7 @@ public class RequestTrip extends RequestHeader {
         double lat1 = places[index - 1].getLat();
         double lng2 = places[index].getLng();
         double lat2 = places[index].getLat();
-        int radius = options.earthRadius.intValue();
+        int radius = Integer.parseInt(options.earthRadius);
         Utility util = new Utility();
         this.distances[index - 1] = (long) util.getDistance(lng1, lat1, lng2, lat2, radius);
     }
@@ -49,16 +50,16 @@ public class RequestTrip extends RequestHeader {
         double lat1 = Double.parseDouble(this.places[0].latitude);
         double lng2 = Double.parseDouble(this.places[places.length - 1].longitude);
         double lat2 = Double.parseDouble(this.places[places.length - 1].latitude);
-        int radius = options.earthRadius.intValue();
+        int radius = Integer.parseInt(options.earthRadius);
         Utility util = new Utility();
         this.distances[distances.length - 1] = (long) util.getDistance(lng1, lat1, lng2, lat2, radius);
     }
 
     public class Option {
-        private Double earthRadius;
+        private String earthRadius;
         private String title;
 
-        Option(Double earthRadius, String title) {
+        Option(String earthRadius, String title) {
             this.earthRadius = earthRadius;
             this.title = title;
         }

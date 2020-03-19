@@ -109,7 +109,7 @@ class MicroServer {
     request.buildResponse();
     Gson jsonConverter = new Gson();
     String responseBody = jsonConverter.toJson(request);
-    log.trace("Data Response: {}", responseBody);
+    log.error("Data Response: {}", responseBody);
     return responseBody;
   }
 

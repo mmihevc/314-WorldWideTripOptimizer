@@ -10,7 +10,7 @@ public class TestPlace {
 
     @Before
     public void createPlaceForTestCases() {
-        place = new Place("20.24", "50.12");
+        place = new Place("20.24", "50.12", "place");
     }
 
     @Test
