@@ -187,26 +187,18 @@ export default class Atlas extends Component {
     }
 
     renderItineraryButton() {
-        let button;
-        let show = false;
         if (this.state.showItinerary) {
-            button = <Button onClick={() => {this.setState({showItinerary: false})}}> Click to view itinerary</Button>
-            show = true;
-        }
-        else {
-            button = <Button onClick={() => {this.setState({showItinerary: true})}}> Click to view itinerary</Button>
-        }
-        if (show) {
             return (
                 <Form>
-                    {button} {this.renderItinerary()}
+                    <Button onClick={() => {this.setState({showItinerary: false})}}> Click to view itinerary</Button>
+                    {this.renderItinerary()}
                 </Form>
             )
         }
         else {
             return (
                 <Form>
-                    {button}
+                    <Button onClick={() => {this.setState({showItinerary: true})}}> Click to view itinerary</Button>
                 </Form>
             )
         }
