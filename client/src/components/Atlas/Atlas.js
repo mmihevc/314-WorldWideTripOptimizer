@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Button, InputGroup,Input,Form,InputGroupAddon,InputGroupText, Alert} from 'reactstrap';
+import {Col, Container, Row, Button, InputGroup,Input,Form,InputGroupAddon,InputGroupText, Alert, Table} from 'reactstrap';
 import {Map, Marker, Polyline, Popup, TileLayer} from 'react-leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
@@ -46,7 +46,8 @@ export default class Atlas extends Component {
             userMarkers: [],
             markerArray : [],
             numDestinations: 1,
-            roundTripDistance: null
+            roundTripDistance: null,
+            showItinerary: false
         };
 
         let i;
@@ -68,11 +69,15 @@ export default class Atlas extends Component {
                             {this.renderMultiple(this.state.numDestinations, this.renderLongitudeLatitudeBox)}
                             {this.renderAddDestinationButton()}
                         </Col>
+                        <Col>
+                            {this.renderItineraryButton()}
+                        </Col>
                     </Row>
                 </Container>
             </div>
         );
     }
+
 
     renderLeafletMap() {
         return (
@@ -178,6 +183,51 @@ export default class Atlas extends Component {
                     <Button onClick={() => this.handleInputChange(index)}>Submit</Button>
                 </InputGroup>
             </Form>
+        )
+    }
+
+    renderItineraryButton() {
+        let button;
+        let show = false;
+        if (this.state.showItinerary) {
+            button = <Button onClick={() => {this.setState({showItinerary: false})}}> Click to view itinerary</Button>
+            show = true;
+        }
+        else {
+            button = <Button onClick={() => {this.setState({showItinerary: true})}}> Click to view itinerary</Button>
+        }
+        if (show) {
+            return (
+                <Form>
+                    {button} {this.renderItinerary()}
+                </Form>
+            )
+        }
+        else {
+            return (
+                <Form>
+                    {button}
+                </Form>
+            )
+        }
+    }
+
+    renderItinerary() {
+        return (
+            <Table bordered>
+                <thead>
+                    <tr>
+                        <th>Destination</th>
+                        <th>Leg Distance</th>
+                        <th>Cumulative Distance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row"></th>
+                    </tr>
+                </tbody>
+            </Table>
         )
     }
 
@@ -364,6 +414,7 @@ export default class Atlas extends Component {
             return adistance;
         }
     }
+
     tripCall(name, lat, long, rad){
         var values = {
             requestVersion: 3,
