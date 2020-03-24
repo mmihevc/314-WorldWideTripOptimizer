@@ -33,17 +33,17 @@ export default class Atlas extends Component {
         this.markAndFlyHome = this.markAndFlyHome.bind(this);
         this.markInitialLocation = this.markInitialLocation.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.goToUserMarkers = this.goToUserMarkers.bind(this);
+        this.goToDestinations = this.goToDestinations.bind(this);
         this.renderLongitudeLatitudeBox = this.renderLongitudeLatitudeBox.bind(this);
-        this.getUserMarker = this.getUserMarker.bind(this);
+        this.renderDestination = this.renderDestination.bind(this);
 
         this.state = {
             markerPosition: null,
             centerPosition: MAP_CENTER_DEFAULT,
-            userInput: [],
-            valueError: [],
-            isSubmit: [],
-            userMarkers: [],
+            inputCoords: [],
+            inputError: [],
+            inputSubmitted: [],
+            destinations: [],
             markerArray : [],
             numDestinations: 1,
             roundTripDistance: null,
@@ -52,7 +52,7 @@ export default class Atlas extends Component {
 
         let i;
         for (i=0; i < this.state.numDestinations; i++)
-            this.state.userInput[i] = '';
+            this.state.inputCoords[i] = '';
 
         this.getCurrentLocation(this.markInitialLocation);
     }
@@ -68,6 +68,7 @@ export default class Atlas extends Component {
                             {this.renderRoundTripDistance()}
                             {this.renderMultiple(this.state.numDestinations, this.renderLongitudeLatitudeBox)}
                             {this.renderAddDestinationButton()}
+                            {this.renderSubmitButton()}
                         </Col>
                         <Col>
                             {this.renderItineraryButton()}
@@ -91,8 +92,8 @@ export default class Atlas extends Component {
                  style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
                 {this.getMarker(this.getMarkerPosition(), this.state.markerPosition)}
-                {this.renderMultiple(this.state.numDestinations, this.getUserMarker)}
-                {this.getLines(this.state.userMarkers)}
+                {this.renderMultiple(this.state.numDestinations, this.renderDestination)}
+                {this.getLines(this.state.destinations)}
             </Map>
         )
     }
@@ -167,20 +168,27 @@ export default class Atlas extends Component {
         return components;
     }
 
+    renderSubmitButton() {
+        return (
+            <Button className="ml-1" onClick={this.handleInputChange}>
+                Submit
+            </Button>
+        )
+    }
+
     renderLongitudeLatitudeBox(index) {
         return (
             <Form onSubmit={this.handleSubmit}>
                 <br/>
-                <InputGroup size="md">
+                <InputGroup>
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>🌎</InputGroupText>
                     </InputGroupAddon>
-                    <Input valid={this.state.valueError[index]}
-                           invalid={!this.state.valueError[index] && (this.state.userInput[index] !== "")}
+                    <Input valid={this.state.inputError[index]}
+                           invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}
                            id={"longitudeLatitude"+index}
                            placeholder="Enter Longitude and Latitude Here"
                     />
-                    <Button onClick={() => this.handleInputChange(index)}>Submit</Button>
                 </InputGroup>
             </Form>
         )
@@ -225,7 +233,7 @@ export default class Atlas extends Component {
 
     renderAddDestinationButton() {
         return (
-            <Button title="Add Destination" className="mt-1"
+            <Button title="Add Destination"
                     onClick={() => {this.addDestination()}}>
                 +
             </Button>
@@ -233,10 +241,10 @@ export default class Atlas extends Component {
     }
 
     addDestination() {
-        this.state.userInput[this.state.numDestinations] = ''
+        this.state.inputCoords[this.state.numDestinations] = ''
         this.setState({
             numDestinations: this.state.numDestinations+1,
-            userInput: this.state.userInput
+            inputCoords: this.state.inputCoords
         });
     }
 
@@ -244,14 +252,14 @@ export default class Atlas extends Component {
         event.preventDefault();
     }
 
-    getUserMarker(index){
-        if (this.state.isSubmit[index]) {
-            let latitude = this.state.userMarkers[index].lat;
-            let longitude = this.state.userMarkers[index].lng;
+    renderDestination(index){
+        if (this.state.destinations[index]) {
+            let latitude = this.state.destinations[index].lat;
+            let longitude = this.state.destinations[index].lng;
             let cord = latitude.toFixed(2) +", " +  longitude.toFixed(2) ;
-            if (this.state.userMarkers[index]) {
+            if (this.state.destinations[index]) {
                 return (
-                    <Marker position={this.state.userMarkers[index]} icon={MARKER_ICON}>
+                    <Marker position={this.state.destinations[index]} icon={MARKER_ICON}>
                         <Popup offset={[0, -18]} className="font-weight-bold">{cord}</Popup>
                     </Marker>
                 );
@@ -259,26 +267,29 @@ export default class Atlas extends Component {
         }
     };
 
-    handleInputChange (index) {
-        this.state.userInput[index] = document.getElementById('longitudeLatitude'+index).value;
-        this.state.isSubmit[index] = true;
+    handleInputChange () {
+        this.state.destinations = [];
+        this.state.markerPosition = null;
+        let i;
+        for (i=0; i < this.state.numDestinations; i++) {
+            this.state.inputCoords[i] = document.getElementById('longitudeLatitude' + i).value;
+            this.state.inputSubmitted[i] = true;
+            this.validateValue(this.state.inputCoords[i], i);
+        }
         this.setState({
-            userInput: this.state.userInput,
-            isSubmit: this.state.isSubmit
+            inputCoords: this.state.inputCoords,
+            inputSubmitted: this.state.inputSubmitted
         });
-        this.validateValue(this.state.userInput[index], index);
-        //if(this.state.userMarkers.length==2){
-        //    this.distancecall(""+this.state.userMarkers[0].lat, ""+this.state.userMarkers[0].lng, ""+this.state.userMarkers[1].lat, ""+this.state.userMarkers[1].lng, 3959);
-        //}
-        if(this.state.userMarkers.length >= 2) {
+        this.goToDestinations();
+        if(this.state.destinations.length >= 2) {
             let names = [];
             let lats = [];
             let lngs = [];
             let i;
-            for (i=0; i < this.state.userMarkers.length; i++) {
+            for (i=0; i < this.state.destinations.length; i++) {
                 names[i] = "place"+i;
-                lats[i] = this.state.userMarkers[i].lat+"";
-                lngs[i] = this.state.userMarkers[i].lng+"";
+                lats[i] = this.state.destinations[i].lat+"";
+                lngs[i] = this.state.destinations[i].lng+"";
             }
             this.tripCall(names, lats, lngs, "3959");
         }
@@ -286,27 +297,21 @@ export default class Atlas extends Component {
 
     validateValue (v, index) {
         try {
-            let userPosition = new Coordinates(this.state.userInput[index]);
-            this.state.valueError[index] = true;
-            this.state.isSubmit[index] = true;
+            let userPosition = new Coordinates(this.state.inputCoords[index]);
+            this.state.inputError[index] = true;
             let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
-            this.state.userMarkers[index]= markerPosition;
+            this.state.destinations[this.state.destinations.length] = markerPosition;
             this.setState({
-                valueError: this.state.valueError,
-                isSubmit: this.state.isSubmit,
-                userMarkers: this.state.userMarkers
-            }, this.goToUserMarkers);
-            this.addMarker(v);
-
-        } catch (error) {
-            this.state.valueError[index] = false;
-            this.setState({
-                valueError: this.state.valueError
+                inputError: this.state.inputError,
+                destinations: this.state.destinations
             });
-
+        } catch (error) {
+            this.state.inputError[index] = false;
+            this.setState({
+                inputError: this.state.inputError
+            });
         }
     }
-
 
     addMarker(mapClickInfo) {
         this.setState({markerPosition: mapClickInfo.latlng});
@@ -439,8 +444,8 @@ export default class Atlas extends Component {
         }
     }
 
-    goToUserMarkers() {
-        let markers = this.state.userMarkers;
+    goToDestinations() {
+        let markers = this.state.destinations;
         let markerGroup = [];
         let i;
         for (i=0; i < markers.length; i++) {
