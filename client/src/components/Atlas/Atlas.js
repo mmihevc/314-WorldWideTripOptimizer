@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import {Col, Container, Row, Button, InputGroup,Input,Form,InputGroupAddon,InputGroupText, Alert, Table} from 'reactstrap';
-import {Map, Marker, Polyline, Popup, TileLayer} from 'react-leaflet';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Coordinates from 'coordinate-parser';
-import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
-import {HTTP_OK} from "../Constants";
-import * as distanceSchema from "../../../schemas/DistanceResponse";
-import * as tripSchema from "../../../schemas/TripResponse";
+import {EARTH_RADIUS_UNITS_DEFAULT} from "../Constants";
+import {tripCall} from "./tripCalls";
+import {getCurrentLocation} from "./geolocation";
+import AtlasLine from "./AtlasLine";
+import AtlasMarker from "./AtlasMarker";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -17,11 +16,6 @@ const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_STYLE_LENGTH = 500;
 const MAP_ZOOM_MAX = 17;
 const MAP_ZOOM_MIN = 1;
-const MARKER_ICON = L.icon({
-    iconUrl: icon,
-    shadowUrl: iconShadow,
-    iconAnchor: [12, 40]  // for proper placement
-});
 
 
 export default class Atlas extends Component {
@@ -30,31 +24,30 @@ export default class Atlas extends Component {
         super(props);
 
         this.addMarker = this.addMarker.bind(this);
-        this.markAndFlyHome = this.markAndFlyHome.bind(this);
-        this.markInitialLocation = this.markInitialLocation.bind(this);
+        this.markUserLocation = this.markUserLocation.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.goToUserMarkers = this.goToUserMarkers.bind(this);
+        this.goToDestinations = this.goToDestinations.bind(this);
         this.renderLongitudeLatitudeBox = this.renderLongitudeLatitudeBox.bind(this);
-        this.getUserMarker = this.getUserMarker.bind(this);
+        this.renderDestination = this.renderDestination.bind(this);
+        this.updateRoundTripDistance = this.updateRoundTripDistance.bind(this);
 
         this.state = {
             markerPosition: null,
             centerPosition: MAP_CENTER_DEFAULT,
-            userInput: [],
-            valueError: [],
-            isSubmit: [],
-            userMarkers: [],
+            inputCoords: [],
+            inputError: [],
+            inputSubmitted: [],
+            destinations: [],
             markerArray : [],
             numDestinations: 1,
             roundTripDistance: null,
             showItinerary: false
         };
 
-        let i;
-        for (i=0; i < this.state.numDestinations; i++)
-            this.state.userInput[i] = '';
+        for (let i=0; i < this.state.numDestinations; i++)
+            this.state.inputCoords[i] = '';
 
-        this.getCurrentLocation(this.markInitialLocation);
+        getCurrentLocation(this.markUserLocation);
     }
 
     render() {
@@ -68,6 +61,7 @@ export default class Atlas extends Component {
                             {this.renderRoundTripDistance()}
                             {this.renderMultiple(this.state.numDestinations, this.renderLongitudeLatitudeBox)}
                             {this.renderAddDestinationButton()}
+                            {this.renderSubmitButton()}
                         </Col>
                         <Col>
                             {this.renderItineraryButton()}
@@ -77,7 +71,6 @@ export default class Atlas extends Component {
             </div>
         );
     }
-
 
     renderLeafletMap() {
         return (
@@ -90,9 +83,9 @@ export default class Atlas extends Component {
                  onClick={this.addMarker}
                  style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
-                {this.getMarker(this.getMarkerPosition(), this.state.markerPosition)}
-                {this.renderMultiple(this.state.numDestinations, this.getUserMarker)}
-                {this.getLines(this.state.userMarkers)}
+                <AtlasMarker position={this.state.markerPosition} name="Home" pan={false}/>
+                {this.renderMultiple(this.state.destinations.length, this.renderDestination)}
+                {this.renderLines(this.state.destinations)}
             </Map>
         )
     }
@@ -105,82 +98,54 @@ export default class Atlas extends Component {
         }
     }
 
-    getLines(markers) {
-        if (markers.length < 2)
-            return;
-        let i;
-        const components = [];
-        for (i=0; i < markers.length-1; i++) {
-            components.push(<div key={i}>{this.getLine(markers, i, i+1)}</div>)
-        }
-        if (markers.length > 2) {
-            components.push(<div key="roundtrip">{this.getLine(markers, 0, markers.length - 1)}</div>)
-        }
-        return components;
-    }
-
-    getLine(markers, i1, i2) {
-        let line = [markers[i1], markers[i2]];
-        if (!this.lineCrossesMeridian(line)) {
-            return <Polyline color="darkgreen" positions={line}/>;
-        } else {
-            let lat2 = this.calculateWrappingLat(markers, i1, i2);
-            let line1 = [markers[i1], {lat: lat2, lng: 180}];
-            let line2 = [markers[i2], {lat: lat2, lng: 180}];
-            if (markers[i1].lng < 0)
-                line1[1].lng = -180;
-            if (markers[i2].lng < 0)
-                line2[1].lng = -180;
-            let components = [];
-            components.push(<Polyline color="darkgreen" positions={line1} key="line1"/>);
-            components.push(<Polyline color="darkgreen" positions={line2} key="line2"/>);
+    renderLines(destinations) {
+        if (destinations.length >= 2) {
+            const components = [];
+            for (let i=0; i < destinations.length-1; i++)
+                components.push(<div key={i}><AtlasLine start={destinations[i]} finish={destinations[i+1]}/></div>);
+            components.push(<div key={destinations.length}><AtlasLine start={destinations[0]} finish={destinations[destinations.length-1]}/></div>);
             return components;
         }
-    }
-
-    calculateWrappingLat(markers, i1, i2) {
-        let latDiff = (markers[i1].lat - markers[i2].lat)
-        let lngDiff1 = 180 - Math.abs(markers[i1].lng);
-        let lngDiff2 = 180 - Math.abs(markers[i2].lng);
-        let lat2 = markers[i1].lat - (latDiff/2)*(lngDiff1 / ((lngDiff1 + lngDiff2)/2));
-        if (markers[i1].lat === markers[i2].lat) {
-            lat2 = markers[i1].lat;
-        }
-        return lat2;
     }
 
     renderHomeButton() {
         return (
             <Button className="mt-1"
-                    onClick={() => this.getCurrentLocation(this.markAndFlyHome)}>
+                    onClick={() => getCurrentLocation(this.markUserLocation)}>
                 Where Am I?
             </Button>
         )
     }
 
     renderMultiple(numRenders, renderFunction) {
-        let i;
         const components = [];
-        for (i=0; i < numRenders; i++) {
+        for (let i=0; i < numRenders; i++) {
             components.push(<div key={i}>{renderFunction(i)}</div>);
         }
         return components;
+    }
+
+    renderSubmitButton() {
+        return (
+            <Button className="ml-1" onClick={this.handleInputChange}>
+                Submit
+            </Button>
+        )
     }
 
     renderLongitudeLatitudeBox(index) {
         return (
             <Form onSubmit={this.handleSubmit}>
                 <br/>
-                <InputGroup size="md">
+                <InputGroup>
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>🌎</InputGroupText>
                     </InputGroupAddon>
-                    <Input valid={this.state.valueError[index]}
-                           invalid={!this.state.valueError[index] && (this.state.userInput[index] !== "")}
+                    <Input valid={this.state.inputError[index]}
+                           invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}
                            id={"longitudeLatitude"+index}
                            placeholder="Enter Longitude and Latitude Here"
                     />
-                    <Button onClick={() => this.handleInputChange(index)}>Submit</Button>
                 </InputGroup>
             </Form>
         )
@@ -225,7 +190,7 @@ export default class Atlas extends Component {
 
     renderAddDestinationButton() {
         return (
-            <Button title="Add Destination" className="mt-1"
+            <Button title="Add Destination"
                     onClick={() => {this.addDestination()}}>
                 +
             </Button>
@@ -233,10 +198,10 @@ export default class Atlas extends Component {
     }
 
     addDestination() {
-        this.state.userInput[this.state.numDestinations] = ''
+        this.state.inputCoords[this.state.numDestinations] = '';
         this.setState({
             numDestinations: this.state.numDestinations+1,
-            userInput: this.state.userInput
+            inputCoords: this.state.inputCoords
         });
     }
 
@@ -244,216 +209,81 @@ export default class Atlas extends Component {
         event.preventDefault();
     }
 
-    getUserMarker(index){
-        if (this.state.isSubmit[index]) {
-            let latitude = this.state.userMarkers[index].lat;
-            let longitude = this.state.userMarkers[index].lng;
-            let cord = latitude.toFixed(2) +", " +  longitude.toFixed(2) ;
-            if (this.state.userMarkers[index]) {
-                return (
-                    <Marker position={this.state.userMarkers[index]} icon={MARKER_ICON}>
-                        <Popup offset={[0, -18]} className="font-weight-bold">{cord}</Popup>
-                    </Marker>
-                );
-            }
-        }
+    renderDestination(index) {
+        return (
+            <AtlasMarker position={this.state.destinations[index]}
+                            name={this.state.destinations[index].name}
+                            pan={true}/>
+        );
     };
 
-    handleInputChange (index) {
-        this.state.userInput[index] = document.getElementById('longitudeLatitude'+index).value;
-        this.state.isSubmit[index] = true;
+    handleInputChange () {
+        this.state.destinations = [];
+        this.state.markerPosition = null;
+        for (let i=0; i < this.state.numDestinations; i++) {
+            this.state.inputCoords[i] = document.getElementById('longitudeLatitude' + i).value;
+            this.state.inputSubmitted[i] = true;
+            this.validateValue(i);
+        }
         this.setState({
-            userInput: this.state.userInput,
-            isSubmit: this.state.isSubmit
+            inputCoords: this.state.inputCoords,
+            inputSubmitted: this.state.inputSubmitted
         });
-        this.validateValue(this.state.userInput[index], index);
-        //if(this.state.userMarkers.length==2){
-        //    this.distancecall(""+this.state.userMarkers[0].lat, ""+this.state.userMarkers[0].lng, ""+this.state.userMarkers[1].lat, ""+this.state.userMarkers[1].lng, 3959);
-        //}
-        if(this.state.userMarkers.length >= 2) {
-            let names = [];
-            let lats = [];
-            let lngs = [];
-            let i;
-            for (i=0; i < this.state.userMarkers.length; i++) {
-                names[i] = "place"+i;
-                lats[i] = this.state.userMarkers[i].lat+"";
-                lngs[i] = this.state.userMarkers[i].lng+"";
-            }
-            this.tripCall(names, lats, lngs, "3959");
+        this.goToDestinations(this.state.destinations);
+        if(this.state.destinations.length >= 2) {
+            tripCall(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.props.serverPort, this.updateRoundTripDistance);
         }
     };
 
-    validateValue (v, index) {
+    validateValue(index) {
         try {
-            let userPosition = new Coordinates(this.state.userInput[index]);
-            this.state.valueError[index] = true;
-            this.state.isSubmit[index] = true;
-            let markerPosition = {lat: userPosition.getLatitude(), lng: userPosition.getLongitude()};
-            this.state.userMarkers[index]= markerPosition;
+            let userPosition = new Coordinates(this.state.inputCoords[index]);
+            this.state.inputError[index] = true;
+            this.state.destinations[this.state.destinations.length] = {
+                lat: userPosition.getLatitude(),
+                lng: userPosition.getLongitude(),
+                name: "place" + this.state.destinations.length.toString()
+            };
             this.setState({
-                valueError: this.state.valueError,
-                isSubmit: this.state.isSubmit,
-                userMarkers: this.state.userMarkers
-            }, this.goToUserMarkers);
-            this.addMarker(v);
-
-        } catch (error) {
-            this.state.valueError[index] = false;
-            this.setState({
-                valueError: this.state.valueError
+                inputError: this.state.inputError,
+                destinations: this.state.destinations
             });
-
+        } catch (error) {
+            this.state.inputError[index] = false;
+            this.setState({
+                inputError: this.state.inputError
+            });
         }
     }
-
 
     addMarker(mapClickInfo) {
         this.setState({markerPosition: mapClickInfo.latlng});
     }
 
-    getMarkerPosition() {
-        let markerPosition = '';
-        if (this.state.markerPosition) {
-            markerPosition = this.state.markerPosition.lat.toFixed(2) + ', ' + this.state.markerPosition.lng.toFixed(2);
-        }
-        return markerPosition;
-    }
-
-    getMarker(bodyJSX, position) {
-        const initMarker = ref => {
-            if (ref) {
-                ref.leafletElement.openPopup()
-            }
-        };
-        if (position) {
-            return (
-                <Marker ref={initMarker} position={position} icon={MARKER_ICON}>
-                    <Popup offset={[0, -18]} className="font-weight-bold">{bodyJSX}</Popup>
-                </Marker>
-            );
-        }
-    }
-
-    error() {
-        alert("This application needs access to your location to work.");
-    }
-
-    getCurrentLocation(anything) {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => anything([position.coords.latitude, position.coords.longitude]), this.error);
-        } else {
-            console.log("Geolocation is not supported by your browser.")
-        }
-    }
-
-    markInitialLocation(homeLocation){
-        let homelat = homeLocation[0];
-        let homelng = homeLocation[1];
-        this.setState({
-            markerPosition:{lat:homelat, lng:homelng},
-            centerPosition:{lat:homelat, lng:homelng}
-        });
-    }
-
-    markAndFlyHome(homeLocation) {
-        let homeLat = homeLocation[0];
-        let homeLng = homeLocation[1];
-
+    markUserLocation(location) {
         this.setState({
             markerPosition: {
-                lat: homeLat,
-                lng: homeLng
-            }});
-        this.leafletMap.leafletElement.flyTo(L.latLng(homeLat, homeLng), MAP_ZOOM_MAX);
+                lat: location.latitude,
+                lng: location.longitude
+            }
+        });
+        this.leafletMap.leafletElement.setView({lat: location.latitude, lng: location.longitude}, MAP_ZOOM_MAX);
     }
 
     updateRoundTripDistance(distances) {
         let totalDist = 0;
-        let i;
-        for (i=0; i < distances.length; i++) {
+        for (let i=0; i < distances.length; i++)
             totalDist += distances[i];
-        }
         this.setState({roundTripDistance: totalDist});
     }
 
-
-    distancecall(lat1, long1, lat2, long2, rad){
-        const values = {
-            requestVersion: 2,
-            requestType: 'distance',
-            place1 : {
-                longitude: long1,
-                latitude: lat1
-            },
-            place2 : {
-                longitude: long2,
-                latitude: lat2
-            },
-            earthRadius: rad
-        };
-        sendServerRequestWithBody('distance', values, this.props.serverPort).then(
-            adistance=>{this.processDistanceResponse(adistance);
-                alert("the distance between your points is: "+adistance.body.distance);}
-        );
-    }
-
-    processDistanceResponse(adistance){
-        if(!isJsonResponseValid(adistance.body, distanceSchema)){
-            alert('error fetching distance')
-        }
-        else if(adistance.statusCode === HTTP_OK){
-            return adistance;
-        }
-    }
-
-    tripCall(name, lat, long, rad){
-        var values = {
-            requestVersion: 3,
-            requestType: 'trip',
-            options: {
-                earthRadius: rad,
-            },
-            places: [],
-            distances : [],
-        }
-        for(let i=0;i<name.length;i++){
-            values.places[i] = {
-                name : name[i],
-                latitude : lat[i],
-                longitude : long[i],
-            }
-        }
-        let distances=[]
-        sendServerRequestWithBody('trip', values, this.props.serverPort).then(
-            atrip=>{this.processTripResponse(atrip);
-                this.updateRoundTripDistance(atrip.body.distances);}
-        );
-    }
-    processTripResponse(atrip){
-        if(!isJsonResponseValid(atrip.body, tripSchema)){
-            alert('error fetching trip')
-        }
-        else if(atrip.statusCode === HTTP_OK){
-            return atrip;
-        }
-    }
-
-    goToUserMarkers() {
-        let markers = this.state.userMarkers;
+    goToDestinations(destinations) {
         let markerGroup = [];
-        let i;
-        for (i=0; i < markers.length; i++) {
-            if (markers[i]) {
-                markerGroup[i] = [markers[i].lat, markers[i].lng]
-            }
-        }
-        this.setState({markerArray : markerGroup})
+        for (let i=0; i < destinations.length; i++)
+            if (destinations[i])
+                markerGroup[i] = [destinations[i].lat, destinations[i].lng];
+        this.setState({markerArray : markerGroup});
         this.leafletMap.leafletElement.fitBounds(markerGroup);
-    }
-
-    lineCrossesMeridian(line) {
-        return Math.abs(line[0].lng - line[1].lng) >= 180;
     }
 
 }
