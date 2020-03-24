@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 
 public class RequestTrip extends RequestHeader {
 
-    private Option options;
-    private Place[] places;
-    private Long[] distances;
+    protected Option options;
+    protected Place[] places;
+    protected Long[] distances;
 
     private final transient Logger log = LoggerFactory.getLogger(RequestTrip.class);
 
@@ -27,14 +27,6 @@ public class RequestTrip extends RequestHeader {
         log.trace("buildResponse -> {}", this);
     }
 
-    String getType() {
-        return this.requestType;
-    }
-
-    Integer getVersion() {
-        return this.requestVersion;
-    }
-
     void getDistance(int index) {
         double lng1 = places[index - 1].getLng();
         double lat1 = places[index - 1].getLat();
@@ -42,7 +34,7 @@ public class RequestTrip extends RequestHeader {
         double lat2 = places[index].getLat();
         double radius = Double.parseDouble(options.earthRadius);
         Utility util = new Utility();
-        this.distances[index - 1] = (long) util.getDistance(lng1, lat1, lng2, lat2, radius);
+        this.distances[index - 1] = util.getDistance(lng1, lat1, lng2, lat2, radius);
     }
 
     void distanceBetweenFirstAndLast() {
@@ -52,16 +44,7 @@ public class RequestTrip extends RequestHeader {
         double lat2 = Double.parseDouble(this.places[places.length - 1].latitude);
         double radius = Double.parseDouble(options.earthRadius);
         Utility util = new Utility();
-        this.distances[distances.length - 1] = (long) util.getDistance(lng1, lat1, lng2, lat2, radius);
+        this.distances[distances.length - 1] = util.getDistance(lng1, lat1, lng2, lat2, radius);
     }
 
-    public class Option {
-        private String earthRadius;
-        private String title;
-
-        Option(String earthRadius, String title) {
-            this.earthRadius = earthRadius;
-            this.title = title;
-        }
-    }
 }

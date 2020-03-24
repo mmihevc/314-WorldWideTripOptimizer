@@ -1,4 +1,5 @@
 package com.tco.server;
+
 import java.lang.Math;
 public class Utility {
 
@@ -14,7 +15,7 @@ public class Utility {
         double sinDL = Math.sin(DL);
         double top = Math.sqrt(Math.pow(cosU2 * sinDL, 2) + Math.pow(cosU1 * sinU2 - sinU1 * cosU2 * cosDL, 2));
         double bottom = sinU1 * sinU2 + cosU1 * cosU2 * cosDL;
-        double distance = Math.atan2(bottom, top) * earthRadius;
+        double distance = Math.atan2(top, bottom) * earthRadius;
         return Math.round(distance);
     }
 }
