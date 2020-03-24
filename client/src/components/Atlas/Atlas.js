@@ -35,6 +35,7 @@ export default class Atlas extends Component {
             markerPosition: null,
             centerPosition: MAP_CENTER_DEFAULT,
             inputCoords: [],
+            inputNames: [],
             inputError: [],
             inputSubmitted: [],
             destinations: [],
@@ -44,8 +45,10 @@ export default class Atlas extends Component {
             showItinerary: false
         };
 
-        for (let i=0; i < this.state.numDestinations; i++)
+        for (let i=0; i < this.state.numDestinations; i++) {
             this.state.inputCoords[i] = '';
+            this.state.inputNames[i] = '';
+        }
 
         getCurrentLocation(this.markUserLocation);
     }

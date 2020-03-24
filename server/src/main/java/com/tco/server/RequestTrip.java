@@ -40,7 +40,7 @@ public class RequestTrip extends RequestHeader {
         double lat1 = places[index - 1].getLat();
         double lng2 = places[index].getLng();
         double lat2 = places[index].getLat();
-        int radius = Integer.parseInt(options.earthRadius);
+        double radius = Double.parseDouble(options.earthRadius);
         Utility util = new Utility();
         this.distances[index - 1] = (long) util.getDistance(lng1, lat1, lng2, lat2, radius);
     }
@@ -50,7 +50,7 @@ public class RequestTrip extends RequestHeader {
         double lat1 = Double.parseDouble(this.places[0].latitude);
         double lng2 = Double.parseDouble(this.places[places.length - 1].longitude);
         double lat2 = Double.parseDouble(this.places[places.length - 1].latitude);
-        int radius = Integer.parseInt(options.earthRadius);
+        double radius = Double.parseDouble(options.earthRadius);
         Utility util = new Utility();
         this.distances[distances.length - 1] = (long) util.getDistance(lng1, lat1, lng2, lat2, radius);
     }

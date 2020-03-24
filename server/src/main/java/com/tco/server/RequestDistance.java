@@ -22,9 +22,8 @@ public class RequestDistance extends RequestHeader  {
         double lat1 = place1.getLat();
         double lng2 = place2.getLng();
         double lat2 = place2.getLat();
-        int radius = this.earthRadius.intValue();
         Utility util = new Utility();
-        this.distance = util.getDistance(lng1, lat1, lng2, lat2, radius);
+        this.distance = util.getDistance(lng1, lat1, lng2, lat2, earthRadius);
         log.trace("buildResponse -> {}", this);
     }
 
