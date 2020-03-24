@@ -65,12 +65,10 @@ export default class Atlas extends Component {
                         <Col sm={12} md={{size: 6, offset: 3}}>
                             {this.renderLeafletMap()}
                             {this.renderHomeButton()}
+                            {this.renderItineraryButton()}
                             {this.renderRoundTripDistance()}
                             {this.renderMultiple(this.state.numDestinations, this.renderLongitudeLatitudeBox)}
                             {this.renderAddDestinationButton()}
-                        </Col>
-                        <Col>
-                            {this.renderItineraryButton()}
                         </Col>
                     </Row>
                 </Container>
@@ -96,6 +94,7 @@ export default class Atlas extends Component {
             </Map>
         )
     }
+
 
     renderRoundTripDistance() {
         if (this.state.roundTripDistance) {
@@ -190,7 +189,9 @@ export default class Atlas extends Component {
         if (this.state.showItinerary) {
             return (
                 <Form>
-                    <Button onClick={() => {this.setState({showItinerary: false})}}> Click to view itinerary</Button>
+                    <br />
+                    <Button className="mt-1"
+                        onClick={() => {this.setState({showItinerary: false})}}> Click to view itinerary</Button>
                     {this.renderItinerary()}
                 </Form>
             )
@@ -198,6 +199,7 @@ export default class Atlas extends Component {
         else {
             return (
                 <Form>
+                    <br />
                     <Button onClick={() => {this.setState({showItinerary: true})}}> Click to view itinerary</Button>
                 </Form>
             )
