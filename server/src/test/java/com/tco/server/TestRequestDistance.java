@@ -19,19 +19,19 @@ public class TestRequestDistance {
 
     @Test
     public void testType() {
-        String type = dist.getType();
+        String type = dist.requestType;
         assertEquals("distance requestType", "distance", type);
     }
 
     @Test
     public void testVersion() {
-        int version = dist.getVersion();
+        int version = dist.requestVersion;
         assertEquals("distance requestVersion", RequestHeader.CURRENT_SUPPORTED_VERSION, version);
     }
 
     @Test
     public void testDistance() {
-        Long expectedDistance = new Long(0);
-        assertEquals("distance distance", dist.distance, expectedDistance);
+        Long expectedDistance = 0L;
+        assertEquals("distance distance", expectedDistance, dist.distance);
     }
 }
