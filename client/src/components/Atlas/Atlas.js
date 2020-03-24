@@ -8,6 +8,7 @@ import {tripCall} from "./tripCalls";
 import {getCurrentLocation} from "./geolocation";
 import AtlasLine from "./AtlasLine";
 import AtlasMarker from "./AtlasMarker";
+import AtlasInput from "./AtlasInput";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -27,8 +28,8 @@ export default class Atlas extends Component {
         this.markUserLocation = this.markUserLocation.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.goToDestinations = this.goToDestinations.bind(this);
-        this.renderLongitudeLatitudeBox = this.renderLongitudeLatitudeBox.bind(this);
         this.renderDestination = this.renderDestination.bind(this);
+        this.renderInputBox = this.renderInputBox.bind(this);
         this.updateRoundTripDistance = this.updateRoundTripDistance.bind(this);
 
         this.state = {
@@ -62,7 +63,7 @@ export default class Atlas extends Component {
                             {this.renderLeafletMap()}
                             {this.renderHomeButton()}
                             {this.renderRoundTripDistance()}
-                            {this.renderMultiple(this.state.numDestinations, this.renderLongitudeLatitudeBox)}
+                            {this.renderMultiple(this.state.numDestinations, this.renderInputBox)}
                             {this.renderAddDestinationButton()}
                             {this.renderSubmitButton()}
                         </Col>
@@ -136,24 +137,6 @@ export default class Atlas extends Component {
         )
     }
 
-    renderLongitudeLatitudeBox(index) {
-        return (
-            <Form onSubmit={this.handleSubmit}>
-                <br/>
-                <InputGroup>
-                    <InputGroupAddon addonType="prepend">
-                        <InputGroupText>🌎</InputGroupText>
-                    </InputGroupAddon>
-                    <Input valid={this.state.inputError[index]}
-                           invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}
-                           id={"longitudeLatitude"+index}
-                           placeholder="Enter Longitude and Latitude Here"
-                    />
-                </InputGroup>
-            </Form>
-        )
-    }
-
     renderItineraryButton() {
         if (this.state.showItinerary) {
             return (
@@ -170,6 +153,12 @@ export default class Atlas extends Component {
                 </Form>
             )
         }
+    }
+
+    renderInputBox(index) {
+        return (
+            <AtlasInput index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>
+        )
     }
 
     renderItinerary() {
@@ -225,6 +214,7 @@ export default class Atlas extends Component {
         this.state.markerPosition = null;
         for (let i=0; i < this.state.numDestinations; i++) {
             this.state.inputCoords[i] = document.getElementById('longitudeLatitude' + i).value;
+            this.state.inputNames[i] = document.getElementById('name' + i).value;
             this.state.inputSubmitted[i] = true;
             this.validateValue(i);
         }
@@ -242,16 +232,21 @@ export default class Atlas extends Component {
         try {
             let userPosition = new Coordinates(this.state.inputCoords[index]);
             this.state.inputError[index] = true;
+            let inputName = "place" + this.state.destinations.length.toString();
+            if (this.state.inputNames[index] !== "") {
+                inputName = this.state.inputNames[index];
+            }
             this.state.destinations[this.state.destinations.length] = {
                 lat: userPosition.getLatitude(),
                 lng: userPosition.getLongitude(),
-                name: "place" + this.state.destinations.length.toString()
+                name: inputName
             };
             this.setState({
                 inputError: this.state.inputError,
                 destinations: this.state.destinations
             });
         } catch (error) {
+            alert(error)
             this.state.inputError[index] = false;
             this.setState({
                 inputError: this.state.inputError
