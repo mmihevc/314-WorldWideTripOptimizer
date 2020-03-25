@@ -9,6 +9,7 @@ import {getCurrentLocation} from "./geolocation";
 import AtlasLine from "./AtlasLine";
 import AtlasMarker from "./AtlasMarker";
 import AtlasInput from "./AtlasInput";
+import {downloadFile} from "./fileIO";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -144,7 +145,12 @@ export default class Atlas extends Component {
     }
 
     loadFile(event) {
-        alert(event.target.files[0].name)
+        let file = event.target.files[0];
+        if (file.type === 'application/json') {
+            alert("yus");
+        } else if (file.type === 'text/csv') {
+            alert("ree")
+        }
     }
 
     renderItineraryButton() {

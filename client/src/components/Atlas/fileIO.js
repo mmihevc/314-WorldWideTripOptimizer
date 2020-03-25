@@ -1,4 +1,3 @@
-
 export function downloadFile(fileType, fileName, fileText) {
     let file = new Blob([fileText], {type: fileType});
     let a = document.createElement('a'),
