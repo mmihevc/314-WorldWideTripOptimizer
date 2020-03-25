@@ -32,6 +32,8 @@ export default class Atlas extends Component {
         this.renderDestination = this.renderDestination.bind(this);
         this.renderInputBox = this.renderInputBox.bind(this);
         this.updateRoundTripDistance = this.updateRoundTripDistance.bind(this);
+        this.loadFile=this.loadFile.bind(this);
+        this.parseJSON=this.parseJSON.bind(this);
 
         this.state = {
             markerPosition: null,
@@ -144,10 +146,21 @@ export default class Atlas extends Component {
         )
     }
 
+    parseJSON(afile){
+        let reader = new FileReader();
+        reader.readAsText(afile);
+        reader.onload=readSuccess;
+        function readSuccess(evt){
+            let content=evt.target.result;
+            alert(content);
+        }
+        return;
+    }
+
     loadFile(event) {
         let file = event.target.files[0];
         if (file.type === 'application/json') {
-            alert("yus");
+            this.parseJSON(file);
         } else if (file.type === 'text/csv') {
             alert("ree")
         }
