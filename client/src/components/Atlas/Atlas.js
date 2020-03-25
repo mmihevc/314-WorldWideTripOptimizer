@@ -67,6 +67,7 @@ export default class Atlas extends Component {
                             {this.renderMultiple(this.state.numDestinations, this.renderInputBox)}
                             {this.renderAddDestinationButton()}
                             {this.renderSubmitButton()}
+                            {this.renderLoadFromFileButton()}
                         </Col>
                     </Row>
                 </Container>
@@ -134,6 +135,16 @@ export default class Atlas extends Component {
                 Submit
             </Button>
         )
+    }
+
+    renderLoadFromFileButton() {
+        return (
+            <Input type='file' name='file' className="mt-1" onChange={this.loadFile}/>
+        )
+    }
+
+    loadFile(event) {
+        alert(event.target.files[0].name)
     }
 
     renderItineraryButton() {
