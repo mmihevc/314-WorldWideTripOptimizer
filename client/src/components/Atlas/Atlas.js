@@ -66,8 +66,8 @@ export default class Atlas extends Component {
                             {this.renderRoundTripDistance()}
                             {this.renderMultiple(this.state.numDestinations, this.renderInputBox)}
                             {this.renderAddDestinationButton()}
-                            {this.renderLoadFromFileButton()}
                             {this.renderSubmitButton()}
+                            {this.renderLoadFromFileButton()}
                         </Col>
                     </Row>
                 </Container>
@@ -139,10 +139,12 @@ export default class Atlas extends Component {
 
     renderLoadFromFileButton() {
         return (
-            <Button className="ml-1">
-                Load
-            </Button>
+            <Input type='file' name='file' className="mt-1" onChange={this.loadFile}/>
         )
+    }
+
+    loadFile(event) {
+        alert(event.target.files[0].name)
     }
 
     renderItineraryButton() {
