@@ -66,6 +66,7 @@ export default class Atlas extends Component {
                             {this.renderRoundTripDistance()}
                             {this.renderMultiple(this.state.numDestinations, this.renderInputBox)}
                             {this.renderAddDestinationButton()}
+                            {this.renderLoadFromFileButton()}
                             {this.renderSubmitButton()}
                         </Col>
                     </Row>
@@ -132,6 +133,14 @@ export default class Atlas extends Component {
         return (
             <Button className="ml-1" onClick={this.handleInputChange}>
                 Submit
+            </Button>
+        )
+    }
+
+    renderLoadFromFileButton() {
+        return (
+            <Button className="ml-1">
+                Load
             </Button>
         )
     }
