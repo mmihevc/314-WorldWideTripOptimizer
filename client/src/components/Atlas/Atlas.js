@@ -286,10 +286,13 @@ export default class Atlas extends Component {
 
     updateRoundTripDistance(distances) { //change to update distances and midfy state directly in their
         let totalDist = 0;
+        let cumulativeDistance=0;
         for (let i=0; i < distances.length; i++) {
             //for each distance in distances i wanna set the state so each destination has a distance value equal to that distance
             //make a new state
+            cumulativeDistance=cumulativeDistance + distances[i];
             this.state.destinations[i].distance = distances[i];
+            this.state.destinations[i].cumulativeDistance=cumulativeDistance;
             totalDist += distances[i];
         }
             this.setState({
