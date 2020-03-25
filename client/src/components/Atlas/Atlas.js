@@ -185,27 +185,31 @@ export default class Atlas extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>{this.state.inputNames[0]}</td>
-                        <td>{this.state.destinations[0].distance}</td>
-                    </tr>
-                    <tr>
-                        <td>{this.state.inputNames[1]}</td>
-                        {/*<td>{this.state.destinations[1].distance}</td>*/}
-                    </tr>
-                    <tr>
-                        <td>{this.state.inputNames[2]}</td>
-                        {/*<td>{this.state.destinations[2].distance}</td>*/}
-                    </tr>
-                    <tr>
-                        <td>{this.state.inputNames[3]}</td>
-                        {/*<td>{this.state.destinations[3].distance}</td>*/}
-                    </tr>
+                    {this.populateRows()}
                 </tbody>
             </Table>
         )
     }
 
+    populateRows() {
+        let rows = []
+        this.state.destinations.map((destination, index) => {
+            let beginning = destination.name;
+            rows.push(this.formatData(index, beginning))
+            index++;
+        })
+        return rows;
+    }
+
+    formatData(index, beg) {
+        return (
+            <tr>
+                <td>{beg}</td>
+                <td>{this.state.destinations[index].distance}</td>
+                <td>{this.state.destinations[index].cumulativeDistance}</td>
+            </tr>
+        )
+    }
 
     renderAddDestinationButton() {
         return (
