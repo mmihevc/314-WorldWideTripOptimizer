@@ -173,12 +173,22 @@ export default class Atlas extends Component {
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row"></th>
+                        <td>{this.state.inputNames[0]}</td>
+                    </tr>
+                    <tr>
+                        <td>{this.state.inputNames[1]}</td>
+                    </tr>
+                    <tr>
+                        <td>{this.state.inputNames[2]}</td>
+                    </tr>
+                    <tr>
+                        <td>{this.state.inputNames[3]}</td>
                     </tr>
                 </tbody>
             </Table>
         )
     }
+
 
     renderAddDestinationButton() {
         return (
