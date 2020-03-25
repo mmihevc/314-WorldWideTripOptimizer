@@ -86,19 +86,53 @@ The user will be able to save their current map and current trip itinerary. The 
 
 ### Epics done  
 
+*Protocol Version 3*
+
+We were able to complete this epic quickly and without any impediments. We were able to reference the distance call in order
+to figure out how to create the trip call.
+
+*More Destinations*
+
+*Itinerary*
+
+This epic took us the longest to complete, however that was due to spring break. Despite that impediment we were able to complete the epic without many issues. It was difficult at first to figure out how to make a react table dynamic but we were able to figure it out in the end.
+
+*Load*
+
+
 ### Epics not done 
+
+*Modify Itinerary*
+
+We were unable to complete this epic because we did not reserve enough time to get it done and because we put to many epics in our backlog this time around.
+
+*Save*
+
+We were unable to complete this epic because we did not reserve enough time to get it done and because we put to many epics in our backlog this time around.
+
 
 ### What went well
 
+During this sprint we learned that creating a multitude of tasks to begin with makes the working on tasks separately easier. Which was extremely helpful since one of our team memebers was out of state and beginning the transition to an online only class. Having a large number of tasks allowed us to break down what we needed to accomplish from the beginning rather then realizing we needed more tasks as the sprint went on. We also learned that Microsoft Teams is a very helpful plateform in order to communicate while not being able to get together as a team because it allowed us to screen share and show the other memebers of our team what we were working on.
+
 ### Problems encountered and resolutions
 
+The biggest problem we encountred this sprint was figuring out how to continue to work as a team while we were no longer able to get together as a team. We solved this by creating a group chat on Microsoft Teams and utilzing the screen share function so we could easily ask questions and get help from one another. 
 
 ## Retrospective
 
 ### What we changed this sprint
 
+The biggest change we implemented this sprint was breaking down the provided epics in tasks that were as simplified as possible. Each epic had about seven tasks associated with it which made what needed to get done more easy to understand from the beginning the sprint whether then frequently creating new tasks to break down the tasks we made in the beginning.
+
 ### What went well
+
+We found maintaining constant communication was helpful for maintaining our team dynamic. By checking in occasionally to see where people are at in the code along with checking in to see how they were holding up in general helped maintain the feeling of being on a team and that we are not alone despite not being able to see each other in person anymore.
 
 ### Potential improvements
 
+In the future we will make sure that we begin epics sooner so we can make sure that we have allotted enough time to complete everything in our back log. We also want to make sure we are maintiaining constant communication because we were not as good as keeping up communication over spring break. 
+
 ### What we will change next time
+
+In the future we will begin our epics sooner so we can complete more epics in the allotted time. We will also try to hold a video conference on Microsoft Teams on during our regular scheduled class time in order to check in about what we are working on, what we have completed, and how we are all doing in general. 
