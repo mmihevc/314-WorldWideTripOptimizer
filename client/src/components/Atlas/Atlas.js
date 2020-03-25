@@ -39,7 +39,7 @@ export default class Atlas extends Component {
             inputNames: [],
             inputError: [],
             inputSubmitted: [],
-            destinations: [],
+            destinations: [], //contains lat, lon, and name, can add distance to that
             markerArray : [],
             numDestinations: 1,
             roundTripDistance: null,
@@ -176,15 +176,19 @@ export default class Atlas extends Component {
                 <tbody>
                     <tr>
                         <td>{this.state.inputNames[0]}</td>
+                        <td>{this.state.destinations[0].distance}</td>
                     </tr>
                     <tr>
                         <td>{this.state.inputNames[1]}</td>
+                        {/*<td>{this.state.destinations[1].distance}</td>*/}
                     </tr>
                     <tr>
                         <td>{this.state.inputNames[2]}</td>
+                        {/*<td>{this.state.destinations[2].distance}</td>*/}
                     </tr>
                     <tr>
                         <td>{this.state.inputNames[3]}</td>
+                        {/*<td>{this.state.destinations[3].distance}</td>*/}
                     </tr>
                 </tbody>
             </Table>
@@ -280,11 +284,19 @@ export default class Atlas extends Component {
         this.leafletMap.leafletElement.setView({lat: location.latitude, lng: location.longitude}, MAP_ZOOM_MAX);
     }
 
-    updateRoundTripDistance(distances) {
+    updateRoundTripDistance(distances) { //change to update distances and midfy state directly in their
         let totalDist = 0;
-        for (let i=0; i < distances.length; i++)
+        for (let i=0; i < distances.length; i++) {
+            //for each distance in distances i wanna set the state so each destination has a distance value equal to that distance
+            //make a new state
+            this.state.destinations[i].distance = distances[i];
             totalDist += distances[i];
-        this.setState({roundTripDistance: totalDist});
+        }
+            this.setState({
+                roundTripDistance: totalDist,
+                destinations: this.state.destinations
+            });
+
     }
 
     goToDestinations(destinations) {
