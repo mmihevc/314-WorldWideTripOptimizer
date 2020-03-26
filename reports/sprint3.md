@@ -93,11 +93,15 @@ to figure out how to create the trip call.
 
 *More Destinations*
 
+We were able to complete this epic quickly and without any impediments. Since we stored everything in arrays last sprint we were able to transition easily from two boxes to as many boxes as necessary.
+
 *Itinerary*
 
 This epic took us the longest to complete, however that was due to spring break. Despite that impediment we were able to complete the epic without many issues. It was difficult at first to figure out how to make a react table dynamic but we were able to figure it out in the end.
 
 *Load*
+
+We were able to complete this epic quickly and without any impediments. By working together we were able to figure out how to parse the json and csv files.
 
 
 ### Epics not done 
