@@ -137,7 +137,7 @@ The component hierarchy for the Sprint 3 version of the application depicted bel
 ![base](images/buttons.jpg)
 
 ### New Itinerary Feature.
-![base](images/Itinerary.jpg)
+![base](images/fixed.jpg)
 
 # Sprint 4 
 # Sprint 5
