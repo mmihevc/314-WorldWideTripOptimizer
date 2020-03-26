@@ -120,7 +120,9 @@ When a user enters a valid Lattitude and Longitude the map will go to that locat
 
 # Sprint 3
 
-### New Component Hierarchy
+### New Component Hierarchy.
+![base](images/hier.jpg)
+
 The component hierarchy for the Sprint 3 version of the application depicted below shows the our top level App component with four children components. The Atlas component has three children components.
 * App renders the major components on the screen.
 * Header renders an icon and a team name in the top banner.
@@ -130,6 +132,12 @@ The component hierarchy for the Sprint 3 version of the application depicted bel
 * AtlasMarker renders a marker with a name and a coordinate
 * AtlasLine renders a line between markers and handles dateline wrapping
 * About renders information about the team.
+
+### New User Interface.
+![base](images/buttons.jpg)
+
+### New Itinerary Feature.
+![base](images/Itinerary.jpg)
 
 # Sprint 4 
 # Sprint 5
