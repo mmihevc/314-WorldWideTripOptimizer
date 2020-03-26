@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Button, InputGroup,Input,Form,InputGroupAddon,InputGroupText, Alert, Table} from 'reactstrap';
+import {Col, Container, Row, Button,Input,Form, Alert, Table} from 'reactstrap';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Coordinates from 'coordinate-parser';
@@ -51,10 +51,7 @@ export default class Atlas extends Component {
             showItinerary: false
         };
 
-        for (let i=0; i < this.state.numDestinations; i++) {
-            this.state.inputCoords[i] = '';
-            this.state.inputNames[i] = '';
-        }
+        this.numDestinationsFunction()
 
         getCurrentLocation(this.markUserLocation);
     }
@@ -166,7 +163,7 @@ export default class Atlas extends Component {
         } else if (file.type === 'text/csv') {
             let config = {
                 header: true,
-                complete: this.completeFunction, //this.completeFunction
+                complete: this.completeFunction,
             };
            Papa.parse(file, config);
         }
@@ -177,10 +174,7 @@ export default class Atlas extends Component {
             numDestinations: results.data.length-1,
         },
             () =>{
-            for (let i=0; i < this.state.numDestinations; i++) {
-                this.state.inputCoords[i] = '';
-                this.state.inputNames[i] = '';
-            }
+                this.numDestinationsFunction()
              for(let i = 0; i < results.data.length-1 ; i++) {
                  document.getElementById('longitudeLatitude' + i).value = results.data[i].places__latitude + "," + results.data[i].places__longitude;
                  document.getElementById('name' + i).value = results.data[i].places__name;
@@ -189,6 +183,13 @@ export default class Atlas extends Component {
         }
         );
         console.log(results)
+    }
+
+    numDestinationsFunction() {
+        for (let i=0; i < this.state.numDestinations; i++) {
+            this.state.inputCoords[i] = '';
+            this.state.inputNames[i] = '';
+        }
     }
 
     renderItineraryButton() {
@@ -343,12 +344,10 @@ export default class Atlas extends Component {
         this.leafletMap.leafletElement.setView({lat: location.latitude, lng: location.longitude}, MAP_ZOOM_MAX);
     }
 
-    updateRoundTripDistance(distances) { //change to update distances and midfy state directly in their
+    updateRoundTripDistance(distances) {
         let totalDist = 0;
         let cumulativeDistance=0;
         for (let i=0; i < distances.length; i++) {
-            //for each distance in distances i wanna set the state so each destination has a distance value equal to that distance
-            //make a new state
             cumulativeDistance=cumulativeDistance + distances[i];
             this.state.destinations[i].distance = distances[i];
             this.state.destinations[i].cumulativeDistance=cumulativeDistance;
