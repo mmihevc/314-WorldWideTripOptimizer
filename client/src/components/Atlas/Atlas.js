@@ -149,18 +149,32 @@ export default class Atlas extends Component {
     parseJSON(afile){
         let reader = new FileReader();
         reader.readAsText(afile);
-        reader.onload=readSuccess;
+        reader.onload=readSuccess.bind(this);
         function readSuccess(evt){
             let content=evt.target.result;
-            alert(content);
-        }
+            let obj=JSON.parse(content);
+            this.setState({
+                numDestinations:obj.places.length-1,
+            },
+                ()=> {
+                    for (let i = 0; i < this.state.numDestinations; i++) {
+                        this.state.inputCoords[i] = '';
+                        this.state.inputNames[i] = '';
+                    }
+                    for (let i = 0; i < obj.places.length-1; i++) {
+                        document.getElementById('longitudeLatitude' + i).value = obj.places[i].latitude + "," + obj.places[i].longitude;
+                        document.getElementById('name' + i).value = obj.places[i].name;
+                    }
+                    this.handleInputChange()
+                }
+        );
         return;
-    }
+    }}
 
     loadFile(event) {
         let file = event.target.files[0];
         if (file.type === 'application/json') {
-            this.parseJSON(file);
+            let obj=this.parseJSON(file);
         } else if (file.type === 'text/csv') {
             alert("ree")
         }
