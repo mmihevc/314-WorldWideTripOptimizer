@@ -136,8 +136,20 @@ The component hierarchy for the Sprint 3 version of the application depicted bel
 ### New User Interface.
 ![base](images/buttons.jpg)
 
+### Users can enter more destinations
+
+A button with the '+' character indicates to the user that they can add additional destinations. Pressing the button adds another input box for name and latitude/longitude for the additional destination. The user does not have to submit a previous destination to enter an additional destination. When a destination is added a marker is added to a map that has the name and coordinates of the destination. If no name is provided then the marker is labeled "place1" for example. Lines are drawn between each marker and between the last and the first marker to make a roundtrip, the lines are also wrapped around the dateline if needed.
+
+### Users can view an itinerary
+
+A button 'Click to view Itinerary' toggles a table that lists the destinations, leg distances, and cumulative distances for the users current trip. The itinerary updates whenever the user submits destinations or loads a trip from a file.
+
 ### New Itinerary Feature.
 ![base](images/fixed.jpg)
+
+### Users can load a file
+
+A button is added for users to choose a local trip file that will be loaded into the webpage. Any previous user input is overidden and replaced with the data from the loaded trip file, which can be in either a JSON or a CSV format. Only a single trip file can be loaded in at a time.
 
 # Sprint 4 
 # Sprint 5
