@@ -10,6 +10,7 @@ import AtlasLine from "./AtlasLine";
 import AtlasMarker from "./AtlasMarker";
 import AtlasInput from "./AtlasInput";
 import {downloadFile} from "./fileIO";
+import Papa from "papaparse";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -34,6 +35,7 @@ export default class Atlas extends Component {
         this.updateRoundTripDistance = this.updateRoundTripDistance.bind(this);
         this.loadFile=this.loadFile.bind(this);
         this.parseJSON=this.parseJSON.bind(this);
+        this.completeFunction=this.completeFunction.bind(this);
 
         this.state = {
             markerPosition: null,
@@ -162,8 +164,31 @@ export default class Atlas extends Component {
         if (file.type === 'application/json') {
             this.parseJSON(file);
         } else if (file.type === 'text/csv') {
-            alert("ree")
+            let config = {
+                header: true,
+                complete: this.completeFunction, //this.completeFunction
+            };
+           Papa.parse(file, config);
         }
+    }
+
+    completeFunction(results, file){
+        this.setState({
+            numDestinations: results.data.length-1,
+        },
+            () =>{
+            for (let i=0; i < this.state.numDestinations; i++) {
+                this.state.inputCoords[i] = '';
+                this.state.inputNames[i] = '';
+            }
+             for(let i = 0; i < results.data.length-1 ; i++) {
+                 document.getElementById('longitudeLatitude' + i).value = results.data[i].places__latitude + "," + results.data[i].places__longitude;
+                 document.getElementById('name' + i).value = results.data[i].places__name;
+                }
+            this.handleInputChange()
+        }
+        );
+        console.log(results)
     }
 
     renderItineraryButton() {
