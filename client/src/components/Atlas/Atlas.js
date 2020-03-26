@@ -156,10 +156,7 @@ export default class Atlas extends Component {
                 numDestinations:obj.places.length-1,
             },
                 ()=> {
-                    for (let i = 0; i < this.state.numDestinations; i++) {
-                        this.state.inputCoords[i] = '';
-                        this.state.inputNames[i] = '';
-                    }
+                    this.numDestinationsFunction()
                     for (let i = 0; i < obj.places.length-1; i++) {
                         document.getElementById('longitudeLatitude' + i).value = obj.places[i].latitude + "," + obj.places[i].longitude;
                         document.getElementById('name' + i).value = obj.places[i].name;
@@ -196,8 +193,8 @@ export default class Atlas extends Component {
             this.handleInputChange()
         }
         );
-        console.log(results)
     }
+
 
     numDestinationsFunction() {
         for (let i=0; i < this.state.numDestinations; i++) {
