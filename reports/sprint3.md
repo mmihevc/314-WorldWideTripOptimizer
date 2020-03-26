@@ -67,9 +67,9 @@ The user will be able to save their current map and current trip itinerary. The 
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *6* | *count* |
-| Tasks |  *43*   | *count* | 
-| Story Points |  *43*  | *sum* | 
+| Epics | *6* | *4* |
+| Tasks |  *43*   | *32* | 
+| Story Points |  *43*  | *32* | 
 
 
 ## Scrums
