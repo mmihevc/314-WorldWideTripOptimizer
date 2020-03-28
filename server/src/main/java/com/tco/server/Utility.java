@@ -3,10 +3,10 @@ package com.tco.server;
 import java.lang.Math;
 public class Utility {
 
-    long getDistance(double long1, double lat1, double long2, double lat2, double earthRadius) {
-        double DL = Math.toRadians(long2 - long1);
-        double U1 = Math.toRadians(lat1);
-        double U2 = Math.toRadians(lat2);
+    static long getDistance(Place place1, Place place2, double earthRadius) {
+        double DL = Math.toRadians(place2.getLng() - place1.getLng());
+        double U1 = Math.toRadians(place1.getLat());
+        double U2 = Math.toRadians(place2.getLat());
         double sinU1 = Math.sin(U1);
         double sinU2 = Math.sin(U2);
         double cosU1 = Math.cos(U1);
