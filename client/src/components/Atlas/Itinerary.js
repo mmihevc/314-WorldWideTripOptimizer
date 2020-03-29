@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Form, Table} from "reactstrap";
+import {Button, Table} from "reactstrap";
 
 export default class Itinerary extends Component {
 
@@ -12,14 +12,23 @@ export default class Itinerary extends Component {
 
     render() {
         return (
-            <Form>
-                <br />
-                <Button onClick={() => {this.setState({showItinerary: !this.state.showItinerary})}}>
+            <div className="mt-1">
+                {this.renderToggleButton()}
+                {this.renderItinerary()}
+            </div>
+        )
+    }
+
+    renderToggleButton() {
+        if (this.props.destinations.length >= 1) {
+            return (
+                <Button className="mb-1" onClick={() => {
+                    this.setState({showItinerary: !this.state.showItinerary})
+                }}>
                     Click to view itinerary
                 </Button>
-                {this.renderItinerary()}
-            </Form>
-        )
+            )
+        }
     }
 
     renderItinerary() {
@@ -42,21 +51,33 @@ export default class Itinerary extends Component {
     }
 
     populateRows() {
-        let rows = [];
-        this.props.destinations.map((destination, index) => {
-            let beginning = destination.name;
-            rows.push(this.formatData(index, beginning));
-            index++;
-        });
-        return rows;
+        if (this.props.destinations.length >= 2) {
+            let rows = [];
+            rows.push(this.formatData(this.props.destinations[0].name, 0, 0));
+            for (let i = 0; i < this.props.destinations.length; i++) {
+                let name;
+                if (i === this.props.destinations.length - 1)
+                    name = this.props.destinations[0].name;
+                else
+                    name = this.props.destinations[i+1].name;
+                let leg = this.props.destinations[i].distance;
+                let cumulative = this.props.destinations[i].cumulativeDistance;
+                rows.push(this.formatData(name, leg, cumulative));
+            }
+            return rows;
+        } else if (this.props.destinations.length === 1) {
+            return this.formatData(this.props.destinations[0].name, 0, 0);
+        } else {
+            return null;
+        }
     }
 
-    formatData(index, beg) {
+    formatData(name, leg, cumulative) {
         return (
-            <tr key={index}>
-                <td>{beg}</td>
-                <td>{this.props.destinations[index].distance}</td>
-                <td>{this.props.destinations[index].cumulativeDistance}</td>
+            <tr key={name + ', ' + cumulative}>
+                <td>{name}</td>
+                <td>{leg}</td>
+                <td>{cumulative}</td>
             </tr>
         )
     }

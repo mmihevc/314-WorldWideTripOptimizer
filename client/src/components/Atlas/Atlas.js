@@ -25,7 +25,7 @@ export default class Atlas extends Component {
 
     constructor(props) {
         super(props);
-        this.markUserLocation = this.markUserLocation.bind(this);
+        this.goToUserLocation = this.goToUserLocation.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.goToDestinations = this.goToDestinations.bind(this);
         this.renderDestination = this.renderDestination.bind(this);
@@ -34,7 +34,10 @@ export default class Atlas extends Component {
         this.loadFile = this.loadFile.bind(this);
         this.parseJSON = this.parseJSON.bind(this);
         this.parseCSV = this.parseCSV.bind(this);
+        this.addToTripButton = this.addToTripButton.bind(this);
+        this.addUserMarker = this.addUserMarker.bind(this);
         this.state = {
+            userLocation: null,
             markerPosition: null,
             centerPosition: MAP_CENTER_DEFAULT,
             inputCoords: [],
@@ -43,11 +46,11 @@ export default class Atlas extends Component {
             inputSubmitted: [],
             destinations: [],
             markerArray : [],
-            numDestinations: 1,
+            numInputs: 0,
             showItinerary: false
         };
         this.clearInputs();
-        getCurrentLocation(this.markUserLocation);
+        getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
     }
 
     render() {
@@ -56,13 +59,16 @@ export default class Atlas extends Component {
                 <Row>
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
-                        {this.renderHomeButton()}
+                        {this.renderWhereAmI()}
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
-                        {this.renderMultiple(this.state.numDestinations, this.renderInputBox)}
-                        <Button onClick={() => {this.addDestination()}}>+</Button>
-                        <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
-                        <Input type='file' name='file' className="mt-1" onChange={this.loadFile}/>
+                        {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
+                        <Button onClick={() => {this.addInputBox()}}>+</Button>
+                        {this.renderSubmitButton()}
+                        <p className="mt-2">
+                            Load Trip:
+                            <Input type='file' name='file' onChange={this.loadFile}/>
+                        </p>
                     </Col>
                 </Row>
             </Container>
@@ -78,7 +84,7 @@ export default class Atlas extends Component {
                  onClick={(mapClickInfo) => {this.setState({markerPosition: mapClickInfo.latlng});}}
                  style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
-                <AtlasMarker position={this.state.markerPosition} name="Home" pan={false}/>
+                <AtlasMarker position={this.state.markerPosition} pan={false} addon={this.addToTripButton} popup={true}/>
                 {this.renderMultiple(this.state.destinations.length, this.renderDestination)}
                 {this.renderLines(this.state.destinations)}
             </Map>
@@ -101,10 +107,26 @@ export default class Atlas extends Component {
         return components;
     }
 
-    renderHomeButton() {
-        return (
-            <Button className="mt-1" onClick={() => getCurrentLocation(this.markUserLocation)}>Where Am I?</Button>
-        )
+    setUserLocation(position) {
+        this.setState({
+            userLocation: position
+        }, this.goToUserLocation)
+    }
+
+    renderWhereAmI() {
+        if (this.state.userLocation) {
+            return (
+                <Button className="mt-1" onClick={_ => getCurrentLocation(this.markUserLocation)}>Where Am I?</Button>
+            )
+        }
+    }
+
+    renderSubmitButton() {
+        if (this.state.numInputs >= 1) {
+            return (
+                <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
+            )
+        }
     }
 
     renderMultiple(numRenders, renderFunction) {
@@ -112,6 +134,20 @@ export default class Atlas extends Component {
         for (let i=0; i < numRenders; i++)
             components.push(<div key={i}>{renderFunction(i)}</div>);
         return components;
+    }
+
+    addToTripButton() {
+        return (
+            <Button onClick={this.addUserMarker} color="primary" size="sm">Add to trip</Button>
+        )
+    }
+
+    addUserMarker() {
+        this.addInputBox(() => {
+            document.getElementById('longitudeLatitude'+(this.state.numInputs-1)).value = this.state.markerPosition.lat + ", " + this.state.markerPosition.lng;
+            document.getElementById('name'+(this.state.numInputs-1)).value = "Place " + (this.state.destinations.length+1);
+            this.handleInputChange();
+        });
     }
 
     loadFile(event) {
@@ -146,7 +182,7 @@ export default class Atlas extends Component {
         if (format === 'csv')
             data.pop();
         this.setState({
-                numDestinations: data.length,
+                numInputs: data.length,
             }, () => {
                 for (let i = 0; i < data.length; i++) {
                     let lat = format === 'json' ? data[i].latitude : data[i].places__latitude;
@@ -161,7 +197,7 @@ export default class Atlas extends Component {
     }
 
     clearInputs() {
-        for (let i=0; i < this.state.numDestinations; i++) {
+        for (let i=0; i < this.state.numInputs; i++) {
             this.state.inputCoords[i] = '';
             this.state.inputNames[i] = '';
         }
@@ -173,12 +209,12 @@ export default class Atlas extends Component {
         )
     }
 
-    addDestination() {
-        this.state.inputCoords[this.state.numDestinations] = '';
+    addInputBox(callback) {
+        this.state.inputCoords[this.state.numInputs] = '';
         this.setState({
-            numDestinations: this.state.numDestinations+1,
+            numInputs: this.state.numInputs+1,
             inputCoords: this.state.inputCoords
-        });
+        }, callback);
     }
 
     renderDestination(index) {
@@ -190,7 +226,7 @@ export default class Atlas extends Component {
     handleInputChange () {
         this.state.destinations = [];
         this.state.markerPosition = null;
-        for (let i=0; i < this.state.numDestinations; i++) {
+        for (let i=0; i < this.state.numInputs; i++) {
             this.state.inputCoords[i] = document.getElementById('longitudeLatitude' + i).value;
             this.state.inputNames[i] = document.getElementById('name' + i).value;
             this.state.inputSubmitted[i] = true;
@@ -212,7 +248,7 @@ export default class Atlas extends Component {
         try {
             let userPosition = new Coordinates(this.state.inputCoords[index]);
             this.state.inputError[index] = true;
-            let inputName = "place" + this.state.destinations.length.toString();
+            let inputName = "Place " + (this.state.destinations.length+1).toString();
             if (this.state.inputNames[index] !== "")
                 inputName = this.state.inputNames[index];
             this.state.destinations[this.state.destinations.length] = {
@@ -226,14 +262,14 @@ export default class Atlas extends Component {
         }
     }
 
-    markUserLocation(location) {
+    goToUserLocation() {
         this.setState({
             markerPosition: {
-                lat: location.latitude,
-                lng: location.longitude
+                lat: this.state.userLocation.latitude,
+                lng: this.state.userLocation.longitude
             }
         });
-        this.leafletMap.leafletElement.setView({lat: location.latitude, lng: location.longitude}, MAP_ZOOM_MAX);
+        this.leafletMap.leafletElement.setView({lat: this.state.userLocation.latitude, lng: this.state.userLocation.longitude}, MAP_ZOOM_MAX);
     }
 
     updateRoundTripDistance(distances) {
