@@ -25,7 +25,6 @@ export default class Atlas extends Component {
 
     constructor(props) {
         super(props);
-        this.addMarker = this.addMarker.bind(this);
         this.markUserLocation = this.markUserLocation.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.goToDestinations = this.goToDestinations.bind(this);
@@ -36,6 +35,7 @@ export default class Atlas extends Component {
         this.parseJSON = this.parseJSON.bind(this);
         this.parseCSV = this.parseCSV.bind(this);
         this.state = {
+            markerPosition: null,
             centerPosition: MAP_CENTER_DEFAULT,
             inputCoords: [],
             inputNames: [],
@@ -52,22 +52,20 @@ export default class Atlas extends Component {
 
     render() {
         return (
-            <div>
-                <Container>
-                    <Row>
-                        <Col sm={12} md={{size: 6, offset: 3}}>
-                            {this.renderLeafletMap()}
-                            {this.renderHomeButton()}
-                            <Itinerary destinations={this.state.destinations}/>
-                            {this.renderRoundTripDistance()}
-                            {this.renderMultiple(this.state.numDestinations, this.renderInputBox)}
-                            {this.renderAddDestinationButton()}
-                            {this.renderSubmitButton()}
-                            {this.renderLoadFromFileButton()}
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
+            <Container>
+                <Row>
+                    <Col sm={12} md={{size: 6, offset: 3}}>
+                        {this.renderLeafletMap()}
+                        {this.renderHomeButton()}
+                        <Itinerary destinations={this.state.destinations}/>
+                        {this.renderRoundTripDistance()}
+                        {this.renderMultiple(this.state.numDestinations, this.renderInputBox)}
+                        <Button onClick={() => {this.addDestination()}}>+</Button>
+                        <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
+                        <Input type='file' name='file' className="mt-1" onChange={this.loadFile}/>
+                    </Col>
+                </Row>
+            </Container>
         )
     }
 
@@ -75,11 +73,9 @@ export default class Atlas extends Component {
         return (
             <Map ref={map => {this.leafletMap = map;}}
                  center={this.state.centerPosition}
-                 zoom={MAP_ZOOM_MAX}
-                 minZoom={MAP_ZOOM_MIN}
-                 maxZoom={MAP_ZOOM_MAX}
+                 zoom={MAP_ZOOM_MAX} minZoom={MAP_ZOOM_MIN} maxZoom={MAP_ZOOM_MAX}
                  maxBounds={MAP_BOUNDS}
-                 onClick={this.addMarker}
+                 onClick={(mapClickInfo) => {this.setState({markerPosition: mapClickInfo.latlng});}}
                  style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
                 <AtlasMarker position={this.state.markerPosition} name="Home" pan={false}/>
@@ -107,33 +103,15 @@ export default class Atlas extends Component {
 
     renderHomeButton() {
         return (
-            <Button className="mt-1"
-                    onClick={() => getCurrentLocation(this.markUserLocation)}>
-                Where Am I?
-            </Button>
+            <Button className="mt-1" onClick={() => getCurrentLocation(this.markUserLocation)}>Where Am I?</Button>
         )
     }
 
     renderMultiple(numRenders, renderFunction) {
-        const components = [];
-        for (let i=0; i < numRenders; i++) {
+        let components = [];
+        for (let i=0; i < numRenders; i++)
             components.push(<div key={i}>{renderFunction(i)}</div>);
-        }
         return components;
-    }
-
-    renderSubmitButton() {
-        return (
-            <Button className="ml-1" onClick={this.handleInputChange}>
-                Submit
-            </Button>
-        )
-    }
-
-    renderLoadFromFileButton() {
-        return (
-            <Input type='file' name='file' className="mt-1" onChange={this.loadFile}/>
-        )
     }
 
     loadFile(event) {
@@ -143,7 +121,7 @@ export default class Atlas extends Component {
         } else if (file.type === 'text/csv') {
             let config = {
                 header: true,
-                complete: this.parseCSV.bind(this)
+                complete: this.parseCSV
             };
             Papa.parse(file, config);
         }
@@ -169,8 +147,7 @@ export default class Atlas extends Component {
             data.pop();
         this.setState({
                 numDestinations: data.length,
-            },
-            () => {
+            }, () => {
                 for (let i = 0; i < data.length; i++) {
                     let lat = format === 'json' ? data[i].latitude : data[i].places__latitude;
                     let lng = format === 'json' ? data[i].longitude : data[i].places__longitude;
@@ -178,7 +155,7 @@ export default class Atlas extends Component {
                     document.getElementById('longitudeLatitude'+i).value = lat + ", " + lng;
                     document.getElementById('name'+i).value = name;
                 }
-                this.handleInputChange()
+                this.handleInputChange();
             }
         );
     }
@@ -196,15 +173,6 @@ export default class Atlas extends Component {
         )
     }
 
-    renderAddDestinationButton() {
-        return (
-            <Button title="Add Destination"
-                    onClick={() => {this.addDestination()}}>
-                +
-            </Button>
-        )
-    }
-
     addDestination() {
         this.state.inputCoords[this.state.numDestinations] = '';
         this.setState({
@@ -214,11 +182,10 @@ export default class Atlas extends Component {
     }
 
     renderDestination(index) {
-        let destination = this.state.destinations[index];
         return (
-            <AtlasMarker position={destination} name={destination.name} pan={true}/>
-        );
-    };
+            <AtlasMarker position={this.state.destinations[index]} name={this.state.destinations[index].name} pan={true}/>
+        )
+    }
 
     handleInputChange () {
         this.state.destinations = [];
@@ -257,10 +224,6 @@ export default class Atlas extends Component {
             console.log(error);
             this.state.inputError[index] = false;
         }
-    }
-
-    addMarker(mapClickInfo) {
-        this.setState({markerPosition: mapClickInfo.latlng});
     }
 
     markUserLocation(location) {
