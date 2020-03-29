@@ -10,17 +10,25 @@ const MARKER_ICON = L.icon({
 
 export default class AtlasMarker extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.openPopup = this.openPopup.bind(this);
+    }
+
+
     render() {
         if (this.props.position) {
             let coordString = this.props.position.lat.toFixed(2) + ', ' + this.props.position.lng.toFixed(2);
             return (
-                <Marker ref={this.openPopup} position={this.props.position} icon={MARKER_ICON}>
+                <Marker ref={popup => {this.popup = popup; this.openPopup()}} position={this.props.position} icon={MARKER_ICON}>
                     <Popup offset={[0, -18]}
                            autoClose={false}
                            autoPan={this.props.pan}>
                         <div>
-                            <p>{this.props.name}<br/>
-                            <b>{coordString}</b></p>
+                            <p>{this.renderName()}
+                            <b>{coordString}</b><br/>
+                            {this.renderAddon()}</p>
                         </div>
                     </Popup>
                 </Marker>
@@ -29,9 +37,25 @@ export default class AtlasMarker extends Component {
         return null;
     }
 
-    openPopup(ref) {
-        if (ref)
-            ref.leafletElement.openPopup();
+    openPopup() {
+        if (this.popup && this.props.popup)
+            this.popup.leafletElement.openPopup();
+    }
+
+    renderName() {
+        if (this.props.name) {
+            return (
+                <span>
+                    {this.props.name}<br/>
+                </span>
+            )
+        }
+    }
+
+    renderAddon() {
+        if (this.props.addon)
+            return this.props.addon();
+        return null;
     }
 
 }

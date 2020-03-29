@@ -6,7 +6,6 @@ export default class AtlasInput extends Component {
     render() {
         return (
             <Form onSubmit={this.handleSubmit}>
-                <br/>
                 <InputGroup>
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>🌎</InputGroupText>
@@ -21,7 +20,8 @@ export default class AtlasInput extends Component {
     renderNameBox(index) {
         return (
             <Input id={"name"+index}
-                   placeholder="Name"/>
+                   placeholder="Name"
+                   size='16'/>
         )
     }
 
