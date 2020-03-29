@@ -34,4 +34,8 @@ export default class AtlasInput extends Component {
         );
     }
 
+    handleSubmit(event) {
+        event.preventDefault();
+    }
+
 }
