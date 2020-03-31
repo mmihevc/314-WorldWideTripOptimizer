@@ -1,4 +1,4 @@
-# Sprint 4 - *your team number* - *your team name*
+# Sprint 4 - Team 11 - [Hip, Hip]
 
 ## Goal: Optimize the trip!
 ### Sprint Leader: Maddie Mihevc
@@ -39,14 +39,37 @@
 
 ## Planned Epics
 
+*Modify Itinerary*
+
+The user will be able to make modifications to the current itinerary. This includes changing the starting point, reversing the order of the destinations, reordering individual destinations, and deleting destinations.
+
+*Save*
+
+The user will be able to save their current map and current trip itinerary. The map can be saved in either KML or SVG format, and the itinerary can be saved in either JSON or CSV format.
+
+*Protocol Version 4*
+
+We are responsible for updating the protocol version to version 4 alone with providing options in order for users to optimize their trips and itineraries with using the less distance traveled.
+
+*Optimize*
+
+The user will be able to request optimization on their itinerary along with applying a default level of optimization on the server that provides the best results along with allowing the option to select a certain level of optimization.
+
+*Modify Desination*
+
+The user will be able to modify the place attributes for a specific destination.
+
+*Concurrency*
+
+We are responisible for taking advantage of everything running at the same time to reduce computation time spent on optimization in order to provide the user with better results.
 
 ## Metrics
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *count* | *count* |
-| Tasks |  *count*   | *count* | 
-| Story Points |  *sum*  | *sum* | 
+| Epics | 6 | *count* |
+| Tasks | 34   | *count* | 
+| Story Points |  30  | *sum* | 
 
 
 ## Scrums
