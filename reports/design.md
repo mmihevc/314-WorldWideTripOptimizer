@@ -152,4 +152,17 @@ A button 'Click to view Itinerary' toggles a table that lists the destinations, 
 A button is added for users to choose a local trip file that will be loaded into the webpage. Any previous user input is overidden and replaced with the data from the loaded trip file, which can be in either a JSON or a CSV format. Only a single trip file can be loaded in at a time.
 
 # Sprint 4 
+
+### New Class Diagram.
+![base](images/classServer.jpg)
+
+### New Component Hierarchy.
+![base](images/newHier.jpg)
+
+### New Team Member Added to About Page.
+![base](images/newAbout.jpg)
+
+### Changes to user interface for optimization options.
+![base](images/optHome.jpg)
+
 # Sprint 5
