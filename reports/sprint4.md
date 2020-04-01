@@ -68,7 +68,7 @@ We are responisible for taking advantage of everything running at the same time 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
 | Epics | 6 | *count* |
-| Tasks | 34   | *count* | 
+| Tasks | 28   | *count* | 
 | Story Points |  30  | *sum* | 
 
 
