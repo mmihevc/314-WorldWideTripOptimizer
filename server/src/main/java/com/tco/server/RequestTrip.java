@@ -11,30 +11,23 @@ public class RequestTrip extends RequestHeader {
 
     private final transient Logger log = LoggerFactory.getLogger(RequestTrip.class);
 
-    RequestTrip() {
-        this.requestType = "trip";
-        this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
-    }
-
     @Override
     public void buildResponse() {
         this.distances = new Long[places.length];
-        for (int i = 1; i < places.length; i++) {
-            getDistance(i);
-            log.trace("buildResponse -> {}", this);
-        }
-        distanceBetweenFirstAndLast();
+        double radius = Double.parseDouble(options.earthRadius);
+        for (int i = 1; i < places.length; i++)
+            getDistance(i, radius);
+        distanceBetweenFirstAndLast(radius);
         log.trace("buildResponse -> {}", this);
     }
 
-    void getDistance(int index) {
-        double radius = Double.parseDouble(options.earthRadius);
+    void getDistance(int index, double radius) {
         this.distances[index - 1] = Utility.getDistance(places[index-1], places[index], radius);
     }
 
-    void distanceBetweenFirstAndLast() {
-        double radius = Double.parseDouble(options.earthRadius);
-        this.distances[distances.length - 1] = Utility.getDistance(places[0], places[places.length-1], radius);
+    void distanceBetweenFirstAndLast(double radius) {
+        if (distances.length > 0)
+            this.distances[distances.length - 1] = Utility.getDistance(places[0], places[places.length-1], radius);
     }
 
 }

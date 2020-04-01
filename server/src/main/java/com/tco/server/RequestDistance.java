@@ -11,11 +11,6 @@ public class RequestDistance extends RequestHeader  {
 
     private final transient Logger log = LoggerFactory.getLogger(RequestDistance.class);
 
-    RequestDistance() {
-        this.requestType = "distance";
-        this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
-    }
-
     @Override
     public void buildResponse() {
         this.distance = Utility.getDistance(place1, place2, earthRadius);

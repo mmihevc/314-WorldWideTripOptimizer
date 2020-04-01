@@ -14,6 +14,8 @@ public class TestRequestDistance {
         dist.place1 = new Place("20.12", "30.14", "place1");
         dist.place2 = new Place("20.12", "30.14", "place2");
         dist.earthRadius = 1024.0;
+        dist.requestVersion = 3;
+        dist.requestType = "distance";
         dist.buildResponse();
     }
 
