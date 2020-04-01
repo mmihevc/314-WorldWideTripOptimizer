@@ -71,6 +71,8 @@ We are responisible for taking advantage of everything running at the same time 
 | Tasks | 28   | *count* | 
 | Story Points |  30  | *sum* | 
 
+Last sprint we created too many tasks from the beginning and were not able to get through them. This sprint we created less task with the hope that we will be able to complete more tasks during this sprint. During our last few sprints we rated every task with an estimate of 1 but this time we gave two tasks an estimate of 2. For this sprint we are tryint to be more aware ahead of time of the difficulty level a task will have. With the having a new member added to our team we hope to complete all of our tasks this sprint. 
+
 
 ## Scrums
 
