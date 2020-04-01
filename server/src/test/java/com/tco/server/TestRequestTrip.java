@@ -11,6 +11,8 @@ public class TestRequestTrip {
     @Before
     public void createTripRequestForTestCases(){
         trip = new RequestTrip();
+        trip.requestType = "trip";
+        trip.requestVersion = 3;
     }
 
     @Test

@@ -35,7 +35,7 @@ public class JSONValidator {
       schema.validate(request);
     } catch (ValidationException e) {
       List<ValidationException> exceptionList = e.getCausingExceptions();
-      String exceptionMsg = "";
+      String exceptionMsg = e.getMessage();
       for (ValidationException ve : exceptionList)
         exceptionMsg += ve.getMessage() + '\n';
       throw new IOException(exceptionMsg);
