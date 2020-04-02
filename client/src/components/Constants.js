@@ -41,3 +41,5 @@ export const KAIS_BIO =  'Kai was born in Virginia Mason hospital on April 5th, 
     'something. Kai started college as an electrical engineering major before switching to computer ' +
     'science to pursue programming. He most recently worked demolition for a small construction '+
     'company. He recommends "The Sparrow" by Maria Doria Russell.';
+
+export const KELLYN_BIO =  '';
