@@ -78,7 +78,8 @@ Last sprint we created too many tasks from the beginning and were not able to ge
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* |  | 
+| 4/1 | #309 | #216, #319 |  | 
+| 4/3 | #309 | #216, #319 | |
 
 
 ## Review
