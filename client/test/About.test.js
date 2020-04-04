@@ -4,6 +4,7 @@ import {shallow} from 'enzyme';
 
 import About from '../src/components/About/About';
 import {JACKIE_BIO, KAIS_BIO, KEVIN_BIO, MADDIE_BIO, TEAM_STATEMENT} from '../src/components/Constants';
+import {simulateOnClick} from "./buttonClick";
 
 const about = shallow(<About />);
 
@@ -17,11 +18,6 @@ function testBioChange() {
     testBioAfterClick(2, KAIS_BIO);
     testBioAfterClick(3, JACKIE_BIO);
     testBioAfterClick(3, TEAM_STATEMENT);
-}
-
-function simulateOnClick(button, parentWrapper) {
-    button.simulate('click');
-    parentWrapper.update();
 }
 
 function testBioAfterClick(bioIndex, bioText) {

@@ -1,7 +1,7 @@
-import {isJsonResponseValid, sendServerRequestWithBody} from "../../utils/restfulAPI";
-import {HTTP_OK, PROTOCOL_VERSION} from "../Constants";
-import * as tripSchema from "../../../schemas/TripResponse";
-import * as distanceSchema from "../../../schemas/DistanceResponse";
+import {isJsonResponseValid, sendServerRequestWithBody} from "./restfulAPI";
+import {HTTP_OK, PROTOCOL_VERSION} from "../components/Constants";
+import * as tripSchema from "../../schemas/TripResponse";
+import * as distanceSchema from "../../schemas/DistanceResponse";
 
 export function tripCall(destinations, rad, port, callback){
     let values = {

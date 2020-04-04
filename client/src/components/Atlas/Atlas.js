@@ -5,12 +5,13 @@ import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
 import Coordinates from 'coordinate-parser';
 import {EARTH_RADIUS_UNITS_DEFAULT} from "../Constants";
-import {tripCall} from "./tripCalls";
-import {getCurrentLocation} from "./geolocation";
+import {tripCall} from "../../utils/tripCalls";
+import {getCurrentLocation} from "../../utils/geolocation";
 import AtlasLine from "./AtlasLine";
 import AtlasMarker from "./AtlasMarker";
 import AtlasInput from "./AtlasInput";
 import Itinerary from "./Itinerary";
+import {getInput, latLngToString, setInput} from "../../utils/input";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -144,8 +145,10 @@ export default class Atlas extends Component {
 
     addUserMarker() {
         this.addInputBox(() => {
-            document.getElementById('longitudeLatitude'+(this.state.numInputs-1)).value = this.state.markerPosition.lat + ", " + this.state.markerPosition.lng;
-            document.getElementById('name'+(this.state.numInputs-1)).value = "Place " + (this.state.destinations.length+1);
+            setInput(this.state.numInputs-1, {
+                coord: latLngToString(this.state.markerPosition.lat, this.state.markerPosition.lng),
+                name: "Place " + (this.state.destinations.length+1)
+            });
             this.handleInputChange();
         });
     }
@@ -188,8 +191,7 @@ export default class Atlas extends Component {
                     let lat = format === 'json' ? data[i].latitude : data[i].places__latitude;
                     let lng = format === 'json' ? data[i].longitude : data[i].places__longitude;
                     let name = format === 'json' ? data[i].name : data[i].places__name;
-                    document.getElementById('longitudeLatitude'+i).value = lat + ", " + lng;
-                    document.getElementById('name'+i).value = name;
+                    this.setInput(i, {coord: latLngToString(lat, lng), name: name});
                 }
                 this.handleInputChange();
             }
@@ -227,8 +229,9 @@ export default class Atlas extends Component {
         this.state.destinations = [];
         this.state.markerPosition = null;
         for (let i=0; i < this.state.numInputs; i++) {
-            this.state.inputCoords[i] = document.getElementById('longitudeLatitude' + i).value;
-            this.state.inputNames[i] = document.getElementById('name' + i).value;
+            let input = getInput(i);
+            this.state.inputCoords[i] = input.coord;
+            this.state.inputNames[i] = input.name;
             this.state.inputSubmitted[i] = true;
             this.validateValue(i);
         }
@@ -298,6 +301,19 @@ export default class Atlas extends Component {
                 this.leafletMap.leafletElement.fitBounds(this.state.markerArray)
             });
         }
+    }
+
+    changeStartDestination(index) {
+        let oldDestinations = [];
+        for (let i=0; i < this.state.numInputs; i++)
+            oldDestinations[i] = getInput(i);
+        for (let i=0; i < this.state.numInputs; i++) {
+            let newIndex = i - index;
+            if (newIndex < 0)
+                newIndex += this.state.numInputs;
+            setInput(newIndex, oldDestinations[i]);
+        }
+        this.handleInputChange();
     }
 
 }
