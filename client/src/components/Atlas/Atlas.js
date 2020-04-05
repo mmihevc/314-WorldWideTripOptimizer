@@ -21,6 +21,7 @@ const MAP_STYLE_LENGTH = 500;
 const MAP_ZOOM_MAX = 17;
 const MAP_ZOOM_MIN = 1;
 
+const UNICODE_REVERSE_SYMBOL = '\u21B9';
 
 export default class Atlas extends Component {
 
@@ -37,6 +38,7 @@ export default class Atlas extends Component {
         this.parseCSV = this.parseCSV.bind(this);
         this.addToTripButton = this.addToTripButton.bind(this);
         this.addUserMarker = this.addUserMarker.bind(this);
+        this.reverseTrip = this.reverseTrip.bind(this);
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -65,7 +67,7 @@ export default class Atlas extends Component {
                         {this.renderRoundTripDistance()}
                         {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
                         <Button onClick={() => {this.addInputBox()}}>+</Button>
-                        {this.renderSubmitButton()}
+                        {this.renderModifyButtons()}
                         <p className="mt-2">
                             Load Trip:
                             <Input type='file' name='file' onChange={this.loadFile}/>
@@ -122,10 +124,13 @@ export default class Atlas extends Component {
         }
     }
 
-    renderSubmitButton() {
+    renderModifyButtons() {
         if (this.state.numInputs >= 1) {
             return (
-                <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
+                <span>
+                    <Button className="ml-1" onClick={this.reverseTrip}>{UNICODE_REVERSE_SYMBOL}</Button>
+                    <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
+                </span>
             )
         }
     }
@@ -311,6 +316,17 @@ export default class Atlas extends Component {
             let newIndex = i - index;
             if (newIndex < 0)
                 newIndex += this.state.numInputs;
+            setInput(newIndex, oldDestinations[i]);
+        }
+        this.handleInputChange();
+    }
+
+    reverseTrip() {
+        let oldDestinations = [];
+        for (let i=1; i < this.state.numInputs; i++)
+            oldDestinations[i] = getInput(i);
+        for (let i=1; i < this.state.numInputs; i++) {
+            let newIndex = this.state.numInputs-i;
             setInput(newIndex, oldDestinations[i]);
         }
         this.handleInputChange();
