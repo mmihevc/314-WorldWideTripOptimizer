@@ -21,6 +21,7 @@ const MAP_STYLE_LENGTH = 500;
 const MAP_ZOOM_MAX = 17;
 const MAP_ZOOM_MIN = 1;
 
+const UNICODE_REVERSE_SYMBOL = '\u21B9';
 
 export default class Atlas extends Component {
 
@@ -65,7 +66,7 @@ export default class Atlas extends Component {
                         {this.renderRoundTripDistance()}
                         {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
                         <Button onClick={() => {this.addInputBox()}}>+</Button>
-                        {this.renderSubmitButton()}
+                        {this.renderModifyButtons()}
                         <p className="mt-2">
                             Load Trip:
                             <Input type='file' name='file' onChange={this.loadFile}/>
@@ -122,10 +123,13 @@ export default class Atlas extends Component {
         }
     }
 
-    renderSubmitButton() {
+    renderModifyButtons() {
         if (this.state.numInputs >= 1) {
             return (
-                <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
+                <span>
+                    <Button className="ml-1" onClick={() => {}}>{UNICODE_REVERSE_SYMBOL}</Button>
+                    <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
+                </span>
             )
         }
     }
