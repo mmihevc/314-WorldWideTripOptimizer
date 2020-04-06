@@ -80,6 +80,7 @@ Last sprint we created too many tasks from the beginning and were not able to ge
 | :--- | :--- | :--- | :--- |
 | 4/1 | #309 | #216, #319 |  | 
 | 4/3 | #309 | #216, #319 | |
+| 4/6 | #309, #219, #187, #217, | #216, #313, #234, #233, #218, #319 | |
 
 
 ## Review
