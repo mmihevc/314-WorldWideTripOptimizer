@@ -216,6 +216,8 @@ export default class Atlas extends Component {
         )
     }
 
+
+
     addInputBox(callback) {
         this.state.inputCoords[this.state.numInputs] = '';
         this.setState({
