@@ -21,3 +21,4 @@
 | Atlas.js:201 | this.setInput throws an error | High | Maddie | | 
 | Atlas.js:163-174 | does not report when an invalid file is given | Medium | Maddie | |
 | input.js:13-14 | Using Document.getElementByID | High | Maddie | |
+| Atlas.js.321 | loading outdated json breaks code | High | Kai | |
