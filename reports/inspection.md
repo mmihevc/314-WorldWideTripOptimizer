@@ -2,8 +2,8 @@
  
 | Inspection | Details |
 | ----- | ----- |
-| Subject | *file and methods/line range to review for meeting* |
-| Meeting | *date, time, location* |
+| Subject | *Atlas.js, lines 1-303* |
+| Meeting | *04/08/2020, 4:00pm, Microsoft Teams* |
 | Checklist | *reference, URL, etc.* |
 
 ### Roles
