@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Form, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap";
+import {Form, Input, InputGroup, InputGroupAddon, InputGroupText, Button} from "reactstrap";
 
 export default class AtlasInput extends Component {
 
@@ -12,6 +12,7 @@ export default class AtlasInput extends Component {
                         {this.renderNameBox(this.props.index)}
                     </InputGroupAddon>
                     {this.renderLngLatBox(this.props.valid, this.props.invalid, this.props.index)}
+                    <Button>↑</Button>
                 </InputGroup>
             </Form>
         );
