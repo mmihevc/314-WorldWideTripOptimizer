@@ -17,5 +17,5 @@
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
-|  | | | | |
+| input.js:13,14 | Using Document.getElementByID, makes it hard to test it | High | Jackie |  |
 |  | | | | |
