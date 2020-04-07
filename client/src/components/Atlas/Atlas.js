@@ -40,6 +40,7 @@ export default class Atlas extends Component {
         this.addToTripButton = this.addToTripButton.bind(this);
         this.addUserMarker = this.addUserMarker.bind(this);
         this.reverseTrip = this.reverseTrip.bind(this);
+        this.displayStartBox = this.displayStartBox.bind(this);
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -53,7 +54,8 @@ export default class Atlas extends Component {
             numInputs: 0,
             showItinerary: false,
             mapSaveFormat: 'KML',
-            mapDropdownOpen: false
+            mapDropdownOpen: false,
+            showStartBox: false
         };
         this.clearInputs();
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
@@ -69,8 +71,12 @@ export default class Atlas extends Component {
                         {this.renderMapSave(this.state.destinations)}
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
+                        {this.state.showStartBox && <AtlasInput />}
                         {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
-                        <Button onClick={() => {this.addInputBox()}}>+</Button>
+                        <ButtonGroup>
+                            <Button onClick={() => {this.addInputBox()}}>+</Button>
+                            <Button className="ml-1" onClick={this.displayStartBox}>Start</Button>
+                        </ButtonGroup>
                         {this.renderModifyButtons()}
                         <p className="mt-2">
                             Load Trip:
@@ -81,6 +87,7 @@ export default class Atlas extends Component {
             </Container>
         )
     }
+
 
     renderLeafletMap() {
         return (
@@ -161,12 +168,16 @@ export default class Atlas extends Component {
             return (
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip}>{UNICODE_REVERSE_SYMBOL}</Button>
-                    <Button className="ml-1">↑</Button>
                     <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
                 </ButtonGroup>
             )
         }
     }
+
+    displayStartBox() {
+        this.setState({showStartBox: true})
+    }
+
 
     renderMultiple(numRenders, renderFunction) {
         let components = [];
