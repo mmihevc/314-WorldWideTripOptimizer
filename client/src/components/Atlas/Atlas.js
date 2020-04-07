@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Button, Input, Alert, ButtonGroup} from 'reactstrap';
+import {Col, Container, Row, Button, Input, Alert, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
@@ -12,6 +12,7 @@ import AtlasMarker from "./AtlasMarker";
 import AtlasInput from "./AtlasInput";
 import Itinerary from "./Itinerary";
 import {getInput, latLngToString, setInput} from "../../utils/input";
+import {saveKML, saveSVG} from "../../utils/save";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -51,6 +52,8 @@ export default class Atlas extends Component {
             markerArray : [],
             numInputs: 0,
             showItinerary: false,
+            mapSaveFormat: 'KML',
+            mapDropdownOpen: false
         };
         this.clearInputs();
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
@@ -63,6 +66,7 @@ export default class Atlas extends Component {
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
                         {this.renderWhereAmI()}
+                        {this.renderMapSave(this.state.destinations)}
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
                         {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
@@ -119,9 +123,37 @@ export default class Atlas extends Component {
     renderWhereAmI() {
         if (this.state.userLocation) {
             return (
-                <Button className="mt-1" onClick={_ => getCurrentLocation(this.markUserLocation)}>Where Am I?</Button>
+                <Button className="mt-1" onClick={_ => getCurrentLocation(this.goToUserLocation)}>Where Am I?</Button>
             )
         }
+    }
+
+    renderMapSave(destinations) {
+        return (
+            <ButtonGroup>
+                <Button className='ml-1 mt-1' onClick={_ => {
+                    if (this.state.mapSaveFormat === 'KML')
+                        saveKML(destinations);
+                    else if (this.state.mapSaveFormat === 'SVG')
+                        saveSVG(destinations);
+                }}>Save Map</Button>
+                <ButtonDropdown className='mt-1' isOpen={this.state.mapDropdownOpen} toggle={() => {
+                    this.setState({mapDropdownOpen: !this.state.mapDropdownOpen})
+                }}>
+                    <DropdownToggle caret>
+                        {this.state.mapSaveFormat}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem onClick={() => {
+                            this.setState({mapSaveFormat: 'KML'})
+                        }}>KML</DropdownItem>
+                        <DropdownItem onClick={() => {
+                            this.setState({mapSaveFormat: 'SVG'})
+                        }}>SVG</DropdownItem>
+                    </DropdownMenu>
+                </ButtonDropdown>
+            </ButtonGroup>
+        )
     }
 
     renderModifyButtons() {
