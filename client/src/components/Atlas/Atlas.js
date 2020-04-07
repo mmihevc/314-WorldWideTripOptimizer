@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Button, Input, Alert, ButtonGroup} from 'reactstrap';
+import {Col, Container, Row, Button, Input, Alert, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
@@ -12,7 +12,7 @@ import AtlasMarker from "./AtlasMarker";
 import AtlasInput from "./AtlasInput";
 import Itinerary from "./Itinerary";
 import {getInput, latLngToString, setInput} from "../../utils/input";
-import {saveKML} from "../../utils/save";
+import {saveKML, saveSVG} from "../../utils/save";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -51,7 +51,9 @@ export default class Atlas extends Component {
             destinations: [],
             markerArray : [],
             numInputs: 0,
-            showItinerary: false
+            showItinerary: false,
+            mapSaveFormat: 'KML',
+            mapDropdownOpen: false
         };
         this.clearInputs();
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
@@ -128,17 +130,39 @@ export default class Atlas extends Component {
 
     renderMapSave(destinations) {
         return (
-            <Button className='ml-1 mt-1' onClick={_ => saveKML(destinations)}>Save Map</Button>
+            <ButtonGroup>
+                <Button className='ml-1 mt-1' onClick={_ => {
+                    if (this.state.mapSaveFormat === 'KML')
+                        saveKML(destinations);
+                    else if (this.state.mapSaveFormat === 'SVG')
+                        saveSVG(destinations);
+                }}>Save Map</Button>
+                <ButtonDropdown className='mt-1' isOpen={this.state.mapDropdownOpen} toggle={() => {
+                    this.setState({mapDropdownOpen: !this.state.mapDropdownOpen})
+                }}>
+                    <DropdownToggle caret>
+                        {this.state.mapSaveFormat}
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem onClick={() => {
+                            this.setState({mapSaveFormat: 'KML'})
+                        }}>KML</DropdownItem>
+                        <DropdownItem onClick={() => {
+                            this.setState({mapSaveFormat: 'SVG'})
+                        }}>SVG</DropdownItem>
+                    </DropdownMenu>
+                </ButtonDropdown>
+            </ButtonGroup>
         )
     }
 
     renderModifyButtons() {
         if (this.state.numInputs >= 1) {
             return (
-                <ButtonGroup>
+                <span>
                     <Button className="ml-1" onClick={this.reverseTrip}>{UNICODE_REVERSE_SYMBOL}</Button>
                     <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
-                </ButtonGroup>
+                </span>
             )
         }
     }
