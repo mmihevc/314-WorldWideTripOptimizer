@@ -26,3 +26,4 @@
 | Atlas.js.313-315,326-328| Duplicate code in changeStartDestination and reverse trip | Low | Kellyn | |
 | Atlas.js.233-253 | Code complexity--need to separate for code health | Low | Kellyn | |
 | Atlas.js.169| No error raised when non-JSON or non-CSV document loaded| Medium | Kellyn | |
+| Atlas.js: 312| If you try to load an old trip it breaks the UI| Medium | Jackie | |
