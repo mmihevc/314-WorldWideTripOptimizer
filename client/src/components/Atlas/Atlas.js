@@ -71,7 +71,7 @@ export default class Atlas extends Component {
                         {this.renderMapSave(this.state.destinations)}
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
-                        {this.state.showStartBox && <AtlasInput />}
+                        {this.state.showStartBox && this.renderInputBox(0)}
                         {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
                         <ButtonGroup>
                             <Button onClick={() => {this.addInputBox()}}>+</Button>
