@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Button, Input, Alert} from 'reactstrap';
+import {Col, Container, Row, Button, Input, Alert, ButtonGroup} from 'reactstrap';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
@@ -50,7 +50,7 @@ export default class Atlas extends Component {
             destinations: [],
             markerArray : [],
             numInputs: 0,
-            showItinerary: false
+            showItinerary: false,
         };
         this.clearInputs();
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
@@ -127,10 +127,11 @@ export default class Atlas extends Component {
     renderModifyButtons() {
         if (this.state.numInputs >= 1) {
             return (
-                <span>
+                <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip}>{UNICODE_REVERSE_SYMBOL}</Button>
+                    <Button className="ml-1">↑</Button>
                     <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
-                </span>
+                </ButtonGroup>
             )
         }
     }
@@ -331,5 +332,4 @@ export default class Atlas extends Component {
         }
         this.handleInputChange();
     }
-
 }
