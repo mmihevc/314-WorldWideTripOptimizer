@@ -159,10 +159,11 @@ export default class Atlas extends Component {
     renderModifyButtons() {
         if (this.state.numInputs >= 1) {
             return (
-                <span>
+                <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip}>{UNICODE_REVERSE_SYMBOL}</Button>
+                    <Button className="ml-1">↑</Button>
                     <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
-                </span>
+                </ButtonGroup>
             )
         }
     }
@@ -363,5 +364,4 @@ export default class Atlas extends Component {
         }
         this.handleInputChange();
     }
-
 }
