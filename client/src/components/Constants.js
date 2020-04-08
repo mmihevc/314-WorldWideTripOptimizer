@@ -41,3 +41,12 @@ export const KAIS_BIO =  'Kai was born in Virginia Mason hospital on April 5th, 
     'something. Kai started college as an electrical engineering major before switching to computer ' +
     'science to pursue programming. He most recently worked demolition for a small construction '+
     'company. He recommends "The Sparrow" by Maria Doria Russell.';
+
+export const KELLYN_BIO =  'Kellyn is a Computer Science major from Denver, Colorado. Her fascination with computer ' +
+    'science began when she worked to create technology for people with spinal cord injuries at a hospital in Denver. ' +
+    'Thus, she is passionate about empowering people by uniting technology and service, especially in high impact ' +
+    'areas. At CSU, she has worked with the NUI Lab, the UN, and the BMS department on technology projects and ' +
+    'research. She also loves to teach and started Girls Who Code at CSU. Last summer, she had an incredibly fun ' +
+    'time researching wearables for teachers in artificially intelligent classrooms at Carnegie Mellon University’s ' +
+    'HCII, and hopes to continue similar work in graduate school. Outside of academics, she loves to travel, cook, read' +
+    ', attend hackathons, and try not to fall off bouldering walls.';
