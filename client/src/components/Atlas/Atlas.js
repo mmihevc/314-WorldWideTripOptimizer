@@ -175,9 +175,8 @@ export default class Atlas extends Component {
     }
 
     displayStartBox() {
-        this.setState({showStartBox: true})
+        this.setState({showStartBox: !this.state.showStartBox})
     }
-
 
     renderMultiple(numRenders, renderFunction) {
         let components = [];
