@@ -42,6 +42,9 @@ export default class Atlas extends Component {
         this.reverseTrip = this.reverseTrip.bind(this);
         this.displayStartBox = this.displayStartBox.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.displaySaveOptions = this.displaySaveOptions.bind(this);
+
+
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -56,7 +59,8 @@ export default class Atlas extends Component {
             showItinerary: false,
             mapSaveFormat: 'KML',
             mapDropdownOpen: false,
-            showStartBox: false
+            showStartBox: false,
+            itineraryDropdown: false
         };
         this.clearInputs();
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
@@ -70,6 +74,7 @@ export default class Atlas extends Component {
                         {this.renderLeafletMap()}
                         {this.renderWhereAmI()}
                         {this.renderMapSave(this.state.destinations)}
+                        {this.renderItinerarySave()}
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
                         {this.state.showStartBox && this.renderInputBox(0)}
@@ -162,6 +167,26 @@ export default class Atlas extends Component {
                 </ButtonDropdown>
             </ButtonGroup>
         )
+    }
+
+    renderItinerarySave() {
+        return (
+            <ButtonGroup>
+                <ButtonDropdown className='ml-1 mt-1' isOpen={this.state.itineraryDropdown} toggle={this.displaySaveOptions}>
+                    <DropdownToggle>
+                        Save Itinerary
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem>JSON</DropdownItem>
+                        <DropdownItem>CSV</DropdownItem>
+                    </DropdownMenu>
+                </ButtonDropdown>
+            </ButtonGroup>
+        )
+    }
+
+    displaySaveOptions() {
+        this.setState({ itineraryDropdown : !this.state.itineraryDropdown })
     }
 
     renderModifyButtons() {
