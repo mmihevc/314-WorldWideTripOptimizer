@@ -183,9 +183,7 @@ export default class Atlas extends Component {
     }
 
     displaySaveOptions() {
-        this.setState({
-            itineraryDropdown : !this.state.itineraryDropdown
-        })
+        this.setState({ itineraryDropdown : !this.state.itineraryDropdown })
     }
 
     renderModifyButtons() {
