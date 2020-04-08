@@ -1,6 +1,7 @@
 import tokml from 'tokml';
 import geojson2svg from 'geojson2svg';
 import {downloadFile} from "./fileIO";
+import {getLines, lineCrossesMeridian} from "./dateline";
 
 const KML_MIME_TYPE = 'application/vnd.google-earth.kml+xml';
 const SVG_MIME_TYPE = 'image/svg+xml';
@@ -38,8 +39,31 @@ function getGeoJSON(destinations) {
             }
         });
     }
+    for (let i=0; i < destinations.length-1; i++)
+        features = addLineFeature(features, destinations[i], destinations[i+1]);
+    features = addLineFeature(features, destinations[destinations.length-1], destinations[0]);
+    console.log(features);
     return {
         type: 'FeatureCollection',
         features: features
     };
+}
+
+function addLineFeature(features, start, finish) {
+    let lines = getLines(start, finish);
+    for (let j=0; j < lines.length; j++) {
+        features = features.concat({
+            type: 'Feature',
+            properties: {
+                name: ''
+            },
+            geometry: {
+                type: 'LineString',
+                coordinates: [
+                    [lines[j][0].lng, lines[j][0].lat], [lines[j][1].lng, lines[j][1].lat]
+                ]
+            }
+        });
+    }
+    return features;
 }
