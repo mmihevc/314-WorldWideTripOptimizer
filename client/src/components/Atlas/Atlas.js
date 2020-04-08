@@ -41,6 +41,7 @@ export default class Atlas extends Component {
         this.addUserMarker = this.addUserMarker.bind(this);
         this.reverseTrip = this.reverseTrip.bind(this);
         this.displayStartBox = this.displayStartBox.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -169,11 +170,15 @@ export default class Atlas extends Component {
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip}>{UNICODE_REVERSE_SYMBOL}</Button>
                     <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
+                    <Button className="ml-1" onClick={this.handleDelete}>✕️</Button>
                 </ButtonGroup>
             )
         }
     }
 
+    handleDelete() {
+        this.setState({numInputs: this.state.numInputs -1}, this.handleInputChange );
+    }
     displayStartBox() {
         this.setState({showStartBox: !this.state.showStartBox})
     }
