@@ -7,7 +7,7 @@ import kevinImage from './images/kevin.jpg';
 import maddieImage from './images/maddie.jpg';
 import kaiImage from './images/kai.jpg';
 import jackieImage from './images/Jackie.jpg';
-import kellynImage from './images/Kellyn.jpg';
+import kellynImage from './images/kellyn.jpg';
 
 
 
