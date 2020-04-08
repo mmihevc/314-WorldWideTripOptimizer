@@ -11,7 +11,7 @@
 | Name | Preparation Time |
 | ---- | ---- |
 | Kellyn Dassler | 35 min |
-|  |  |
+| Kevin Schroeder | 30 min |
 
 ### Problems found
 
@@ -27,3 +27,8 @@
 | Atlas.js.233-253 | Code complexity--need to separate for code health | Low | Kellyn | |
 | Atlas.js.169| No error raised when non-JSON or non-CSV document loaded| Medium | Kellyn | |
 | Atlas.js: 312| If you try to load an old trip it breaks the UI| Medium | Jackie | |
+| Atlas.js.122 | Where Am I button doesn't work anymore | Medium | Kevin | |
+| Atlas.js.141,108-109, | key attribute should be more unique, div not needed | Low | Kevin | |
+| input.js.3-4,13-14 | Direct DOM manipulation | High | Kevin | |
+| Atlas.js.56 | Nothing to inform user that geolocation is disabled | Low | Kevin | |
+| Atlas.js.66 | Error in console when looking at itinerary when all distances are zero | Low | Kevin | |

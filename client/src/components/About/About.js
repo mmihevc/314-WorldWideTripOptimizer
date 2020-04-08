@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {Container, Row, Col, Button} from 'reactstrap';
 import {Card, CardImg, CardTitle} from 'reactstrap';
-import {CLIENT_TEAM_NAME, JACKIE_BIO, KAIS_BIO, KEVIN_BIO, MADDIE_BIO, TEAM_STATEMENT} from "../Constants";
+import {CLIENT_TEAM_NAME, JACKIE_BIO, KAIS_BIO, KEVIN_BIO, MADDIE_BIO, KELLYN_BIO, TEAM_STATEMENT} from "../Constants";
 import '../tcowebstyle.css';
 import kevinImage from './images/kevin.jpg';
 import maddieImage from './images/maddie.jpg';
 import kaiImage from './images/kai.jpg';
 import jackieImage from './images/Jackie.jpg';
+import kellynImage from './images/kellyn.jpg';
 
 
 
@@ -61,6 +62,7 @@ export default class About extends Component {
           {this.renderPerson(MADDIE_BIO, maddieImage, 'Maddie Mihevc')}
           {this.renderPerson(KAIS_BIO, kaiImage, 'Kai Griem')}
           {this.renderPerson(JACKIE_BIO, jackieImage, 'Jackie Clotfelter')}
+          {this.renderPerson(KELLYN_BIO, kellynImage, 'Kellyn Dassler')}
         </Row>
       )
     }
