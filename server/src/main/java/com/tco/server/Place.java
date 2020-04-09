@@ -11,11 +11,16 @@ public class Place {
         this.name = name;
     }
 
-    double getLat() {
+    public double getLat() {
         return Double.parseDouble(this.latitude);
     }
 
-    double getLng() {
+    public double getLng() {
         return Double.parseDouble(this.longitude);
     }
+
+    public String toString() {
+        return name + ": " + this.latitude + ',' + this.longitude;
+    }
+
 }
