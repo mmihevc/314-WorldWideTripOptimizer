@@ -39,7 +39,7 @@ public class TestRequestTrip {
         long tripDistance = 0;
         for (long dist : trip.distances)
             tripDistance += dist;
-        assertEquals("trip requestDistancesT05", 51794, tripDistance);
+        assertEquals("trip requestDistancesT05", 40085, tripDistance);
     }
 
 }
