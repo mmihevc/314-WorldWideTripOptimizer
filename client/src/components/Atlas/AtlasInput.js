@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Form, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap";
-import {Draggable, Droppable} from 'react-beautiful-dnd';
+import {Droppable} from 'react-beautiful-dnd';
 
 
 

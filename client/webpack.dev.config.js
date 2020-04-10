@@ -22,7 +22,7 @@ const LOG_LEVEL = 5;
  * That is, this file represents a module, which contains what's defined below.
  */
 module.exports = {
-  // Noting the mode allows Webpack to make some optimizaitons depending
+  // Noting the mode allows Webpack to make some optimizations depending
   // on if we are developing or in production.
   mode: 'development',
 

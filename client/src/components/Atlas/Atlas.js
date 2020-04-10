@@ -285,15 +285,13 @@ export default class Atlas extends Component {
         }
     }
 
-    onDragEnd = result => {
-
+    onDragEnd(){
     }
+
 
     renderInputBox(index) {
         return (
             <DragDropContext
-                onDragStart
-                onDragUpdate
                 onDragEnd={this.onDragEnd}>
                 {<AtlasInput index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>}
             </DragDropContext>
