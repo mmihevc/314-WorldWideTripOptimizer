@@ -1,11 +1,16 @@
 import React, {Component} from "react";
 import {Form, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap";
+import {Draggable} from 'react-beautiful-dnd';
+
+
+
 
 export default class AtlasInput extends Component {
 
     render() {
         return (
             <Form onSubmit={this.handleSubmit}>
+                <Draggable draggableId={this.props.index} index={this.props.index}></Draggable>
                 <InputGroup>
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>🌎</InputGroupText>
@@ -33,6 +38,7 @@ export default class AtlasInput extends Component {
                    placeholder="Longitude and Latitude"/>
         );
     }
+
 
     handleSubmit(event) {
         event.preventDefault();

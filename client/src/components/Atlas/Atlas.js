@@ -13,6 +13,8 @@ import AtlasInput from "./AtlasInput";
 import Itinerary from "./Itinerary";
 import {getInput, latLngToString, setInput} from "../../utils/input";
 import {saveKML, saveSVG} from "../../utils/save";
+import {DragDropContext} from 'react-beautiful-dnd';
+import {AtlasColumn} from './Atlascolumn';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -204,6 +206,7 @@ export default class Atlas extends Component {
     handleDelete() {
         this.setState({numInputs: this.state.numInputs -1}, this.handleInputChange );
     }
+
     displayStartBox() {
         this.setState({showStartBox: !this.state.showStartBox})
     }
@@ -283,9 +286,18 @@ export default class Atlas extends Component {
         }
     }
 
+    onDragEnd = result => {
+
+    }
+
     renderInputBox(index) {
         return (
-            <AtlasInput index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>
+            <DragDropContext
+                onDragStart
+                onDragUpdate
+                onDragEnd={this.onDragEnd}>
+                {<AtlasInput index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>}
+            </DragDropContext>
         )
     }
 
