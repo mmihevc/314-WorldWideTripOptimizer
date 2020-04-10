@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Form, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap";
-import {Droppable} from 'react-beautiful-dnd';
+import {Droppable, Draggable} from 'react-beautiful-dnd';
 
 
 
@@ -15,13 +15,21 @@ export default class AtlasInput extends Component {
                 innerRef={provided.innerRef}
                 {...provided.droppableProps}
                 >
-                <InputGroup>
+                <Draggable draggableId={this.props.id} index={this.props.index}>
+                    {provided => (
+                <InputGroup
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    innerRef={provided.innerRef}
+                >
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>🌎</InputGroupText>
                         {this.renderNameBox(this.props.index)}
                     </InputGroupAddon>
                     {this.renderLngLatBox(this.props.valid, this.props.invalid, this.props.index)}
                 </InputGroup>
+                    )}
+                </Draggable>
                 {provided.placeholder}
             </Form>
                 )}
