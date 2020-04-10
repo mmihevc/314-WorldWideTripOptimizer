@@ -14,7 +14,6 @@ import Itinerary from "./Itinerary";
 import {getInput, latLngToString, setInput} from "../../utils/input";
 import {saveKML, saveSVG} from "../../utils/save";
 import {DragDropContext} from 'react-beautiful-dnd';
-import {AtlasColumn} from './Atlascolumn';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
