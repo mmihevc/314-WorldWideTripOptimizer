@@ -70,6 +70,7 @@ export default class Atlas extends Component {
             inputCoords: [],
             inputNames: [],
             inputError: [],
+            inputBoxes: [],
             inputSubmitted: [],
             destinations: [],
             markerArray : [],
@@ -124,7 +125,6 @@ export default class Atlas extends Component {
         )
     }
 
-
     renderLeafletMap() {
         return (
             <Map ref={map => {this.leafletMap = map;}}
@@ -142,8 +142,22 @@ export default class Atlas extends Component {
     }
 
     onDragEnd (result) {
+        const {destination, source, draggableId} = result;
         //TODO: reorder column
-    }
+        if(!destination){
+            console.log("No Destination");
+            return;
+        }
+
+        if(
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ){
+            console.log("Source info"+ source);
+            return;
+        }
+
+    };
 
     renderRoundTripDistance() {
         if (this.state.roundTripDistance) {
