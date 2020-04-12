@@ -27,7 +27,8 @@
     "tokml": "^0.4.0",
     "ulog": "^1.1.0",
     "webpack": "^4.28.4",
-    "webpack-cli": "^3.2.1"
+    "webpack-cli": "^3.2.1",
+    "styled-components": "latest"
   },
   "devDependencies": {
     "ajv": "^6.10.2",

@@ -1,6 +1,19 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Button, Input, Alert, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+import {
+    Alert,
+    Button,
+    ButtonDropdown,
+    ButtonGroup,
+    Col,
+    Container,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Input,
+    Row
+} from 'reactstrap';
 import {Map, TileLayer} from 'react-leaflet';
+import styled from 'styled-components';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
 import Coordinates from 'coordinate-parser';
@@ -13,7 +26,7 @@ import AtlasInput from "./AtlasInput";
 import Itinerary from "./Itinerary";
 import {getInput, latLngToString, setInput} from "../../utils/input";
 import {saveKML, saveSVG} from "../../utils/save";
-import {DragDropContext} from 'react-beautiful-dnd';
+import {DragDropContext, Droppable} from 'react-beautiful-dnd';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -24,12 +37,16 @@ const MAP_ZOOM_MAX = 17;
 const MAP_ZOOM_MIN = 1;
 
 const UNICODE_REVERSE_SYMBOL = '\u21B9';
+const {div} = styled;
+const PlacesList = div`padding:8px; border: 1px solid lightgrey; border-radius: 2px;`;
+
 
 export default class Atlas extends Component {
 
     constructor(props) {
         super(props);
         this.goToUserLocation = this.goToUserLocation.bind(this);
+        this.onDragEnd = this.onDragEnd.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.goToDestinations = this.goToDestinations.bind(this);
         this.renderDestination = this.renderDestination.bind(this);
@@ -76,10 +93,22 @@ export default class Atlas extends Component {
                         {this.renderWhereAmI()}
                         {this.renderMapSave(this.state.destinations)}
                         {this.renderItinerarySave()}
+                        <DragDropContext onDragEnd={this.onDragEnd}>
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
-                        {this.state.showStartBox && this.renderInputBox(0)}
-                        {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
+                            <Droppable droppableId={'column-1'}>
+                                {({droppableProps, innerRef, placeholder}) => (
+                                    <PlacesList
+                                        innerRef={innerRef}
+                                        {...(droppableProps)}
+                                        >
+                                        {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
+                                        {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
+                                        {placeholder}
+                                    </PlacesList>
+                                    )}
+                        </Droppable>
+                        </DragDropContext>
                         <ButtonGroup>
                             <Button onClick={() => {this.addInputBox()}}>+</Button>
                             <Button className="ml-1" onClick={this.displayStartBox}>Start</Button>
@@ -110,6 +139,10 @@ export default class Atlas extends Component {
                 {this.renderLines(this.state.destinations)}
             </Map>
         )
+    }
+
+    onDragEnd (result) {
+        //TODO: reorder column
     }
 
     renderRoundTripDistance() {
@@ -285,16 +318,9 @@ export default class Atlas extends Component {
         }
     }
 
-    onDragEnd(){
-    }
-
-
     renderInputBox(index) {
         return (
-            <DragDropContext
-                onDragEnd={this.onDragEnd}>
-                {<AtlasInput index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>}
-            </DragDropContext>
+            <AtlasInput id={index} index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>
         )
     }
 
