@@ -26,7 +26,7 @@ import AtlasInput from "./AtlasInput";
 import Itinerary from "./Itinerary";
 import {getInput, latLngToString, setInput} from "../../utils/input";
 import {saveKML, saveSVG} from "../../utils/save";
-import {DragDropContext, Droppable} from 'react-beautiful-dnd';
+import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -37,8 +37,8 @@ const MAP_ZOOM_MAX = 17;
 const MAP_ZOOM_MIN = 1;
 
 const UNICODE_REVERSE_SYMBOL = '\u21B9';
-const {div} = styled;
-const PlacesList = div`padding:8px; border: 1px solid lightgrey; border-radius: 2px;`;
+//const {div} = styled;
+//const PlacesList = div`padding:8px; border: 1px solid lightgrey; border-radius: 2px;`;
 
 
 export default class Atlas extends Component {
@@ -70,7 +70,6 @@ export default class Atlas extends Component {
             inputCoords: [],
             inputNames: [],
             inputError: [],
-            inputBoxes: [],
             inputSubmitted: [],
             destinations: [],
             markerArray : [],
@@ -97,16 +96,16 @@ export default class Atlas extends Component {
                         <DragDropContext onDragEnd={this.onDragEnd}>
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
-                            <Droppable droppableId={'column-1'}>
-                                {({droppableProps, innerRef, placeholder}) => (
-                                    <PlacesList
-                                        innerRef={innerRef}
-                                        {...(droppableProps)}
+                            <Droppable droppableId={'droppable'}>
+                                {(provided) => (
+                                    <div
+                                        {...provided.droppableProps}
+                                        innerRef={provided.innerRef}
                                         >
                                         {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
                                         {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
-                                        {placeholder}
-                                    </PlacesList>
+                                        {provided.placeholder}
+                                    </div>
                                     )}
                         </Droppable>
                         </DragDropContext>
@@ -125,6 +124,9 @@ export default class Atlas extends Component {
         )
     }
 
+    // {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
+    // {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
+
     renderLeafletMap() {
         return (
             <Map ref={map => {this.leafletMap = map;}}
@@ -141,23 +143,16 @@ export default class Atlas extends Component {
         )
     }
 
+    /*getInputBoxes(){
+        console.log(this.state.numInputs);
+        Array.from({length:this.state.numInputs}, (v,k) => k).map(k =>({
+            id: `place-${k}`,
+            content: `item ${k}`
+        }));
+    }*/
+
     onDragEnd (result) {
-        const {destination, source, draggableId} = result;
-        //TODO: reorder column
-        if(!destination){
-            console.log("No Destination");
-            return;
-        }
-
-        if(
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        ){
-            console.log("Source info"+ source);
-            return;
-        }
-
-    };
+    }
 
     renderRoundTripDistance() {
         if (this.state.roundTripDistance) {

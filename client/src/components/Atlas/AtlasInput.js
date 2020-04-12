@@ -9,23 +9,22 @@ export default class AtlasInput extends Component {
 
     render() {
         return (
-            <Form onSubmit={this.handleSubmit}>
-                <Draggable draggableId={this.props.id} index={this.props.index}>
-                    {({dragHandleProps, draggableProps, innerRef}) => (
-                <InputGroup
-                    {...(draggableProps)}
-                    {...(dragHandleProps)}
-                    innerRef={innerRef}
-                >
+            <Draggable draggableId={this.props.id} index={this.props.index}>
+                {(provided) => (
+            <Form onSubmit={this.handleSubmit}
+                  {...provided.draggableProps}
+                  {...provided.dragHandleProps}
+                  innerRef={provided.innerRef}>
+                <InputGroup>
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>🌎</InputGroupText>
                         {this.renderNameBox(this.props.index)}
                     </InputGroupAddon>
                     {this.renderLngLatBox(this.props.valid, this.props.invalid, this.props.index)}
                 </InputGroup>
-                    )}
-                </Draggable>
             </Form>
+                )}
+            </Draggable>
 
         );
     }
