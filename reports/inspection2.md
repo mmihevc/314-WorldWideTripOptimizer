@@ -17,5 +17,8 @@
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
+|  | | | | |
+| MicroServer.java:19 | Field can be converted to a local variable | low | Jackie | |
 | MicroServer.java: 96 | Fewer arguments provided (0) than placeholders specified (1) | low | Jclotfel101 | |
 |  | | | | |
+
