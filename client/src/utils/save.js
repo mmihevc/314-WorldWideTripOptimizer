@@ -5,6 +5,8 @@ import {getLines, lineCrossesMeridian} from "./dateline";
 
 const KML_MIME_TYPE = 'application/vnd.google-earth.kml+xml';
 const SVG_MIME_TYPE = 'image/svg+xml';
+const JSON_MIME_TYPE = 'application/json';
+const CSV_MIME_TYPE = 'text/csv';
 const SVG_OPTIONS = {
     viewportSize: {
         width: 500,
@@ -24,6 +26,15 @@ export function saveSVG(destinations) {
     svg = '<svg width="500" height="500">\n' + svg.join('\n') + '\n</svg>';
     downloadFile(SVG_MIME_TYPE, 'map.svg', svg);
 }
+export function saveJSON(destinations){
+    let JSON = destinations;
+    downloadFile(JSON_MIME_TYPE, 'itinerary.json', JSON);
+}
+export function saveCSV(destinations){
+    let CSV = destinations;
+    downloadFile(CSV_MIME_TYPE, 'itinerary.csv', CSV)
+}
+//add a similar function but for csv and json so i can still use the download file function from fileio
 
 function getGeoJSON(destinations) {
     let features = [];
