@@ -11,7 +11,7 @@
 | Name | Preparation Time |
 | ---- | ---- |
 | Kellyn Dassler  | 30 min |
-|  |  |
+| Maddie Mihevc | 30 min |
 
 ### Problems found
 
@@ -22,5 +22,7 @@
 | MicroServer.java:19 | Field can be converted to a local variable | low | Jackie | |
 | MicroServer.java: 96 | Fewer arguments provided (0) than placeholders specified (1) | low | Jclotfel101 | |
 | Utility.java: 7 | passing a null value as a coordinate causes build to fail | low  | Kai Griem  | kgriem  |
+| WebApplication.java:34 | Fewer arguments provided (0) than placeholders specified (1) | low | Maddie | |
+| RequestHeader.java:5 | Using hardcoded values instead of constants | low | Maddie | |
 
 
