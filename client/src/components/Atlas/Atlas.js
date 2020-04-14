@@ -12,7 +12,7 @@ import AtlasMarker from "./AtlasMarker";
 import AtlasInput from "./AtlasInput";
 import Itinerary from "./Itinerary";
 import {getInput, latLngToString, setInput} from "../../utils/input";
-import {saveKML, saveSVG} from "../../utils/save";
+import {saveKML, saveSVG, saveJSON, saveCSV} from "../../utils/save";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -60,7 +60,8 @@ export default class Atlas extends Component {
             mapSaveFormat: 'KML',
             mapDropdownOpen: false,
             showStartBox: false,
-            itineraryDropdown: false
+            itineraryDropdown: false,
+            itinerarySaveFormat: 'JSON'
         };
         this.clearInputs();
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
@@ -169,7 +170,7 @@ export default class Atlas extends Component {
         )
     }
 
-    renderItinerarySave() {
+    renderItinerarySave(destinations) {
         return (
             <ButtonGroup>
                 <ButtonDropdown className='ml-1 mt-1' isOpen={this.state.itineraryDropdown} toggle={this.displaySaveOptions}>
@@ -177,8 +178,14 @@ export default class Atlas extends Component {
                         Save Itinerary
                     </DropdownToggle>
                     <DropdownMenu>
-                        <DropdownItem>JSON</DropdownItem>
-                        <DropdownItem>CSV</DropdownItem>
+                        <DropdownItem onClick={() =>{
+                            this.setState({itinerarySaveFormat: 'JSON' })
+                            saveJSON(destinations);
+                        }}>JSON</DropdownItem>
+                        <DropdownItem onClick={() =>{
+                            this.setState({itinerarySaveFormat: 'CSV'})
+                            saveCSV(destinations);
+                        }}>CSV</DropdownItem>
                     </DropdownMenu>
                 </ButtonDropdown>
             </ButtonGroup>
