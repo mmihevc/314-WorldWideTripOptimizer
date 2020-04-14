@@ -18,4 +18,4 @@
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
 |  | | | | |
-|  | | | | |
+| MicroServer.java:19 | Field can be converted to a local variable | low | Jackie | |
