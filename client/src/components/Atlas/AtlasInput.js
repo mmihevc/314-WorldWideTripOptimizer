@@ -12,12 +12,12 @@ export default class AtlasInput extends Component {
                 <InputGroup>
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>🌎</InputGroupText>
-                        {this.renderSwitchUpButton(this.props.index)}
-                        {this.renderSwitchDownButton(this.props.index)}
                         {this.renderNameBox(this.props.index)}
                     </InputGroupAddon>
                     {this.renderLngLatBox(this.props.valid, this.props.invalid, this.props.index)}
                     <InputGroupAddon addonType="append">
+                        {this.renderSwitchUpButton(this.props.index)}
+                        {this.renderSwitchDownButton(this.props.index)}
                         {this.renderDeleteButton(this.props.index)}
                     </InputGroupAddon>
                 </InputGroup>
