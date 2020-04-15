@@ -35,16 +35,12 @@ const MAP_ZOOM_MAX = 17;
 const MAP_ZOOM_MIN = 1;
 
 const UNICODE_REVERSE_SYMBOL = '\u21B9';
-//const {div} = styled;
-//const PlacesList = div`padding:8px; border: 1px solid lightgrey; border-radius: 2px;`;
-
 
 export default class Atlas extends Component {
 
     constructor(props) {
         super(props);
         this.goToUserLocation = this.goToUserLocation.bind(this);
-        this.onDragEnd = this.onDragEnd.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.goToDestinations = this.goToDestinations.bind(this);
         this.renderDestination = this.renderDestination.bind(this);
@@ -218,7 +214,7 @@ export default class Atlas extends Component {
     }
 
     handleDelete() {
-        this.setState({numInputs: this.state.numInputs -1}, this.handleInputChange );
+        this.setState({numInputs: this.state.numInputs -1}, this.handleInputChange);
     }
 
     displayStartBox() {

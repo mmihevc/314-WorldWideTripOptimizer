@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import {Form, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap";
-
+import {Button, Form, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap";
+const UNICODE_UP_SYMBOL = '\u2191';
+const UNICODE_DOWN_SYMBOL = '\u2193';
 
 export default class AtlasInput extends Component {
 
@@ -10,9 +11,14 @@ export default class AtlasInput extends Component {
                 <InputGroup>
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>🌎</InputGroupText>
+                        {this.renderSwitchUpButton(this.props.index)}
+                        {this.renderSwitchDownButton(this.props.index)}
                         {this.renderNameBox(this.props.index)}
                     </InputGroupAddon>
                     {this.renderLngLatBox(this.props.valid, this.props.invalid, this.props.index)}
+                    <InputGroupAddon addonType="append">
+                        {this.renderDeleteButton(this.props.index)}
+                    </InputGroupAddon>
                 </InputGroup>
             </Form>
         );
@@ -26,6 +32,27 @@ export default class AtlasInput extends Component {
         )
     }
 
+//TODO: Implement delete function
+    renderDeleteButton(index) {
+        return (
+            <Button className="ml-1" onClick={() => {this.handleDeleteFunction()}}>✕️</Button>
+        )
+    }
+
+//TODO: Implement switch up function
+    renderSwitchUpButton(index) {
+        return (
+            <Button className="ml-1" onClick={() => {this.handleSwitchUp()}}>{UNICODE_UP_SYMBOL}</Button>
+        )
+    }
+
+//TODO: Implement switch down function
+    renderSwitchDownButton(index) {
+        return (
+            <Button className="ml-1" onClick={() => {this.handleSwitchDown()}}>️{UNICODE_DOWN_SYMBOL}</Button>
+        );
+    }
+
     renderLngLatBox(valid, invalid, index) {
         return (
             <Input valid={valid}
@@ -34,7 +61,6 @@ export default class AtlasInput extends Component {
                    placeholder="Longitude and Latitude"/>
         );
     }
-
 
     handleSubmit(event) {
         event.preventDefault();
