@@ -81,8 +81,10 @@ export default class Atlas extends Component {
                 <Row>
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
-                        {this.renderWhereAmI()}
-                        {this.renderSettings()}
+                        <ButtonGroup>
+                            {this.renderWhereAmI()}
+                            {this.renderSettings()}
+                        </ButtonGroup>
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
                         {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
@@ -144,14 +146,14 @@ export default class Atlas extends Component {
     renderWhereAmI() {
         if (this.state.userLocation) {
             return (
-                <Button className="mt-1" onClick={_ => getCurrentLocation(this.goToUserLocation)}>Where Am I?</Button>
+                <Button className="ml-1" onClick={_ => getCurrentLocation(this.goToUserLocation)}>Where Am I?</Button>
             )
         }
     }
 
     renderSettings(){
         return (
-            <Dropdown className='mt-1' isOpen={this.state.SettingsDropDownOpen} toggle={() => {
+            <Dropdown className='ml-1' isOpen={this.state.SettingsDropDownOpen} toggle={() => {
                 this.setState({SettingsDropDownOpen: !this.state.SettingsDropDownOpen})
             }}>
                 <DropdownToggle caret>
