@@ -82,18 +82,8 @@ export default class Atlas extends Component {
                 <Row>
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col sm={6} md={{size: 3, offset: 3}}>
                         {this.renderWhereAmI()}
-                    </Col>
-                    <Col sm={6} md={{size: 3, offset: 3}}>
                         {this.renderSettings()}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col sm={12} md={{size: 6, offset: 3}}>
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
                         {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
