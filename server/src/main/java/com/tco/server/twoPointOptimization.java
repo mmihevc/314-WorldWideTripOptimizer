@@ -30,7 +30,12 @@ public class twoPointOptimization {
     }
     */
     public static Place[] optimize(Place route[], double radius) {
-        //int route[] = null;
+        Place mytrip[]= new Place[route.length+1];
+        for(int j=0;j<route.length;j++){
+            mytrip[j]=route[j];
+        }
+        mytrip[mytrip.length-1]=route[0];
+        route=mytrip;
         int n=route.length-1;
         Boolean improvement = true;
         while(improvement) {
@@ -46,6 +51,10 @@ public class twoPointOptimization {
                 }
             }
         }
-        return route;
+        mytrip=new Place[route.length-1];
+        for(int j=0;j<mytrip.length;j++){
+            mytrip[j]=route[j];
+        }
+        return mytrip;
     }
 }
