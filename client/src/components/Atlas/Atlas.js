@@ -68,7 +68,6 @@ export default class Atlas extends Component {
             markerArray : [],
             numInputs: 0,
             showItinerary: false,
-            SaveDropDownOpen: false,
             SettingsDropDownOpen: false,
             showStartBox: false,
         };
@@ -97,7 +96,6 @@ export default class Atlas extends Component {
                             Load Trip:
                             <Input type='file' name='file' onChange={this.loadFile}/>
                         </p>
-                        {this.renderSaveOptions(this.state.destinations)}
                     </Col>
                 </Row>
             </Container>
@@ -160,46 +158,28 @@ export default class Atlas extends Component {
                     Settings
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem header>Optimization Levels</DropdownItem>
-                    <DropdownItem onClick={() => {this.connectOneOpt()}}>Level 1</DropdownItem>
-                    <DropdownItem onClick={() => {this.connectTwoOpt()}}>Level 2</DropdownItem>
-                    <DropdownItem onClick={() => {this.connectThreeOpt()}}>Level 3</DropdownItem>
-                </DropdownMenu>
-            </Dropdown>
-        )
-    }
-
-    connectOneOpt(){
-        //TODO: connect level one-optimization function here or rewrite imports to use server functions
-    }
-
-    connectTwoOpt(){
-        //TODO: connect level two-optimization function here or rewrite imports to use server functions
-    }
-
-    connectThreeOpt(){
-        //TODO: connect level three-optimization function here or rewrite imports to use server functions
-    }
-
-    renderSaveOptions(destinations) {
-        return (
-            <Dropdown className='mt-1' isOpen={this.state.SaveDropDownOpen} toggle={() => {
-                this.setState({SaveDropDownOpen: !this.state.SaveDropDownOpen})
-            }}>
-                <DropdownToggle caret>
-                    Save Trip
-                </DropdownToggle>
-                <DropdownMenu>
+                    <DropdownItem header><bold>Trip Optimization Levels</bold></DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem onClick={() => {connectOneTwoOrThreeOpt("1")}}>Level 1</DropdownItem>
+                    <DropdownItem onClick={() => {connectOneTwoOrThreeOpt("2")}}>Level 2</DropdownItem>
+                    <DropdownItem onClick={() => {connectOneTwoOrThreeOpt("3")}}>Level 3</DropdownItem>
+                    <DropdownItem divider />
                     <DropdownItem header>Save Map</DropdownItem>
+                    <DropdownItem divider />
                     <DropdownItem onClick={() => {saveKML(destinations)}}>KML</DropdownItem>
                     <DropdownItem onClick={() => {saveSVG(destinations)}}>SVG</DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem header>Save Itinerary</DropdownItem>
+                    <DropdownItem divider />
                     <DropdownItem onClick={() => {saveJSON(destinations)}}>JSON</DropdownItem>
                     <DropdownItem onClick={() =>{saveCSV(destinations)}}>CSV</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         )
+    }
+
+    connectOneTwoOrThreeOpt(level){
+        //TODO: connect level one, two or three-optimization function here or rewrite imports to use server functions
     }
 
     renderModifyButtons() {
