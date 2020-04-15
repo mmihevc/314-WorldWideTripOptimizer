@@ -81,8 +81,15 @@ export default class Atlas extends Component {
                 <Row>
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
+                    </Col>
+                </Row>
+                <Row>
+                    <Col sm={6} md={{size: 3, offset: 3}}>
                         {this.renderWhereAmI()}
-                        {this.renderSaveOptions(this.state.destinations)}
+                    </Col>
+                </Row>
+                <Row>
+                    <Col sm={12} md={{size: 6, offset: 3}}>
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
                         {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
@@ -96,6 +103,7 @@ export default class Atlas extends Component {
                             Load Trip:
                             <Input type='file' name='file' onChange={this.loadFile}/>
                         </p>
+                        {this.renderSaveOptions(this.state.destinations)}
                     </Col>
                 </Row>
             </Container>
@@ -155,7 +163,7 @@ export default class Atlas extends Component {
                 this.setState({SettingsDropDownOpen: !this.state.SettingsDropDownOpen})
             }}>
                 <DropdownToggle caret>
-                    Save Options
+                    Save Trip
                 </DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem header>Save Map</DropdownItem>
