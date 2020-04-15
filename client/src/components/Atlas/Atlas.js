@@ -68,6 +68,7 @@ export default class Atlas extends Component {
             markerArray : [],
             numInputs: 0,
             showItinerary: false,
+            SaveDropDownOpen: false,
             SettingsDropDownOpen: false,
             showStartBox: false,
         };
@@ -82,7 +83,7 @@ export default class Atlas extends Component {
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
                         {this.renderWhereAmI()}
-                        {this.renderSaveOptions(this.state.destinations)}
+                        {this.renderSettings()}
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
                         {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
@@ -96,6 +97,7 @@ export default class Atlas extends Component {
                             Load Trip:
                             <Input type='file' name='file' onChange={this.loadFile}/>
                         </p>
+                        {this.renderSaveOptions(this.state.destinations)}
                     </Col>
                 </Row>
             </Container>
@@ -149,13 +151,43 @@ export default class Atlas extends Component {
         }
     }
 
-    renderSaveOptions(destinations) {
+    renderSettings(){
         return (
             <Dropdown className='mt-1' isOpen={this.state.SettingsDropDownOpen} toggle={() => {
                 this.setState({SettingsDropDownOpen: !this.state.SettingsDropDownOpen})
             }}>
                 <DropdownToggle caret>
-                    Save Options
+                    Settings
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem header>Optimization Levels</DropdownItem>
+                    <DropdownItem onClick={() => {this.connectOneOpt()}}>Level 1</DropdownItem>
+                    <DropdownItem onClick={() => {this.connectTwoOpt()}}>Level 2</DropdownItem>
+                    <DropdownItem onClick={() => {this.connectThreeOpt()}}>Level 3</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+        )
+    }
+
+    connectOneOpt(){
+        //TODO: connect level one-optimization function here or rewrite imports to use server functions
+    }
+
+    connectTwoOpt(){
+        //TODO: connect level two-optimization function here or rewrite imports to use server functions
+    }
+
+    connectThreeOpt(){
+        //TODO: connect level three-optimization function here or rewrite imports to use server functions
+    }
+
+    renderSaveOptions(destinations) {
+        return (
+            <Dropdown className='mt-1' isOpen={this.state.SaveDropDownOpen} toggle={() => {
+                this.setState({SaveDropDownOpen: !this.state.SaveDropDownOpen})
+            }}>
+                <DropdownToggle caret>
+                    Save Trip
                 </DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem header>Save Map</DropdownItem>
