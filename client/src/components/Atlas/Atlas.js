@@ -54,7 +54,6 @@ export default class Atlas extends Component {
         this.reverseTrip = this.reverseTrip.bind(this);
         this.displayStartBox = this.displayStartBox.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.displaySaveOptions = this.displaySaveOptions.bind(this);
 
 
         this.state = {
@@ -70,11 +69,7 @@ export default class Atlas extends Component {
             numInputs: 0,
             showItinerary: false,
             SettingsDropDownOpen: false,
-            mapSaveFormat: 'KML',
-            mapDropdownOpen: false,
             showStartBox: false,
-            itineraryDropdown: false,
-            itinerarySaveFormat: 'JSON'
         };
         this.clearInputs();
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
@@ -88,7 +83,6 @@ export default class Atlas extends Component {
                         {this.renderLeafletMap()}
                         {this.renderWhereAmI()}
                         {this.renderMapSave(this.state.destinations)}
-                        {this.renderItinerarySave()}
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
                         {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
@@ -174,10 +168,6 @@ export default class Atlas extends Component {
                 </DropdownMenu>
             </Dropdown>
         )
-    }
-
-    displaySaveOptions() {
-        this.setState({ itineraryDropdown : !this.state.itineraryDropdown })
     }
 
     renderModifyButtons() {
