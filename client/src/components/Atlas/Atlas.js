@@ -182,6 +182,15 @@ export default class Atlas extends Component {
 
     connectOneTwoOrThreeOpt(level){
         //TODO: connect level one, two or three-optimization function here or rewrite imports to use server functions
+        if (level == "1") {
+
+        }
+        if (level == "2") {
+
+        }
+        if (level == "3") {
+
+        }
     }
 
     renderModifyButtons() {
@@ -265,7 +274,7 @@ export default class Atlas extends Component {
                     let lat = format === 'json' ? data[i].latitude : data[i].places__latitude;
                     let lng = format === 'json' ? data[i].longitude : data[i].places__longitude;
                     let name = format === 'json' ? data[i].name : data[i].places__name;
-                    this.setInput(i, {coord: latLngToString(lat, lng), name: name});
+                    setInput(i, {coord: latLngToString(lat, lng), name: name});
                 }
                 this.handleInputChange();
             }
