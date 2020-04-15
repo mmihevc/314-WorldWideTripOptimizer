@@ -13,6 +13,8 @@ public class RequestTrip extends RequestHeader {
 
     @Override
     public void buildResponse() {
+        //this.places=twoPointOptimization.optimize(this.places, Double.parseDouble(options.earthRadius));
+
         this.distances = new Long[places.length];
         double radius = Double.parseDouble(options.earthRadius);
         for (int i = 1; i < places.length; i++)
