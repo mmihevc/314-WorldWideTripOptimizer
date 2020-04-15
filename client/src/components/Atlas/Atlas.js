@@ -82,7 +82,7 @@ export default class Atlas extends Component {
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
                         {this.renderWhereAmI()}
-                        {this.renderMapSave(this.state.destinations)}
+                        {this.renderSaveOptions(this.state.destinations)}
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
                         {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
@@ -149,7 +149,7 @@ export default class Atlas extends Component {
         }
     }
 
-    renderMapSave(destinations) {
+    renderSaveOptions(destinations) {
         return (
             <Dropdown className='mt-1' isOpen={this.state.SettingsDropDownOpen} toggle={() => {
                 this.setState({SettingsDropDownOpen: !this.state.SettingsDropDownOpen})
