@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Button, Form, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap";
+
 const UNICODE_UP_SYMBOL = '\u2191';
 const UNICODE_DOWN_SYMBOL = '\u2193';
 
@@ -42,15 +43,23 @@ export default class AtlasInput extends Component {
 //TODO: Implement switch up function
     renderSwitchUpButton(index) {
         return (
-            <Button className="ml-1" onClick={() => {this.handleSwitchUp()}}>{UNICODE_UP_SYMBOL}</Button>
+            <Button className="ml-1" onClick={() => {this.handleSwitch("up")}}>{UNICODE_UP_SYMBOL}</Button>
         )
     }
 
 //TODO: Implement switch down function
     renderSwitchDownButton(index) {
         return (
-            <Button className="ml-1" onClick={() => {this.handleSwitchDown()}}>️{UNICODE_DOWN_SYMBOL}</Button>
+            <Button className="ml-1" onClick={() => {this.handleSwitch("down")}}>️{UNICODE_DOWN_SYMBOL}</Button>
         );
+    }
+
+    handleSwitch(direction){
+        //TODO: Implement switch functionality
+    }
+
+    handleDeleteFunction(){
+        //TODO: Implement individual delete functionality
     }
 
     renderLngLatBox(valid, invalid, index) {
