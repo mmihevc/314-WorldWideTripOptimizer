@@ -52,6 +52,7 @@ export default class Atlas extends Component {
         this.addToTripButton = this.addToTripButton.bind(this);
         this.addUserMarker = this.addUserMarker.bind(this);
         this.reverseTrip = this.reverseTrip.bind(this);
+        this.handleSwitch = this.reverseTrip.bind(this);
         this.displayStartBox = this.displayStartBox.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
 
@@ -279,7 +280,7 @@ export default class Atlas extends Component {
 
     renderInputBox(index) {
         return (
-            <AtlasInput id={index} index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>
+            <AtlasInput numInputs= {this.state.numInputs} index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>
         )
     }
 
@@ -297,7 +298,7 @@ export default class Atlas extends Component {
         )
     }
 
-    handleInputChange () {
+     handleInputChange () {
         this.state.destinations = [];
         this.state.markerPosition = null;
         for (let i=0; i < this.state.numInputs; i++) {
@@ -398,4 +399,5 @@ export default class Atlas extends Component {
         }
         this.handleInputChange();
     }
+
 }
