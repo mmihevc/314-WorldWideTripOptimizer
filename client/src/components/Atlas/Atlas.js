@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {
     Alert,
     Button,
-    ButtonDropdown,
     ButtonGroup,
     Col,
     Container,
@@ -24,7 +23,8 @@ import AtlasMarker from "./AtlasMarker";
 import AtlasInput from "./AtlasInput";
 import Itinerary from "./Itinerary";
 import {getInput, latLngToString, setInput} from "../../utils/input";
-import {saveKML, saveSVG, saveJSON, saveCSV} from "../../utils/save";
+import {saveCSV, saveJSON, saveKML, saveSVG} from "../../utils/save";
+import Dropdown from "reactstrap/lib/Dropdown";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -54,7 +54,6 @@ export default class Atlas extends Component {
         this.reverseTrip = this.reverseTrip.bind(this);
         this.displayStartBox = this.displayStartBox.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.displaySaveOptions = this.displaySaveOptions.bind(this);
 
 
         this.state = {
@@ -69,11 +68,8 @@ export default class Atlas extends Component {
             markerArray : [],
             numInputs: 0,
             showItinerary: false,
-            mapSaveFormat: 'KML',
-            mapDropdownOpen: false,
+            SettingsDropDownOpen: false,
             showStartBox: false,
-            itineraryDropdown: false,
-            itinerarySaveFormat: 'JSON'
         };
         this.clearInputs();
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
@@ -86,8 +82,7 @@ export default class Atlas extends Component {
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
                         {this.renderWhereAmI()}
-                        {this.renderMapSave(this.state.destinations)}
-                        {this.renderItinerarySave()}
+                        {this.renderSaveOptions(this.state.destinations)}
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
                         {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
@@ -154,58 +149,25 @@ export default class Atlas extends Component {
         }
     }
 
-    renderMapSave(destinations) {
+    renderSaveOptions(destinations) {
         return (
-            <ButtonGroup>
-                <Button className='ml-1 mt-1' onClick={_ => {
-                    if (this.state.mapSaveFormat === 'KML')
-                        saveKML(destinations);
-                    else if (this.state.mapSaveFormat === 'SVG')
-                        saveSVG(destinations);
-                }}>Save Map</Button>
-                <ButtonDropdown className='mt-1' isOpen={this.state.mapDropdownOpen} toggle={() => {
-                    this.setState({mapDropdownOpen: !this.state.mapDropdownOpen})
-                }}>
-                    <DropdownToggle caret>
-                        {this.state.mapSaveFormat}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem onClick={() => {
-                            this.setState({mapSaveFormat: 'KML'})
-                        }}>KML</DropdownItem>
-                        <DropdownItem onClick={() => {
-                            this.setState({mapSaveFormat: 'SVG'})
-                        }}>SVG</DropdownItem>
-                    </DropdownMenu>
-                </ButtonDropdown>
-            </ButtonGroup>
+            <Dropdown className='mt-1' isOpen={this.state.SettingsDropDownOpen} toggle={() => {
+                this.setState({SettingsDropDownOpen: !this.state.SettingsDropDownOpen})
+            }}>
+                <DropdownToggle caret>
+                    Save Options
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem header>Save Map</DropdownItem>
+                    <DropdownItem onClick={() => {saveKML(destinations)}}>KML</DropdownItem>
+                    <DropdownItem onClick={() => {saveSVG(destinations)}}>SVG</DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem header>Save Itinerary</DropdownItem>
+                    <DropdownItem onClick={() => {saveJSON(destinations)}}>JSON</DropdownItem>
+                    <DropdownItem onClick={() =>{saveCSV(destinations)}}>CSV</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
         )
-    }
-
-    renderItinerarySave(destinations) {
-        return (
-            <ButtonGroup>
-                <ButtonDropdown className='ml-1 mt-1' isOpen={this.state.itineraryDropdown} toggle={this.displaySaveOptions}>
-                    <DropdownToggle>
-                        Save Itinerary
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem onClick={() =>{
-                            this.setState({itinerarySaveFormat: 'JSON' })
-                            saveJSON(destinations);
-                        }}>JSON</DropdownItem>
-                        <DropdownItem onClick={() =>{
-                            this.setState({itinerarySaveFormat: 'CSV'})
-                            saveCSV(destinations);
-                        }}>CSV</DropdownItem>
-                    </DropdownMenu>
-                </ButtonDropdown>
-            </ButtonGroup>
-        )
-    }
-
-    displaySaveOptions() {
-        this.setState({ itineraryDropdown : !this.state.itineraryDropdown })
     }
 
     renderModifyButtons() {
