@@ -68,6 +68,7 @@ export default class Atlas extends Component {
             markerArray : [],
             numInputs: 0,
             showItinerary: false,
+            SaveDropDownOpen: false,
             SettingsDropDownOpen: false,
             showStartBox: false,
         };
@@ -86,6 +87,9 @@ export default class Atlas extends Component {
                 <Row>
                     <Col sm={6} md={{size: 3, offset: 3}}>
                         {this.renderWhereAmI()}
+                    </Col>
+                    <Col sm={6} md={{size: 3, offset: 3}}>
+                        {this.renderSettings()}
                     </Col>
                 </Row>
                 <Row>
@@ -157,10 +161,40 @@ export default class Atlas extends Component {
         }
     }
 
-    renderSaveOptions(destinations) {
+    renderSettings(){
         return (
             <Dropdown className='mt-1' isOpen={this.state.SettingsDropDownOpen} toggle={() => {
                 this.setState({SettingsDropDownOpen: !this.state.SettingsDropDownOpen})
+            }}>
+                <DropdownToggle caret>
+                    Settings
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem header>Optimization Levels</DropdownItem>
+                    <DropdownItem onClick={() => {this.connectOneOpt()}}>Level 1</DropdownItem>
+                    <DropdownItem onClick={() => {this.connectTwoOpt()}}>Level 2</DropdownItem>
+                    <DropdownItem onClick={() => {this.connectThreeOpt()}}>Level 3</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
+        )
+    }
+
+    connectOneOpt(){
+        //TODO: connect level one-optimization function here or rewrite imports to use server functions
+    }
+
+    connectTwoOpt(){
+        //TODO: connect level two-optimization function here or rewrite imports to use server functions
+    }
+
+    connectThreeOpt(){
+        //TODO: connect level three-optimization function here or rewrite imports to use server functions
+    }
+
+    renderSaveOptions(destinations) {
+        return (
+            <Dropdown className='mt-1' isOpen={this.state.SaveDropDownOpen} toggle={() => {
+                this.setState({SaveDropDownOpen: !this.state.SaveDropDownOpen})
             }}>
                 <DropdownToggle caret>
                     Save Trip
