@@ -1,5 +1,17 @@
 import React, {Component} from 'react';
-import {Col, Container, Row, Button, Input, Alert, ButtonGroup, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+import {
+    Alert,
+    Button,
+    ButtonDropdown,
+    ButtonGroup,
+    Col,
+    Container,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Input,
+    Row
+} from 'reactstrap';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
@@ -78,7 +90,7 @@ export default class Atlas extends Component {
                         {this.renderItinerarySave()}
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
-                        {this.state.showStartBox && this.renderInputBox(0)}
+                        {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
                         {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
                         <ButtonGroup>
                             <Button onClick={() => {this.addInputBox()}}>+</Button>
@@ -95,7 +107,6 @@ export default class Atlas extends Component {
         )
     }
 
-
     renderLeafletMap() {
         return (
             <Map ref={map => {this.leafletMap = map;}}
@@ -111,6 +122,7 @@ export default class Atlas extends Component {
             </Map>
         )
     }
+
 
     renderRoundTripDistance() {
         if (this.state.roundTripDistance) {
@@ -209,8 +221,9 @@ export default class Atlas extends Component {
     }
 
     handleDelete() {
-        this.setState({numInputs: this.state.numInputs -1}, this.handleInputChange );
+        this.setState({numInputs: this.state.numInputs -1}, this.handleInputChange);
     }
+
     displayStartBox() {
         this.setState({showStartBox: !this.state.showStartBox})
     }
@@ -292,7 +305,7 @@ export default class Atlas extends Component {
 
     renderInputBox(index) {
         return (
-            <AtlasInput index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>
+            <AtlasInput id={index} index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>
         )
     }
 
