@@ -30,7 +30,8 @@ public class TestRequestTrip {
 
     @Test
     public void testDistancesT05() {
-        trip.options = new Option("6371.0", "World Ski Resorts -> 51,794");
+
+        trip.options = new Option("6371.0", "World Ski Resorts -> 51,794", "1", "none", "none");
         trip.places = new Place[6];
         trip.places[0] = new Place("45.415498", "6.634682", "Courchevel Tourisme");
         trip.places[1] = new Place("47.137390", "10.269852", "St Anton am Arlberg");
