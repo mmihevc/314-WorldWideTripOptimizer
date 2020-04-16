@@ -83,14 +83,39 @@ Last sprint we created too many tasks from the beginning and were not able to ge
 | 4/6 | #309, #219, #187, #217 | #216, #313, #234, #233, #218, #319 | |
 | 4/8 | #309, #219, #187, #217, #313, #227, #220, #228, #218, #216, #226 | #324, #322, #229, #323, #234, #233 | |
 | 4/10 | #309, #219, #187, #217, #313, #227, #220, #228, #218, #216, #226, #322, #314,#311, #317 | #324, #229, #323, #234, #233| |
-| 4/13 |  #309, #219, #187, #217, #313, #227, #220, #228, #218, #216, #226, #322, #314,#311, #317, #322 | #324, #229, #323, #234, #233 | |
+| 4/13 | #309, #219, #187, #217, #313, #227, #220, #228, #218, #216, #226, #322, #314,#311, #317, #322 | #324, #229, #323, #234, #233 | |
+| 4/15 | #309, #219, #187, #217, #313, #227, #220, #228, #218, #216, #226, #322, #314,#311, #317, #322, #318, #323, #316, #371, #229, #233, #368 | #320, #234, #369, #310 | |
 
 
 ## Review
 
 ### Epics done  
 
+*Modify Itinerary*
+
+We were able to complete this epic efficiently and with no impediments. Using a series of buttons the user can now add a box that represents the new starting location, reorder the destinations, reverse the trip, and delete a destination.
+
+*Save*
+
+We were able to complete this epic quickly and with no impediments. This epic was the easiest epic to complete during this sprint for our team. The user can now save both the map and the intinerary.
+
+*Optimize*
+
+We were able to complete this epic quickly and with no impediments. Based on a series of options that the user can provide, the intinerary can now be optimized based on those options.
+
+*Modify Destinations*
+
+The way we initally set our UI allowed for the user to modify the destinations without use needing to add anything additional besides adding more testing.
+
 ### Epics not done 
+
+*Protocol Version 4*
+
+We were able to complete all of the task associated with this epic expcept for implementing 3-opt. We did not reserve enough time to complete that task and test it to make sure it works. 
+
+*Concurrency*
+
+We were unable to complete this epic because we did not reserve enough time to get it done. Some of the other epics took longer than expected which led to use being unable to complete this epic. 
 
 ### What went well
 
