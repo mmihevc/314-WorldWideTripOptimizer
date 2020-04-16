@@ -221,7 +221,7 @@ export default class Atlas extends Component {
             alert("Invalid response time")
         }
         this.setState({
-            response:  document.getElementById('response').value,
+            response:  response,
             construction: document.getElementById('construction').value,
             improvement: document.getElementById('improvement').value
         })
