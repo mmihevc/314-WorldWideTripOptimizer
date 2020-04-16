@@ -447,10 +447,12 @@ export default class Atlas extends Component {
     }
 
     reverseTrip() {
-        let oldDestinations = this.getOldDestinations(1);
-        for (let i=1; i < this.state.numInputs; i++) {
-            let newIndex = this.state.numInputs-i;
+        let oldDestinations = this.getOldDestinations(0);
+        let counter = this.state.numInputs;
+        for (let i=0; i < this.state.numInputs; i++) {
+            let newIndex = counter - 1;
             this.setInput(newIndex, oldDestinations[i]);
+            counter = counter - 1;
         }
         this.handleInputChange();
     }

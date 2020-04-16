@@ -1,10 +1,11 @@
 import './enzyme.config.js';
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import {mount, shallow} from 'enzyme';
 
 import Atlas from '../src/components/Atlas/Atlas';
-import {setInput} from "../src/utils/input";
 import {simulateOnClick} from "./buttonClick";
+
+const UNICODE_REVERSE_SYMBOL = '\u21B9';
 
 function testInitialAppState() {
   const app = shallow(<Atlas />);
@@ -30,6 +31,16 @@ function testChangeStartingLocation() {
 }
 test("Testing Atlas's changeStartDestination", testChangeStartingLocation);
 
+function testReverseTrip() {
+  const app = shallow(<Atlas/>);
+  simulateOnClick(app.find('Button[children="Add to trip"]'), app);
+  simulateOnClick(app.find('Button[children="Add to trip"]'), app);
+  simulateOnClick(app.find('Button[children="Add to trip"]'), app);
+  simulateOnClick(app.find('Button[children="UNICODE_REVERSE_SYMBOL"]'), app);
+  expect(app.state().numInputs).toEqual(3);
+  expect(app.state()
+}
+test("Testing Atlas's ReverseTrip Function", testReverseTrip);
 
 function testGoToUserLocation() {
   const app = mount(<Atlas/>);
