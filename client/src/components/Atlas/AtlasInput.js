@@ -42,22 +42,16 @@ export default class AtlasInput extends Component {
         )
     }
 
-//TODO: Implement switch up function
     renderSwitchUpButton(index) {
         return (
-            <Button className="ml-1" onClick={() => {this.handleSwitch("up")}}>{UNICODE_UP_SYMBOL}</Button>
+            <Button className="ml-1" onClick={() => {this.props.handleSwitch("up", index)}}>{UNICODE_UP_SYMBOL}</Button>
         )
     }
 
-//TODO: Implement switch down function
     renderSwitchDownButton(index) {
         return (
-            <Button className="ml-1" onClick={() => {this.handleSwitch("down")}}>️{UNICODE_DOWN_SYMBOL}</Button>
+            <Button className="ml-1" onClick={() => {this.props.handleSwitch("down", index)}}>️{UNICODE_DOWN_SYMBOL}</Button>
         );
-    }
-
-    handleSwitch(direction){
-        //TODO: Implement switch functionality
     }
 
     handleDeleteFunction(){
@@ -74,6 +68,32 @@ export default class AtlasInput extends Component {
                    value={this.props.coordsValue}/>
         );
     }
+
+   /* handleSwitch(direction, index){
+        if(direction === "up"){
+            //Switch current with previous destination, rerender line, itinerary, and input boxes
+            let oldDestinations = [];
+            for (let i=0; i < this.props.numInputs; i++)
+                oldDestinations[i] = getInput(i);
+            let prevDestination = oldDestinations[index-1];
+            let curDestination = oldDestinations[index];
+            setInput(index-1, curDestination);
+            setInput(index, prevDestination);
+            this.props.handleInputChange();
+        }
+        if(direction === "down"){
+            //Switch current with next destination, rerender line, itinerary, and input boxes
+        }
+    }
+   /* handleSwitch(direction, index){
+        if(direction === "up"){
+            //let newDestinations = [];
+            //Switch current with previous destination, rerender line and input boxes
+        }
+        if(direction === "down"){
+            //Switch current with next destination, rerender line and input boxes
+        }
+    }*/
 
     handleSubmit(event) {
         event.preventDefault();
