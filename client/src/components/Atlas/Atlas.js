@@ -1,5 +1,24 @@
 import React, {Component} from 'react';
-import { Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, FormGroup, Input, InputGroup, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
+import {
+    Alert,
+    Button,
+    ButtonGroup,
+    Col,
+    Container,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Form,
+    FormGroup,
+    Input,
+    InputGroup,
+    Label,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
+    Row
+} from 'reactstrap';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
@@ -50,6 +69,7 @@ export default class Atlas extends Component {
         this.handleOnChange = this.handleOnChange.bind(this);
         this.setInput = this.setInput.bind(this);
         this.getInput = this.getInput.bind(this);
+        this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
 
         this.state = {
             userLocation: null,
@@ -326,7 +346,8 @@ export default class Atlas extends Component {
                         onChange={this.handleOnChange}
                         nameValue={this.state.inputNames[index]}
                         coordsValue={this.state.inputCoords[index]}
-                        handleSwitch= {this.handleSwitch}/>
+                        handleSwitch= {this.handleSwitch}
+                        handleDeleteFunction = {this.handleDeleteFunction}/>
         )
     }
 
@@ -421,9 +442,7 @@ export default class Atlas extends Component {
     }
 
     reverseTrip() {
-        let oldDestinations = [];
-        for (let i=1; i < this.state.numInputs; i++)
-            oldDestinations[i] = this.getInput(i);
+        let oldDestinations = this.getOldDestinations(1);
         for (let i=1; i < this.state.numInputs; i++) {
             let newIndex = this.state.numInputs-i;
             this.setInput(newIndex, oldDestinations[i]);
@@ -431,21 +450,53 @@ export default class Atlas extends Component {
         this.handleInputChange();
     }
 
+    getOldDestinations(startVal){
+        let oldDestinations = [];
+        for (let i=startVal; i < this.state.numInputs; i++)
+            oldDestinations[i] = this.getInput(i);
+        return oldDestinations;
+    }
+
     handleSwitch(direction, index){
+        //ToDo: ensure itinerary so doesn't add duplicates, error catch for first and last place
+        let oldDestinations = this.getOldDestinations(0);
+        let curDestination = oldDestinations[index];
         if(direction === "up"){
-            //Switch current with previous destination, rerender line, itinerary, and input boxes
-            let oldDestinations = [];
-            for (let i=0; i < this.state.numInputs; i++)
-                oldDestinations[i] = getInput(i);
             let prevDestination = oldDestinations[index-1];
-            let curDestination = oldDestinations[index];
             this.setInput(index-1, curDestination);
             this.setInput(index, prevDestination);
-            this.handleInputChange();
         }
         if(direction === "down"){
-            //Switch current with next destination, rerender line, itinerary, and input boxes
+            let nextDestination = oldDestinations[index+1];
+            this.setInput(index+1, curDestination);
+            this.setInput(index, nextDestination);
         }
+        this.handleInputChange();
+    }
+
+    changeStartDestination(index) {
+        let oldDestinations = this.getOldDestinations(0);
+        for (let i=0; i < this.state.numInputs; i++) {
+            let newIndex = i - index;
+            if (newIndex < 0)
+                newIndex += this.state.numInputs;
+            this.setInput(newIndex, oldDestinations[i]);
+        }
+        this.handleInputChange();
+    }
+
+    handleDeleteFunction(index){
+        let oldDestinations = this.getOldDestinations(0);
+        for (let i=0; i < this.state.numInputs; i++) {
+            if(i>index){
+                let newIndex = i-1;
+                console.log(newIndex);
+                this.setInput(newIndex, oldDestinations[i]);
+            }
+        }
+        this.setState({numInputs: this.state.numInputs - 1});
+        this.handleInputChange();
+        //this.setState({numInputs: this.state.numInputs - 1}, this.handleInputChange);
     }
 
     handleOnChange(evt) {
