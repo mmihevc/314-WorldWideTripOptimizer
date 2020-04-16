@@ -484,7 +484,6 @@ export default class Atlas extends Component {
         for (let i=0; i < this.state.numInputs; i++) {
             if(i>index){
                 let newIndex = i-1;
-                console.log(newIndex);
                 this.setInput(newIndex, oldDestinations[i]);
             }
         }
