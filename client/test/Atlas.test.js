@@ -5,7 +5,7 @@ import {mount, shallow} from 'enzyme';
 import Atlas from '../src/components/Atlas/Atlas';
 import {simulateOnClick} from "./buttonClick";
 
-const UNICODE_REVERSE_SYMBOL = '\u21B9';
+//const UNICODE_REVERSE_SYMBOL = '\u21B9';
 
 function testInitialAppState() {
   const app = shallow(<Atlas />);
@@ -33,12 +33,13 @@ test("Testing Atlas's changeStartDestination", testChangeStartingLocation);
 
 function testReverseTrip() {
   const app = shallow(<Atlas/>);
+  let oldDest = app.state().destinations(0);
   simulateOnClick(app.find('Button[children="Add to trip"]'), app);
   simulateOnClick(app.find('Button[children="Add to trip"]'), app);
   simulateOnClick(app.find('Button[children="Add to trip"]'), app);
-  simulateOnClick(app.find('Button[children="UNICODE_REVERSE_SYMBOL"]'), app);
+  simulateOnClick(app.find('Button[children=\'\u21B9\']'), app);
   expect(app.state().numInputs).toEqual(3);
-  expect(app.state()
+  expect(app.state().destinations(app.state().numInputs.length)).toEqual(oldDest);
 }
 test("Testing Atlas's ReverseTrip Function", testReverseTrip);
 
