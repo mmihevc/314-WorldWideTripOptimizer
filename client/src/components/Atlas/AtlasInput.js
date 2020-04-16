@@ -35,7 +35,6 @@ export default class AtlasInput extends Component {
         )
     }
 
-//TODO: Implement delete function
     renderDeleteButton(index) {
         return (
             <Button className="ml-1" onClick={() => {this.props.handleDeleteFunction(index)}}>✕️</Button>
@@ -52,10 +51,6 @@ export default class AtlasInput extends Component {
         return (
             <Button className="ml-1" onClick={() => {this.props.handleSwitch("down", index)}}>️{UNICODE_DOWN_SYMBOL}</Button>
         );
-    }
-
-    handleDeleteFunction(){
-        //TODO: Implement individual delete functionality
     }
 
     renderLngLatBox(valid, invalid, index) {

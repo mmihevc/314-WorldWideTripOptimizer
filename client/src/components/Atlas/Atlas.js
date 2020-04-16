@@ -496,7 +496,6 @@ export default class Atlas extends Component {
         }
         this.setState({numInputs: this.state.numInputs - 1});
         this.handleInputChange();
-        //this.setState({numInputs: this.state.numInputs - 1}, this.handleInputChange);
     }
 
     handleOnChange(evt) {
