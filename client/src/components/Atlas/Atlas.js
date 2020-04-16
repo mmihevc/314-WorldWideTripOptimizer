@@ -1,16 +1,5 @@
 import React, {Component} from 'react';
-import {
-    Alert,
-    Button,
-    ButtonGroup,
-    Col,
-    Container,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    Input,
-    Row
-} from 'reactstrap';
+import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, Row, Form, Modal, ModalHeader, InputGroup, FormGroup, Label, ModalBody, ModalFooter} from 'reactstrap';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
@@ -25,6 +14,7 @@ import Itinerary from "./Itinerary";
 import {getInput, latLngToString, setInput} from "../../utils/input";
 import {saveCSV, saveJSON, saveKML, saveSVG} from "../../utils/save";
 import Dropdown from "reactstrap/lib/Dropdown";
+import handleSubmit from "./AtlasInput";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -54,7 +44,7 @@ export default class Atlas extends Component {
         this.reverseTrip = this.reverseTrip.bind(this);
         this.displayStartBox = this.displayStartBox.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-
+        this.displayOptPopover = this.displayOptPopover.bind(this);
 
         this.state = {
             userLocation: null,
@@ -70,6 +60,7 @@ export default class Atlas extends Component {
             showItinerary: false,
             SettingsDropDownOpen: false,
             showStartBox: false,
+            showOpt: false,
         };
         this.clearInputs();
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
@@ -84,6 +75,7 @@ export default class Atlas extends Component {
                         <ButtonGroup>
                             {this.renderWhereAmI()}
                             {this.renderSettings()}
+                            {this.renderOptimizationOptions()}
                         </ButtonGroup>
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
@@ -160,12 +152,6 @@ export default class Atlas extends Component {
                     Settings
                 </DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem header><bold>Trip Optimization Levels</bold></DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem onClick={() => {connectOneTwoOrThreeOpt("1")}}>Level 1</DropdownItem>
-                    <DropdownItem onClick={() => {connectOneTwoOrThreeOpt("2")}}>Level 2</DropdownItem>
-                    <DropdownItem onClick={() => {connectOneTwoOrThreeOpt("3")}}>Level 3</DropdownItem>
-                    <DropdownItem divider />
                     <DropdownItem header>Save Map</DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem onClick={() => {saveKML(destinations)}}>KML</DropdownItem>
@@ -180,17 +166,50 @@ export default class Atlas extends Component {
         )
     }
 
-    connectOneTwoOrThreeOpt(level){
-        //TODO: connect level one, two or three-optimization function here or rewrite imports to use server functions
-        if (level == "1") {
+    renderOptimizationOptions() {
+        return (
+            <Form onSubmit={handleSubmit}>
+                <Button className="ml-1" onClick={this.displayOptPopover}>Opt Options</Button>
+                <Modal isOpen={this.state.showOpt} toggle={this.displayOptPopover}>
+                    <ModalHeader toggle={this.displayOptPopover}>Optional Optimization Options</ModalHeader>
+                    <ModalBody>
+                        <InputGroup>
+                            <Input id="response" placeholder="Enter desired response time: 1-60" />
+                        </InputGroup>
+                        <br/>
+                        <FormGroup>
+                            <Label for="construction">Construction</Label>
+                            <Input type="select" id="construction">
+                                <option>none</option>
+                                <option>one</option>
+                                <option>some</option>
+                            </Input>
+                            <br/>
+                            <Label for="improvement">Improvement</Label>
+                            <Input type="select" id="improvement">
+                                <option>none</option>
+                                <option>2opt</option>
+                                <option>3opt</option>
+                            </Input>
+                        </FormGroup>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button onClick={this.connectOneTwoOrThreeOpt}>Submit</Button>
+                    </ModalFooter>
+                </Modal>
+            </Form>
+        )
+    }
 
-        }
-        if (level == "2") {
+    displayOptPopover() {
+        this.setState({showOpt : !this.state.showOpt});
+    }
 
-        }
-        if (level == "3") {
-
-        }
+    connectOneTwoOrThreeOpt(){
+        let response = document.getElementById('response').value;
+        let construction = document.getElementById('construction').value;
+        let improvement = document.getElementById('improvement').value;
+        tripCall(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.props.serverPort, this.updateRoundTripDistance, construction, improvement, response);
     }
 
     renderModifyButtons() {
