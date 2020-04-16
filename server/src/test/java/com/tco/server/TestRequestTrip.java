@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+
 public class TestRequestTrip {
     private RequestTrip trip;
 
@@ -12,7 +13,7 @@ public class TestRequestTrip {
     public void createTripRequestForTestCases(){
         trip = new RequestTrip();
         trip.requestType = "trip";
-        trip.requestVersion = 3;
+        trip.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
     }
 
     @Test
