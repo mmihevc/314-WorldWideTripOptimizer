@@ -12,12 +12,12 @@ export default class AtlasInput extends Component {
                 <InputGroup>
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText>🌎</InputGroupText>
-                        {this.renderSwitchUpButton(this.props.index)}
-                        {this.renderSwitchDownButton(this.props.index)}
                         {this.renderNameBox(this.props.index)}
                     </InputGroupAddon>
                     {this.renderLngLatBox(this.props.valid, this.props.invalid, this.props.index)}
                     <InputGroupAddon addonType="append">
+                        {this.renderSwitchUpButton(this.props.index)}
+                        {this.renderSwitchDownButton(this.props.index)}
                         {this.renderDeleteButton(this.props.index)}
                     </InputGroupAddon>
                 </InputGroup>
@@ -27,9 +27,11 @@ export default class AtlasInput extends Component {
 
     renderNameBox(index) {
         return (
-            <Input id={"name"+index}
+            <Input name={"Name"+index}
                    placeholder="Name"
-                   size='16'/>
+                   size='16'
+                   onChange={this.props.onChange}
+                   value={this.props.nameValue}/>
         )
     }
 
@@ -60,8 +62,10 @@ export default class AtlasInput extends Component {
         return (
             <Input valid={valid}
                    invalid={invalid}
-                   id={"longitudeLatitude"+index}
-                   placeholder="Longitude and Latitude"/>
+                   name={"Coords"+index}
+                   placeholder="Longitude and Latitude"
+                   onChange={this.props.onChange}
+                   value={this.props.coordsValue}/>
         );
     }
 

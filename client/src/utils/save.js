@@ -1,7 +1,7 @@
 import tokml from 'tokml';
 import geojson2svg from 'geojson2svg';
 import {downloadFile} from "./fileIO";
-import {getLines, lineCrossesMeridian} from "./dateline";
+import {getLines} from "./dateline";
 
 const KML_MIME_TYPE = 'application/vnd.google-earth.kml+xml';
 const SVG_MIME_TYPE = 'image/svg+xml';
@@ -36,7 +36,7 @@ export function saveCSV(destinations){
 }
 //add a similar function but for csv and json so i can still use the download file function from fileio
 
-function getGeoJSON(destinations) {
+export function getGeoJSON(destinations) {
     let features = [];
     for (let i=0; i < destinations.length; i++) {
         features = features.concat({
@@ -53,7 +53,6 @@ function getGeoJSON(destinations) {
     for (let i=0; i < destinations.length-1; i++)
         features = addLineFeature(features, destinations[i], destinations[i+1]);
     features = addLineFeature(features, destinations[destinations.length-1], destinations[0]);
-    console.log(features);
     return {
         type: 'FeatureCollection',
         features: features
