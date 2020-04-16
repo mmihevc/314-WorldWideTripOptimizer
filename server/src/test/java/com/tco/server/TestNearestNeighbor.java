@@ -1,6 +1,8 @@
 package com.tco.server;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.*;
 
@@ -17,9 +19,9 @@ public class TestNearestNeighbor {
         places[5] = new Place("40.41", "-104.71", "Greeley");
         Place[] sortedPlaces = NearestNeighbor.nearestNeighbor(places);
         Place[] expectedPlaces = new Place[6];
-        expectedPlaces[0] = places[0];
+        expectedPlaces[0] = places[2];
         expectedPlaces[1] = places[4];
-        expectedPlaces[2] = places[2];
+        expectedPlaces[2] = places[0];
         expectedPlaces[3] = places[5];
         expectedPlaces[4] = places[1];
         expectedPlaces[5] = places[3];
@@ -35,7 +37,7 @@ public class TestNearestNeighbor {
         places[0] = new Place("39.7392", "-104.9903", "Denver");
         places[1] = new Place("40.01499", "-105.27055", "Boulder");
         places[2] = new Place("40.585258", "-105.084419", "Fort Collins");
-        long[][] distanceMatrix = NearestNeighbor.buildDistanceMatrix(places, 3958.8);
+        long[][] distanceMatrix = NearestNeighbor.buildDistanceMatrix(places);
         assertArrayEquals("NearestNeighbor buildDistanceMatrix", expectedMatrix, distanceMatrix);
     }
 

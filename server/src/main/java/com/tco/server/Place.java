@@ -18,4 +18,5 @@ public class Place {
     double getLng() {
         return Double.parseDouble(this.longitude);
     }
+
 }

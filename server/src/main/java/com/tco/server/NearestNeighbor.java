@@ -7,89 +7,125 @@ public class NearestNeighbor {
     public static Place[] nearestNeighbor(Place[] places) {
         if (places.length <= 3)
             return places;
-        long[][] distanceMatrix = buildDistanceMatrix(places, 3958.8);
-        int[] bestTour = new int[places.length];
+        long[][] distanceMatrix = buildDistanceMatrix(places);
+        Tour bestTour = new Tour(places.length, 0, distanceMatrix);
         long bestDistance = Long.MAX_VALUE;
-        for (int i=0; i < places.length; i++) {
-            int[] tour = new int[places.length];
-            boolean[] unvisitedPlaces = new boolean[places.length];
-            Arrays.fill(tour, -1);
-            Arrays.fill(unvisitedPlaces, true);
-            tour[0] = i;
-            int tourIndex = 1;
-            unvisitedPlaces[i] = false;
-            while (placesAreUnvisited(unvisitedPlaces)) {
-                int lastPlace = getLastPlaceInTour(tour);
-                int nextPlace = getClosestPlace(distanceMatrix, lastPlace, unvisitedPlaces);
-                tour[tourIndex] = nextPlace;
-                tourIndex++;
-                unvisitedPlaces[nextPlace] = false;
-            }
-            long distance = getTourDistance(distanceMatrix, tour);
-            if (distance < bestDistance) {
-                bestDistance = distance;
-                bestTour = tour.clone();
+        for (int placeIndex=0; placeIndex < places.length; placeIndex++) {
+            Tour curTour = new Tour(places.length, placeIndex, distanceMatrix);
+            long curDistance = curTour.getTotalDistance(distanceMatrix);
+            if (curDistance < bestDistance) {
+                bestDistance = curDistance;
+                bestTour = curTour;
             }
         }
-        Place[] newPlaces = new Place[places.length];
-        for (int i=0; i < bestTour.length; i++)
-            newPlaces[i] = places[bestTour[i]];
-        return newPlaces;
-    }
-
-    protected static long getTourDistance(long[][] distanceMatrix, int[] tour) {
-        long distance = 0;
-        for (int i=0; i < tour.length-1; i++) {
-            int start = tour[i];
-            int finish = tour[i+1];
-            distance += distanceMatrix[start][finish];
-        }
-        distance += distanceMatrix[tour[tour.length-1]][tour[0]];
-        return distance;
+        return bestTour.getTour(places);
     }
 
     protected static int getClosestPlace(long[][] distanceMatrix, int startPlace, boolean[] unvisitedPlaces) {
+        long[] distances = distanceMatrix[startPlace];
         long bestDistance = Long.MAX_VALUE;
         int closestPlace = -1;
-        for (int i=0; i < distanceMatrix[startPlace].length; i++) {
-            if (startPlace == i || !unvisitedPlaces[i])
+        for (int placeIndex=0; placeIndex < distances.length; placeIndex++) {
+            if (!placeShouldBeVisited(placeIndex, startPlace, unvisitedPlaces))
                 continue;
-            long distance = distanceMatrix[startPlace][i];
+            long distance = distances[placeIndex];
             if (distance < bestDistance) {
-                closestPlace = i;
+                closestPlace = placeIndex;
                 bestDistance = distance;
             }
         }
         return closestPlace;
     }
 
-    protected static int getLastPlaceInTour(int[] tour) {
-        for (int i=0; i < tour.length; i++)
-            if (tour[i] != -1)
-                return tour[i];
-        return -1;
+    private static boolean placeShouldBeVisited(int placeIndex, int startPlace, boolean[] unvisitedPlaces) {
+        return startPlace != placeIndex && unvisitedPlaces[placeIndex];
     }
 
-    protected static boolean placesAreUnvisited(boolean[] unvisitedPlaces) {
-        for (int i=0; i < unvisitedPlaces.length; i++)
-            if (unvisitedPlaces[i])
+    protected static long[][] buildDistanceMatrix(Place[] places) {
+        long[][] distanceMatrix = new long[places.length][places.length];
+        for (int i=0; i < places.length; i++)
+            for (int j=0; j < places.length; j++)
+                distanceMatrix[i][j] = getDistanceAtIndices(places, distanceMatrix, i, j);
+        return distanceMatrix;
+    }
+
+    private static long getDistanceAtIndices(Place[] places, long[][] distanceMatrix, int i, int j) {
+        if (i == j)
+            return 0;
+        else if (j < i)
+            return distanceMatrix[j][i];
+        else
+            return Utility.getDistance(places[i], places[j], 3958.8);
+    }
+
+}
+
+class Tour {
+    private long[][] distanceMatrix;
+    private int[] tour;
+    private boolean[] unvisitedPlaces;
+    private int tourIndex;
+
+    Tour(int size, int startPlace, long[][] distanceMatrix) {
+        this.distanceMatrix = distanceMatrix;
+        this.initializeTour(size, startPlace);
+        this.buildTour();
+    }
+
+    private void initializeTour(int size, int startPlace) {
+        this.tour = new int[size];
+        this.unvisitedPlaces = new boolean[size];
+        Arrays.fill(this.tour, -1);
+        Arrays.fill(this.unvisitedPlaces, true);
+        this.tour[0] = startPlace;
+        this.unvisitedPlaces[startPlace] = false;
+        this.tourIndex = 1;
+    }
+
+    private void buildTour() {
+        while (this.placesAreUnvisited())
+            this.visitNextPlace();
+    }
+
+    private void visitNextPlace() {
+        int lastPlace = this.getLastPlace();
+        int nextPlace = NearestNeighbor.getClosestPlace(distanceMatrix, lastPlace, unvisitedPlaces);
+        this.addPlace(nextPlace);
+        this.unvisitedPlaces[nextPlace] = false;
+    }
+
+    private void addPlace(int place) {
+        this.tour[this.tourIndex] = place;
+        this.tourIndex++;
+    }
+
+    private int getLastPlace() {
+        return this.tour[this.tourIndex-1];
+    }
+
+    private boolean placesAreUnvisited() {
+        for (boolean unvisitedPlace : unvisitedPlaces)
+            if (unvisitedPlace)
                 return true;
         return false;
     }
 
-    protected static long[][] buildDistanceMatrix(Place[] places, double earthRadius) {
-        long[][] distanceMatrix = new long[places.length][places.length];
-        for (int i=0; i < places.length; i++) {
-            for (int j=0; j < places.length; j++) {
-                if (i == j)
-                    distanceMatrix[i][j] = 0;
-                else if (j < i)
-                    distanceMatrix[i][j] = distanceMatrix[j][i];
-                else
-                    distanceMatrix[i][j] = Utility.getDistance(places[i], places[j], earthRadius);
-            }
+    public Place[] getTour(Place[] places) {
+        Place[] newPlaces = new Place[places.length];
+        for (int placeIndex=0; placeIndex < places.length; placeIndex++)
+            newPlaces[placeIndex] = places[this.tour[placeIndex]];
+        return newPlaces;
+    }
+
+    public long getTotalDistance(long[][] distanceMatrix) {
+        long distance = 0;
+        for (int placeIndex=0; placeIndex < this.tour.length-1; placeIndex++) {
+            int start = this.tour[placeIndex];
+            int finish = this.tour[placeIndex+1];
+            distance += distanceMatrix[start][finish];
         }
-        return distanceMatrix;
+        distance += distanceMatrix[this.tour[this.tour.length-1]][this.tour[0]];
+        return distance;
     }
 
 }
