@@ -3,13 +3,22 @@ import {HTTP_OK, PROTOCOL_VERSION} from "../components/Constants";
 import * as tripSchema from "../../schemas/TripResponse";
 import * as distanceSchema from "../../schemas/DistanceResponse";
 
-export function tripCall(destinations, rad, port, callback, response = 1, construction, improvement){
+export function tripCall(destinations, rad, port, callback, response , construction, improvement){
+    if(response.length==0){
+        response="1";
+    }
+    if(construction.length==0){
+        construction="none";
+    }
+    if(improvement.length==0){
+        improvement="none";
+    }
     let values = {
         requestVersion: PROTOCOL_VERSION,
         requestType: 'trip',
         options: {
             earthRadius: rad,
-            optimizations: {
+            optimization: {
                 response: response, //desired response time from 1-60 seconds
                 construction: construction,
                 improvement: improvement
