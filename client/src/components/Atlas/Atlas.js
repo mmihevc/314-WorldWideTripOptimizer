@@ -448,7 +448,6 @@ export default class Atlas extends Component {
         }
     }
 
-}
     handleOnChange(evt) {
         const target = evt.target;
         const value = target.value;
