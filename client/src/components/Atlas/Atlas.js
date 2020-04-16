@@ -115,10 +115,7 @@ export default class Atlas extends Component {
                             <Button className="ml-1" onClick={this.displayStartBox}>Start</Button>
                         </ButtonGroup>
                         {this.renderModifyButtons()}
-                        <p className="mt-2">
-                            Load Trip:
-                            <Input type='file' name='file' onChange={this.loadFile}/>
-                        </p>
+                        {this.renderLoadTrip()}
                     </Col>
                 </Row>
             </Container>
@@ -138,6 +135,15 @@ export default class Atlas extends Component {
                 {this.renderMultiple(this.state.destinations.length, this.renderDestination)}
                 {this.renderLines(this.state.destinations)}
             </Map>
+        )
+    }
+
+    renderLoadTrip() {
+        return (
+            <p className="mt-2">
+                Load Trip:
+                <Input type='file' name='file' onChange={this.loadFile}/>
+            </p>
         )
     }
 
@@ -220,10 +226,7 @@ export default class Atlas extends Component {
                                 <option>3opt</option>
                             </Input>
                         </FormGroup>
-                        <p className="mt-2">
-                            Load Trip:
-                            <Input type='file' name='file' onChange={this.loadFile}/>
-                        </p>
+                        {this.renderLoadTrip()}
                     </ModalBody>
                     <ModalFooter></ModalFooter>
                 </Modal>
