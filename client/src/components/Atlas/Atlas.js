@@ -287,6 +287,8 @@ export default class Atlas extends Component {
                 complete: this.parseCSV
             };
             Papa.parse(file, config);
+        }else{
+            alert("File must be a JSON or CSV")
         }
     }
 
