@@ -3,7 +3,7 @@ import {HTTP_OK, PROTOCOL_VERSION} from "../components/Constants";
 import * as tripSchema from "../../schemas/TripResponse";
 import * as distanceSchema from "../../schemas/DistanceResponse";
 
-export function tripCall(destinations, rad, port, callback, construction, improvement, response = 1){
+export function tripCall(destinations, rad, port, callback, response = 1, construction, improvement){
     let values = {
         requestVersion: PROTOCOL_VERSION,
         requestType: 'trip',

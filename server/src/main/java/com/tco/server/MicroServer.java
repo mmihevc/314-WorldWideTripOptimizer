@@ -16,7 +16,6 @@ import spark.Spark;
 
 class MicroServer {
 
-  private final String CONFIG_REQUEST_BODY = "{\"requestType\" : \"config\", \"requestVersion\" : 3}";
   private final Logger log = LoggerFactory.getLogger(MicroServer.class);
   private DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
@@ -67,6 +66,7 @@ class MicroServer {
   }
 
   private String processConfigRequest(Request request, Response response) {
+    String CONFIG_REQUEST_BODY = "{\"requestType\" : \"config\", \"requestVersion\" : 4}";
     logRequest(request);
     return processHttpRequest(RequestConfig.class, CONFIG_REQUEST_BODY, response);
   }
