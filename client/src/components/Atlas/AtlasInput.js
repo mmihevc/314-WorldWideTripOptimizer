@@ -27,9 +27,11 @@ export default class AtlasInput extends Component {
 
     renderNameBox(index) {
         return (
-            <Input id={"name"+index}
+            <Input name={"Name"+index}
                    placeholder="Name"
-                   size='16'/>
+                   size='16'
+                   onChange={this.props.onChange}
+                   value={this.props.nameValue}/>
         )
     }
 
@@ -66,8 +68,10 @@ export default class AtlasInput extends Component {
         return (
             <Input valid={valid}
                    invalid={invalid}
-                   id={"longitudeLatitude"+index}
-                   placeholder="Longitude and Latitude"/>
+                   name={"Coords"+index}
+                   placeholder="Longitude and Latitude"
+                   onChange={this.props.onChange}
+                   value={this.props.coordsValue}/>
         );
     }
 
