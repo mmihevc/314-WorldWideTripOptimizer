@@ -1,24 +1,5 @@
 import React, {Component} from 'react';
-import {
-    Alert,
-    Button,
-    ButtonGroup,
-    Col,
-    Container,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    Form,
-    FormGroup,
-    Input,
-    InputGroup,
-    Label,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    Row
-} from 'reactstrap';
+import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, FormGroup, Input, InputGroup, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row} from 'reactstrap';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
@@ -35,7 +16,6 @@ import {latLngToString, parseIndex, parseStateName} from "../../utils/input";
 import {saveCSV, saveJSON, saveKML, saveSVG} from "../../utils/save";
 import Dropdown from "reactstrap/lib/Dropdown";
 
-
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
 const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors";
@@ -43,11 +23,9 @@ const MAP_LAYER_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const MAP_STYLE_LENGTH = 500;
 const MAP_ZOOM_MAX = 17;
 const MAP_ZOOM_MIN = 1;
-
 const UNICODE_REVERSE_SYMBOL = '\u21B9';
 
 export default class Atlas extends Component {
-
     constructor(props) {
         super(props);
         this.goToUserLocation = this.goToUserLocation.bind(this);
@@ -70,8 +48,6 @@ export default class Atlas extends Component {
         this.getInput = this.getInput.bind(this);
         this.connectOneTwoOrThreeOpt = this.connectOneTwoOrThreeOpt.bind(this);
         this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
-
-
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -209,26 +185,19 @@ export default class Atlas extends Component {
                     <ModalBody>
                         <InputGroup>
                             <Input id="response" placeholder="Enter desired response time: 1-60" onChange={this.connectOneTwoOrThreeOpt}/>
-                        </InputGroup>
-                        <br/>
+                        </InputGroup><br/>
                         <FormGroup>
                             <Label for="construction">Construction</Label>
                             <Input type="select" id="construction" onChange={this.connectOneTwoOrThreeOpt}>
-                                <option>none</option>
-                                <option>one</option>
-                                <option>some</option>
-                            </Input>
-                            <br/>
+                                <option>none</option><option>one</option><option>some</option>
+                            </Input><br/>
                             <Label for="improvement">Improvement</Label>
                             <Input type="select" id="improvement" onChange={this.connectOneTwoOrThreeOpt}>
-                                <option>none</option>
-                                <option>2opt</option>
-                                <option>3opt</option>
+                                <option>none</option><option>2opt</option><option>3opt</option>
                             </Input>
                         </FormGroup>
                         {this.renderLoadTrip()}
                     </ModalBody>
-                    <ModalFooter></ModalFooter>
                 </Modal>
             </Form>
         )
@@ -478,17 +447,6 @@ export default class Atlas extends Component {
             let nextDestination = oldDestinations[index+1];
             this.setInput(index+1, curDestination);
             this.setInput(index, nextDestination);
-        }
-        this.handleInputChange();
-    }
-
-    changeStartDestination(index) {
-        let oldDestinations = this.getOldDestinations(0);
-        for (let i=0; i < this.state.numInputs; i++) {
-            let newIndex = i - index;
-            if (newIndex < 0)
-                newIndex += this.state.numInputs;
-            this.setInput(newIndex, oldDestinations[i]);
         }
         this.handleInputChange();
     }
