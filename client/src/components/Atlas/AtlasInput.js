@@ -35,10 +35,9 @@ export default class AtlasInput extends Component {
         )
     }
 
-//TODO: Implement delete function
     renderDeleteButton(index) {
         return (
-            <Button className="ml-1" onClick={() => {this.handleDeleteFunction()}}>✕️</Button>
+            <Button className="ml-1" onClick={() => {this.props.handleDeleteFunction(index)}}>✕️</Button>
         )
     }
 
@@ -54,10 +53,6 @@ export default class AtlasInput extends Component {
         );
     }
 
-    handleDeleteFunction(){
-        //TODO: Implement individual delete functionality
-    }
-
     renderLngLatBox(valid, invalid, index) {
         return (
             <Input valid={valid}
@@ -68,32 +63,6 @@ export default class AtlasInput extends Component {
                    value={this.props.coordsValue}/>
         );
     }
-
-   /* handleSwitch(direction, index){
-        if(direction === "up"){
-            //Switch current with previous destination, rerender line, itinerary, and input boxes
-            let oldDestinations = [];
-            for (let i=0; i < this.props.numInputs; i++)
-                oldDestinations[i] = getInput(i);
-            let prevDestination = oldDestinations[index-1];
-            let curDestination = oldDestinations[index];
-            setInput(index-1, curDestination);
-            setInput(index, prevDestination);
-            this.props.handleInputChange();
-        }
-        if(direction === "down"){
-            //Switch current with next destination, rerender line, itinerary, and input boxes
-        }
-    }
-   /* handleSwitch(direction, index){
-        if(direction === "up"){
-            //let newDestinations = [];
-            //Switch current with previous destination, rerender line and input boxes
-        }
-        if(direction === "down"){
-            //Switch current with next destination, rerender line and input boxes
-        }
-    }*/
 
     handleSubmit(event) {
         event.preventDefault();
