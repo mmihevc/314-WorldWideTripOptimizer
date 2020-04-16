@@ -26,6 +26,7 @@ import {getInput, latLngToString, setInput} from "../../utils/input";
 import {saveCSV, saveJSON, saveKML, saveSVG} from "../../utils/save";
 import Dropdown from "reactstrap/lib/Dropdown";
 
+
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
 const MAP_LAYER_ATTRIBUTION = "&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors";
@@ -52,7 +53,7 @@ export default class Atlas extends Component {
         this.addToTripButton = this.addToTripButton.bind(this);
         this.addUserMarker = this.addUserMarker.bind(this);
         this.reverseTrip = this.reverseTrip.bind(this);
-        this.handleSwitch = this.reverseTrip.bind(this);
+        this.handleSwitch = this.handleSwitch.bind(this);
         this.displayStartBox = this.displayStartBox.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
 
@@ -280,7 +281,7 @@ export default class Atlas extends Component {
 
     renderInputBox(index) {
         return (
-            <AtlasInput numInputs= {this.state.numInputs} index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>
+            <AtlasInput handleSwitch= {this.handleSwitch} index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>
         )
     }
 
@@ -398,6 +399,23 @@ export default class Atlas extends Component {
             setInput(newIndex, oldDestinations[i]);
         }
         this.handleInputChange();
+    }
+
+    handleSwitch(direction, index){
+        if(direction === "up"){
+            //Switch current with previous destination, rerender line, itinerary, and input boxes
+            let oldDestinations = [];
+            for (let i=0; i < this.state.numInputs; i++)
+                oldDestinations[i] = getInput(i);
+            let prevDestination = oldDestinations[index-1];
+            let curDestination = oldDestinations[index];
+            setInput(index-1, curDestination);
+            setInput(index, prevDestination);
+            this.handleInputChange();
+        }
+        if(direction === "down"){
+            //Switch current with next destination, rerender line, itinerary, and input boxes
+        }
     }
 
 }

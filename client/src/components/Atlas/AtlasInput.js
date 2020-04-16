@@ -1,8 +1,5 @@
 import React, {Component} from "react";
 import {Button, Form, Input, InputGroup, InputGroupAddon, InputGroupText} from "reactstrap";
-import {getInput, setInput} from "../../utils/input";
-import {handleSwitch} from "./Atlas";
-
 
 const UNICODE_UP_SYMBOL = '\u2191';
 const UNICODE_DOWN_SYMBOL = '\u2193';
@@ -45,13 +42,13 @@ export default class AtlasInput extends Component {
 
     renderSwitchUpButton(index) {
         return (
-            <Button className="ml-1" onClick={() => {handleSwitch("up", index)}}>{UNICODE_UP_SYMBOL}</Button>
+            <Button className="ml-1" onClick={() => {this.props.handleSwitch("up", index)}}>{UNICODE_UP_SYMBOL}</Button>
         )
     }
 
     renderSwitchDownButton(index) {
         return (
-            <Button className="ml-1" onClick={() => {handleSwitch("down", index)}}>️{UNICODE_DOWN_SYMBOL}</Button>
+            <Button className="ml-1" onClick={() => {this.props.handleSwitch("down", index)}}>️{UNICODE_DOWN_SYMBOL}</Button>
         );
     }
 
@@ -68,7 +65,7 @@ export default class AtlasInput extends Component {
         );
     }
 
-    handleSwitch(direction, index){
+   /* handleSwitch(direction, index){
         if(direction === "up"){
             //Switch current with previous destination, rerender line, itinerary, and input boxes
             let oldDestinations = [];
@@ -78,7 +75,7 @@ export default class AtlasInput extends Component {
             let curDestination = oldDestinations[index];
             setInput(index-1, curDestination);
             setInput(index, prevDestination);
-            handleInputChange();
+            this.props.handleInputChange();
         }
         if(direction === "down"){
             //Switch current with next destination, rerender line, itinerary, and input boxes
