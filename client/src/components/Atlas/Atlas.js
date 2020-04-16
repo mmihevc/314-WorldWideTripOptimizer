@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, FormGroup, Input, InputGroup, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row} from 'reactstrap';
+import { Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, FormGroup, Input, InputGroup, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
@@ -15,6 +15,7 @@ import Itinerary from "./Itinerary";
 import {latLngToString, parseIndex, parseStateName} from "../../utils/input";
 import {saveCSV, saveJSON, saveKML, saveSVG} from "../../utils/save";
 import Dropdown from "reactstrap/lib/Dropdown";
+
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -42,6 +43,7 @@ export default class Atlas extends Component {
         this.addToTripButton = this.addToTripButton.bind(this);
         this.addUserMarker = this.addUserMarker.bind(this);
         this.reverseTrip = this.reverseTrip.bind(this);
+        this.handleSwitch = this.handleSwitch.bind(this);
         this.displayStartBox = this.displayStartBox.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.displayOptPopover = this.displayOptPopover.bind(this);
@@ -274,6 +276,8 @@ export default class Atlas extends Component {
                 complete: this.parseCSV
             };
             Papa.parse(file, config);
+        }else{
+            alert("File must be a JSON or CSV")
         }
     }
 
@@ -327,7 +331,8 @@ export default class Atlas extends Component {
                         invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "") && this.state.inputSubmitted[index]}
                         onChange={this.handleOnChange}
                         nameValue={this.state.inputNames[index]}
-                        coordsValue={this.state.inputCoords[index]}/>
+                        coordsValue={this.state.inputCoords[index]}
+                        handleSwitch= {this.handleSwitch}/>
         )
     }
 
@@ -347,7 +352,7 @@ export default class Atlas extends Component {
         )
     }
 
-    handleInputChange () {
+     handleInputChange () {
         this.state.destinations = [];
         this.state.markerPosition = null;
         for (let i=0; i < this.state.numInputs; i++) {
@@ -430,6 +435,23 @@ export default class Atlas extends Component {
             this.setInput(newIndex, oldDestinations[i]);
         }
         this.handleInputChange();
+    }
+
+    handleSwitch(direction, index){
+        if(direction === "up"){
+            //Switch current with previous destination, rerender line, itinerary, and input boxes
+            let oldDestinations = [];
+            for (let i=0; i < this.state.numInputs; i++)
+                oldDestinations[i] = getInput(i);
+            let prevDestination = oldDestinations[index-1];
+            let curDestination = oldDestinations[index];
+            this.setInput(index-1, curDestination);
+            this.setInput(index, prevDestination);
+            this.handleInputChange();
+        }
+        if(direction === "down"){
+            //Switch current with next destination, rerender line, itinerary, and input boxes
+        }
     }
 
     handleOnChange(evt) {
