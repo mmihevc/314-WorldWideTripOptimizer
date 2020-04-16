@@ -29,3 +29,31 @@ function testChangeStartingLocation() {
   expect(app.state().numInputs).toEqual(3);
 }
 test("Testing Atlas's changeStartDestination", testChangeStartingLocation);
+
+
+function testGoToUserLocation() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let position = {
+    latitude: 5,
+    longitude: 6
+  };
+  instance.setUserLocation(position);
+  expect(app.state('userLocation')).toBe(position);
+}
+test("Testing Atlas goToUserLocation", testGoToUserLocation);
+
+/*
+function testUpdateRoundTripDistance() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let position = {
+    latitude: 5,
+    longitude: 6
+  };
+  instance.setUserLocation(position);
+  app.update();
+  simulateOnClick(app.find('Button[children="Add to trip"]'), app);
+}
+test("Testing updateRoundTripDistance", testUpdateRoundTripDistance);
+ */
