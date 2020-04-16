@@ -68,7 +68,9 @@ export default class Atlas extends Component {
         this.handleOnChange = this.handleOnChange.bind(this);
         this.setInput = this.setInput.bind(this);
         this.getInput = this.getInput.bind(this);
+        this.connectOneTwoOrThreeOpt = this.connectOneTwoOrThreeOpt.bind(this);
         this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
+
 
         this.state = {
             userLocation: null,
@@ -85,6 +87,9 @@ export default class Atlas extends Component {
             SettingsDropDownOpen: false,
             showStartBox: false,
             showOpt: false,
+            response: '',
+            construction: '',
+            improvement: ''
         };
         this.clearInputs();
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
@@ -135,7 +140,6 @@ export default class Atlas extends Component {
             </Map>
         )
     }
-
 
     renderRoundTripDistance() {
         if (this.state.roundTripDistance) {
@@ -195,31 +199,33 @@ export default class Atlas extends Component {
             <Form onSubmit={handleSubmit}>
                 <Button className="ml-1" onClick={this.displayOptPopover}>Opt Options</Button>
                 <Modal isOpen={this.state.showOpt} toggle={this.displayOptPopover}>
-                    <ModalHeader toggle={this.displayOptPopover}>Optional Optimization Options</ModalHeader>
+                    <ModalHeader toggle={this.displayOptPopover}>Select Options Before Loading File</ModalHeader>
                     <ModalBody>
                         <InputGroup>
-                            <Input id="response" placeholder="Enter desired response time: 1-60" />
+                            <Input id="response" placeholder="Enter desired response time: 1-60" onChange={this.connectOneTwoOrThreeOpt}/>
                         </InputGroup>
                         <br/>
                         <FormGroup>
                             <Label for="construction">Construction</Label>
-                            <Input type="select" id="construction">
+                            <Input type="select" id="construction" onChange={this.connectOneTwoOrThreeOpt}>
                                 <option>none</option>
                                 <option>one</option>
                                 <option>some</option>
                             </Input>
                             <br/>
                             <Label for="improvement">Improvement</Label>
-                            <Input type="select" id="improvement">
+                            <Input type="select" id="improvement" onChange={this.connectOneTwoOrThreeOpt}>
                                 <option>none</option>
                                 <option>2opt</option>
                                 <option>3opt</option>
                             </Input>
                         </FormGroup>
+                        <p className="mt-2">
+                            Load Trip:
+                            <Input type='file' name='file' onChange={this.loadFile}/>
+                        </p>
                     </ModalBody>
-                    <ModalFooter>
-                        <Button onClick={this.connectOneTwoOrThreeOpt}>Submit</Button>
-                    </ModalFooter>
+                    <ModalFooter></ModalFooter>
                 </Modal>
             </Form>
         )
@@ -230,10 +236,15 @@ export default class Atlas extends Component {
     }
 
     connectOneTwoOrThreeOpt(){
-        let response = document.getElementById('response').value;
-        let construction = document.getElementById('construction').value;
-        let improvement = document.getElementById('improvement').value;
-        tripCall(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.props.serverPort, this.updateRoundTripDistance, construction, improvement, response);
+        let response = document.getElementById('response').value
+        if (response > 60 || response < 1) {
+            alert("Invalid response time")
+        }
+        this.setState({
+            response:  response,
+            construction: document.getElementById('construction').value,
+            improvement: document.getElementById('improvement').value
+        })
     }
 
     renderModifyButtons() {
@@ -376,7 +387,7 @@ export default class Atlas extends Component {
         }, () => {
             this.goToDestinations(this.state.destinations);
             if(this.state.destinations.length >= 2)
-                tripCall(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.props.serverPort, this.updateRoundTripDistance);
+                tripCall(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.props.serverPort, this.updateRoundTripDistance, this.state.response, this.state.construction, this.state.improvement);
         });
     };
 
