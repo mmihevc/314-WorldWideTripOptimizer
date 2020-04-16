@@ -64,7 +64,6 @@ export default class Atlas extends Component {
         this.reverseTrip = this.reverseTrip.bind(this);
         this.handleSwitch = this.handleSwitch.bind(this);
         this.displayStartBox = this.displayStartBox.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
         this.displayOptPopover = this.displayOptPopover.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
         this.setInput = this.setInput.bind(this);
@@ -243,14 +242,9 @@ export default class Atlas extends Component {
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip}>{UNICODE_REVERSE_SYMBOL}</Button>
                     <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
-                    <Button className="ml-1" onClick={this.handleDelete}>✕️</Button>
                 </ButtonGroup>
             )
         }
-    }
-
-    handleDelete() {
-        this.setState({numInputs: this.state.numInputs -1}, this.handleInputChange);
     }
 
     displayStartBox() {
