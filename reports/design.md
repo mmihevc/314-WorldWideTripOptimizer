@@ -157,12 +157,16 @@ A button is added for users to choose a local trip file that will be loaded into
 ![base](images/classServer.jpg)
 
 ### New Component Hierarchy.
-![base](images/newHier.jpg)
+![base](images/IMG_0107.PNG)
 
 ### New Team Member Added to About Page.
 ![base](images/newAbout.jpg)
 
 ### Changes to user interface for optimization options.
-![base](images/optHome.jpg)
+![base](images/IMG_0108.PNG)
+
+### Changes to user interface for destination order.
+![base](images/IMG_0103.PNG)
+![base](images/IMG_0102.PNG)
 
 # Sprint 5
