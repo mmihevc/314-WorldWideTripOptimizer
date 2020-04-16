@@ -179,7 +179,7 @@ export default class Atlas extends Component {
             <Form onSubmit={handleSubmit}>
                 <Button className="ml-1" onClick={this.displayOptPopover}>Opt Options</Button>
                 <Modal isOpen={this.state.showOpt} toggle={this.displayOptPopover}>
-                    <ModalHeader toggle={this.displayOptPopover}>Optional Optimization Options</ModalHeader>
+                    <ModalHeader toggle={this.displayOptPopover}>Select Options Before Loading File</ModalHeader>
                     <ModalBody>
                         <InputGroup>
                             <Input id="response" placeholder="Enter desired response time: 1-60" onChange={this.connectOneTwoOrThreeOpt}/>
@@ -216,6 +216,10 @@ export default class Atlas extends Component {
     }
 
     connectOneTwoOrThreeOpt(){
+        let response = document.getElementById('response').value
+        if (response > 60 || response < 1) {
+            alert("Invalid response time")
+        }
         this.setState({
             response:  document.getElementById('response').value,
             construction: document.getElementById('construction').value,
