@@ -1,5 +1,24 @@
 import React, {Component} from 'react';
-import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Input, Row, Form, Modal, ModalHeader, InputGroup, FormGroup, Label, ModalBody, ModalFooter} from 'reactstrap';
+import {
+    Alert,
+    Button,
+    ButtonGroup,
+    Col,
+    Container,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Form,
+    FormGroup,
+    Input,
+    InputGroup,
+    Label,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
+    Row
+} from 'reactstrap';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
@@ -10,11 +29,11 @@ import {getCurrentLocation} from "../../utils/geolocation";
 import AtlasLine from "./AtlasLine";
 import AtlasMarker from "./AtlasMarker";
 import AtlasInput from "./AtlasInput";
+import handleSubmit from "./AtlasInput";
 import Itinerary from "./Itinerary";
-import {getInput, latLngToString, setInput} from "../../utils/input";
+import {latLngToString, parseIndex, parseStateName} from "../../utils/input";
 import {saveCSV, saveJSON, saveKML, saveSVG} from "../../utils/save";
 import Dropdown from "reactstrap/lib/Dropdown";
-import handleSubmit from "./AtlasInput";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -45,6 +64,9 @@ export default class Atlas extends Component {
         this.displayStartBox = this.displayStartBox.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.displayOptPopover = this.displayOptPopover.bind(this);
+        this.handleOnChange = this.handleOnChange.bind(this);
+        this.setInput = this.setInput.bind(this);
+        this.getInput = this.getInput.bind(this);
 
         this.state = {
             userLocation: null,
@@ -154,13 +176,13 @@ export default class Atlas extends Component {
                 <DropdownMenu>
                     <DropdownItem header>Save Map</DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem onClick={() => {saveKML(destinations)}}>KML</DropdownItem>
-                    <DropdownItem onClick={() => {saveSVG(destinations)}}>SVG</DropdownItem>
+                    <DropdownItem onClick={() => {saveKML(this.state.destinations)}}>KML</DropdownItem>
+                    <DropdownItem onClick={() => {saveSVG(this.state.destinations)}}>SVG</DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem header>Save Itinerary</DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem onClick={() => {saveJSON(destinations)}}>JSON</DropdownItem>
-                    <DropdownItem onClick={() =>{saveCSV(destinations)}}>CSV</DropdownItem>
+                    <DropdownItem onClick={() => {saveJSON(this.state.destinations)}}>JSON</DropdownItem>
+                    <DropdownItem onClick={() =>{saveCSV(this.state.destinations)}}>CSV</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         )
@@ -247,7 +269,7 @@ export default class Atlas extends Component {
 
     addUserMarker() {
         this.addInputBox(() => {
-            setInput(this.state.numInputs-1, {
+            this.setInput(this.state.numInputs-1, {
                 coord: latLngToString(this.state.markerPosition.lat, this.state.markerPosition.lng),
                 name: "Place " + (this.state.destinations.length+1)
             });
@@ -293,7 +315,7 @@ export default class Atlas extends Component {
                     let lat = format === 'json' ? data[i].latitude : data[i].places__latitude;
                     let lng = format === 'json' ? data[i].longitude : data[i].places__longitude;
                     let name = format === 'json' ? data[i].name : data[i].places__name;
-                    setInput(i, {coord: latLngToString(lat, lng), name: name});
+                    this.setInput(i, {coord: latLngToString(lat, lng), name: name});
                 }
                 this.handleInputChange();
             }
@@ -305,19 +327,30 @@ export default class Atlas extends Component {
             this.state.inputCoords[i] = '';
             this.state.inputNames[i] = '';
         }
+        this.setState({
+            inputCoords: this.state.inputCoords,
+            inputNames: this.state.inputNames
+        })
     }
 
     renderInputBox(index) {
         return (
-            <AtlasInput id={index} index={index} valid={this.state.inputError[index]} invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "")}/>
+            <AtlasInput id={index} index={index}
+                        valid={this.state.inputError[index]}
+                        invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "") && this.state.inputSubmitted[index]}
+                        onChange={this.handleOnChange}
+                        nameValue={this.state.inputNames[index]}
+                        coordsValue={this.state.inputCoords[index]}/>
         )
     }
 
     addInputBox(callback) {
         this.state.inputCoords[this.state.numInputs] = '';
+        this.state.inputNames[this.state.numInputs] = '';
         this.setState({
             numInputs: this.state.numInputs+1,
-            inputCoords: this.state.inputCoords
+            inputCoords: this.state.inputCoords,
+            inputNames: this.state.inputNames
         }, callback);
     }
 
@@ -331,9 +364,6 @@ export default class Atlas extends Component {
         this.state.destinations = [];
         this.state.markerPosition = null;
         for (let i=0; i < this.state.numInputs; i++) {
-            let input = getInput(i);
-            this.state.inputCoords[i] = input.coord;
-            this.state.inputNames[i] = input.name;
             this.state.inputSubmitted[i] = true;
             this.validateValue(i);
         }
@@ -362,7 +392,6 @@ export default class Atlas extends Component {
                 name: inputName
             };
         } catch (error) {
-            console.log(error);
             this.state.inputError[index] = false;
         }
     }
@@ -405,27 +434,49 @@ export default class Atlas extends Component {
         }
     }
 
-    changeStartDestination(index) {
+    reverseTrip() {
         let oldDestinations = [];
-        for (let i=0; i < this.state.numInputs; i++)
-            oldDestinations[i] = getInput(i);
-        for (let i=0; i < this.state.numInputs; i++) {
-            let newIndex = i - index;
-            if (newIndex < 0)
-                newIndex += this.state.numInputs;
-            setInput(newIndex, oldDestinations[i]);
+        for (let i=1; i < this.state.numInputs; i++)
+            oldDestinations[i] = this.getInput(i);
+        for (let i=1; i < this.state.numInputs; i++) {
+            let newIndex = this.state.numInputs-i;
+            this.setInput(newIndex, oldDestinations[i]);
         }
         this.handleInputChange();
     }
 
-    reverseTrip() {
-        let oldDestinations = [];
-        for (let i=1; i < this.state.numInputs; i++)
-            oldDestinations[i] = getInput(i);
-        for (let i=1; i < this.state.numInputs; i++) {
-            let newIndex = this.state.numInputs-i;
-            setInput(newIndex, oldDestinations[i]);
+    handleOnChange(evt) {
+        const target = evt.target;
+        const value = target.value;
+        const name = target.name;
+        let index = parseIndex(name);
+        let stateName = parseStateName(name);
+        if (stateName === "inputCoords") {
+            this.state.inputCoords[index] = value;
+            this.setState({inputCoords: this.state.inputCoords});
+        } else if (stateName === "inputName") {
+            this.state.inputNames[index] = value;
+            this.setState({inputNames: this.state.inputNames});
         }
-        this.handleInputChange();
+        this.state.inputSubmitted[index] = false;
+        this.setState({
+            inputSubmitted: this.state.inputSubmitted
+        })
+    }
+
+    setInput(index, input) {
+        this.state.inputNames[index] = input.name;
+        this.state.inputCoords[index] = input.coord;
+        this.setState({
+            inputNames: this.state.inputNames,
+            inputCoords: this.state.inputCoords
+        })
+    }
+
+    getInput(index) {
+        return {
+            coord: this.state.inputCoords[index],
+            name: this.state.inputNames[index]
+        }
     }
 }
