@@ -2,7 +2,6 @@ package com.tco.server;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.HashMap;
 
 /** The server for the single page web application. */
 public class WebApplication {
@@ -19,14 +18,14 @@ public class WebApplication {
       System.exit(1);
     }
 
-    Integer serverPort = getServerPort(commandLineArguments);
+    int serverPort = getServerPort(commandLineArguments);
     MicroServer server = new MicroServer(serverPort);  // constructor never returns
   }
 
 
   private static int getServerPort(String[] commandLineArguments) {
 
-    Integer serverPort = DEFAULT_SERVER_PORT;
+    int serverPort = DEFAULT_SERVER_PORT;
     if (commandLineArguments.length > 0) {
       try {
         serverPort = Integer.parseInt(commandLineArguments[0]);
