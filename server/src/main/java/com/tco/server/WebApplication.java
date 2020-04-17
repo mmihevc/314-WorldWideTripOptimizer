@@ -30,7 +30,7 @@ public class WebApplication {
       try {
         serverPort = Integer.parseInt(commandLineArguments[0]);
       } catch (Exception e) {
-        log.error("Error converting server port: {}", e);
+        log.error("Error converting server port: {}", e.getMessage());
       }
     }
     if(portIsValid(serverPort)) {
