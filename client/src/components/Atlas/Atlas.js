@@ -279,10 +279,9 @@ export default class Atlas extends Component {
         this.loadTripData(results, 'csv');
     }
 
-    loadTripData(tripData, format) {
+    determineOldTrip(format, tripData) {
         let data = format === 'json' ? tripData.places : tripData.data;
         if (format === 'csv') {
-            data.pop();
             if (data[0].requestVersion !== PROTOCOL_VERSION.toString()) {
                 alert("Old trip version")
             }
@@ -292,6 +291,14 @@ export default class Atlas extends Component {
                 alert("Old trip version")
             }
         }
+    }
+
+    loadTripData(tripData, format) {
+        let data = format === 'json' ? tripData.places : tripData.data;
+        if (format === 'csv') {
+            data.pop();
+        }
+        this.determineOldTrip(format, tripData);
         this.setState({
                 numInputs: data.length,
             }, () => {
@@ -304,17 +311,6 @@ export default class Atlas extends Component {
                 this.handleInputChange();
             }
         );
-    }
-
-    clearInputs() {
-        for (let i=0; i < this.state.numInputs; i++) {
-            this.state.inputCoords[i] = '';
-            this.state.inputNames[i] = '';
-        }
-        this.setState({
-            inputCoords: this.state.inputCoords,
-            inputNames: this.state.inputNames
-        })
     }
 
     renderInputBox(index) {
