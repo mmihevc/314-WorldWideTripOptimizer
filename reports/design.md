@@ -154,19 +154,22 @@ A button is added for users to choose a local trip file that will be loaded into
 # Sprint 4 
 
 ### New Class Diagram.
-![base](images/classServer.jpg)
-
-### New Component Hierarchy.
-![base](images/IMG_0107.PNG)
+![base](images/classServer.jpg) 
 
 ### New Team Member Added to About Page.
 ![base](images/newAbout.jpg)
 
+This Sprint we got a wonderfull new addition to our team Kellyn. We had to change up our home page to add her to the team. 
+
 ### Changes to user interface for optimization options.
 ![base](images/IMG_0108.PNG)
+
+You can select 2 opt or nearest neightbor which is 1 on the constructiion drop down then it will optimize based off that. It wont return it in a certain amount of time it wont do multiole iterations of nearest neighbor. 
 
 ### Changes to user interface for destination order.
 ![base](images/IMG_0103.PNG)
 ![base](images/IMG_0102.PNG)
+
+User is now able to change to order of their trip by clicking on buttons. 
 
 # Sprint 5
