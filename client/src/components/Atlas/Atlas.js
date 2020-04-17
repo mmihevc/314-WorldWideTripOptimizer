@@ -67,7 +67,6 @@ export default class Atlas extends Component {
             construction: '',
             improvement: ''
         };
-        this.clearInputs();
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
     }
 
@@ -237,7 +236,7 @@ export default class Atlas extends Component {
     renderMultiple(numRenders, renderFunction) {
         let components = [];
         for (let i=0; i < numRenders; i++)
-            components.push(<div key={i}>{renderFunction(i)}</div>);
+            components.push(renderFunction(i));
         return components;
     }
 
@@ -317,7 +316,7 @@ export default class Atlas extends Component {
 
     renderInputBox(index) {
         return (
-            <AtlasInput id={index} index={index}
+            <AtlasInput key={"input"+index} id={index} index={index}
                         valid={this.state.inputError[index]}
                         invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "") && this.state.inputSubmitted[index]}
                         onChange={this.handleOnChange}
@@ -340,7 +339,7 @@ export default class Atlas extends Component {
 
     renderDestination(index) {
         return (
-            <AtlasMarker position={this.state.destinations[index]} name={this.state.destinations[index].name} pan={true}/>
+            <AtlasMarker key={"Marker"+index} position={this.state.destinations[index]} name={this.state.destinations[index].name} pan={true}/>
         )
     }
 
