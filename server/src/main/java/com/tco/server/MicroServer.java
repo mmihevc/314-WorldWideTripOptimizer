@@ -1,18 +1,19 @@
 package com.tco.server;
 
-import static spark.Spark.secure;
-
 import com.google.gson.Gson;
 import com.tco.misc.JSONValidator;
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static spark.Spark.secure;
 
 class MicroServer {
 
@@ -93,7 +94,7 @@ class MicroServer {
       response.status(400);
       return requestBody;
     } catch (Exception e) {
-      log.error("Exception: {}", e);
+      log.error("Exception: {}", e.getMessage());
       response.status(500);
       return requestBody;
     }
