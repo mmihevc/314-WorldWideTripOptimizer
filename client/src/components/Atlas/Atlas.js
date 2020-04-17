@@ -205,8 +205,8 @@ export default class Atlas extends Component {
     displayOptPopover() { this.setState({showOpt : !this.state.showOpt});}
 
     connectOneTwoOrThreeOpt(){
-        let response = document.getElementById('response').value
-        if (response != '' && (response > 60 || response < 1)) {
+        let response = document.getElementById('response').value;
+        if (response !== '' && (response > 60 || response < 1)) {
             alert("Invalid response time")
         }
         this.setState({
@@ -287,7 +287,7 @@ export default class Atlas extends Component {
             }
         }
         else {
-            if (tripData.requestVersion != PROTOCOL_VERSION){
+            if (tripData.requestVersion !== PROTOCOL_VERSION){
                 alert("Old trip version")
             }
         }
@@ -435,15 +435,14 @@ export default class Atlas extends Component {
     }
 
     handleSwitch(direction, index){
-        //ToDo: ensure itinerary so doesn't add duplicates, error catch for first and last place
         let oldDestinations = this.getOldDestinations(0);
         let curDestination = oldDestinations[index];
-        if(direction === "up"){
+        if(direction === "up" && (index!==0)){
             let prevDestination = oldDestinations[index-1];
             this.setInput(index-1, curDestination);
             this.setInput(index, prevDestination);
         }
-        if(direction === "down"){
+        if(direction === "down" && index!==(this.state.numInputs-1)){
             let nextDestination = oldDestinations[index+1];
             this.setInput(index+1, curDestination);
             this.setInput(index, nextDestination);
