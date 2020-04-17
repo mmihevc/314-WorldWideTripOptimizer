@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, FormGroup, Input, InputGroup, Label, Modal, ModalBody, ButtonToolbar, ModalHeader, Row} from 'reactstrap';
+import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, FormGroup, Input, InputGroup, Label, Modal, ModalBody, ModalHeader, Row} from 'reactstrap';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
@@ -77,11 +77,11 @@ export default class Atlas extends Component {
                 <Row>
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
-                        <ButtonToolbar>
+                        <ButtonGroup>
                             {this.renderWhereAmI()}
                             {this.renderSettings()}
                             {this.renderOptimizationOptions()}
-                        </ButtonToolbar>
+                        </ButtonGroup>
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
                         {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
