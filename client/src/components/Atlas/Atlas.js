@@ -4,7 +4,7 @@ import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
 import Coordinates from 'coordinate-parser';
-import {EARTH_RADIUS_UNITS_DEFAULT} from "../Constants";
+import {EARTH_RADIUS_UNITS_DEFAULT, PROTOCOL_VERSION} from "../Constants";
 import {tripCall} from "../../utils/tripCalls";
 import {getCurrentLocation} from "../../utils/geolocation";
 import AtlasLine from "./AtlasLine";
@@ -288,8 +288,17 @@ export default class Atlas extends Component {
 
     loadTripData(tripData, format) {
         let data = format === 'json' ? tripData.places : tripData.data;
-        if (format === 'csv')
+        if (format === 'csv') {
             data.pop();
+            if (data[0].requestVersion !== PROTOCOL_VERSION.toString()) {
+                alert("Old trip version")
+            }
+        }
+        else {
+            if (tripData.requestVersion != PROTOCOL_VERSION){
+                alert("Old trip version")
+            }
+        }
         this.setState({
                 numInputs: data.length,
             }, () => {
