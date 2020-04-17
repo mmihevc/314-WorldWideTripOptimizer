@@ -5,8 +5,6 @@ import {mount, shallow} from 'enzyme';
 import Atlas from '../src/components/Atlas/Atlas';
 import {simulateOnClick} from "./buttonClick";
 
-//const UNICODE_REVERSE_SYMBOL = '\u21B9';
-
 function testInitialAppState() {
   const app = shallow(<Atlas />);
 
@@ -31,18 +29,6 @@ function testChangeStartingLocation() {
 }
 test("Testing Atlas's changeStartDestination", testChangeStartingLocation);
 
-function testReverseTrip() {
-  const app = shallow(<Atlas/>);
-  let oldDest = app.state().destinations(0);
-  simulateOnClick(app.find('Button[children="Add to trip"]'), app);
-  simulateOnClick(app.find('Button[children="Add to trip"]'), app);
-  simulateOnClick(app.find('Button[children="Add to trip"]'), app);
-  simulateOnClick(app.find('Button[children=\'\u21B9\']'), app);
-  expect(app.state().numInputs).toEqual(3);
-  expect(app.state().destinations(app.state().numInputs.length)).toEqual(oldDest);
-}
-test("Testing Atlas's ReverseTrip Function", testReverseTrip);
-
 function testGoToUserLocation() {
   const app = mount(<Atlas/>);
   const instance = app.instance();
@@ -55,7 +41,7 @@ function testGoToUserLocation() {
 }
 test("Testing Atlas goToUserLocation", testGoToUserLocation);
 
-/*
+
 function testUpdateRoundTripDistance() {
   const app = mount(<Atlas/>);
   const instance = app.instance();
@@ -68,4 +54,3 @@ function testUpdateRoundTripDistance() {
   simulateOnClick(app.find('Button[children="Add to trip"]'), app);
 }
 test("Testing updateRoundTripDistance", testUpdateRoundTripDistance);
- */
