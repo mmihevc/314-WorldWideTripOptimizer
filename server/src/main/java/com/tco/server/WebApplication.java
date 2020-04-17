@@ -19,8 +19,8 @@ public class WebApplication {
       System.exit(1);
     }
 
-    Integer serverPort = getServerPort(commandLineArguments);
-    MicroServer server = new MicroServer(serverPort);  // constructor never returns
+    int serverPort = getServerPort(commandLineArguments);
+    new MicroServer(serverPort);
   }
 
 
