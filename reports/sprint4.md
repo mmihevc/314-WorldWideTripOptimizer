@@ -99,15 +99,15 @@ We were able to complete this epic efficiently and with no impediments. Using a 
 
 We were able to complete this epic quickly and with no impediments. This epic was the easiest epic to complete during this sprint for our team. The user can now save both the map and the intinerary.
 
-*Optimize*
-
-We were able to complete this epic quickly and with no impediments. Based on a series of options that the user can provide, the intinerary can now be optimized based on those options.
-
 *Modify Destinations*
 
 The way we initally set our UI allowed for the user to modify the destinations without use needing to add anything additional besides adding more testing.
 
 ### Epics not done 
+
+*Optimize*
+
+We were able to complete most of the tasks associated with this epic however we were not able to determine the best level of optimization if the user doesn't provide what the level of optimization they would like. We did not reserve enough time to complete this task.
 
 *Protocol Version 4*
 
