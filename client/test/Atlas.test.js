@@ -41,7 +41,6 @@ function testGoToUserLocation() {
 }
 test("Testing Atlas goToUserLocation", testGoToUserLocation);
 
-
 function testUpdateRoundTripDistance() {
   const app = mount(<Atlas/>);
   const instance = app.instance();
