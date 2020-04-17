@@ -441,8 +441,6 @@ export default class Atlas extends Component {
     handleSwitch(direction, index){
         let oldDestinations = this.getOldDestinations(0);
         let curDestination = oldDestinations[index];
-        console.log(index);
-        console.log(this.state.numInputs);
         if(direction === "up" && (index!==0)){
             let prevDestination = oldDestinations[index-1];
             this.setInput(index-1, curDestination);
