@@ -13,8 +13,13 @@ public class RequestTrip extends RequestHeader {
 
     @Override
     public void buildResponse() {
-        //this.places=twoPointOptimization.optimize(this.places, Double.parseDouble(options.earthRadius));
+        // nn 1s=85 2s
+        // 2opt 1s=100 2s 240
 
+        if(this.options.optimization.improvement.equals("2opt")){
+           this.places=twoPointOptimization.optimize(this.places, Double.parseDouble(options.earthRadius));}
+        if(this.options.optimization.construction.equals("one")){
+            this.places=NearestNeighbor.nearestNeighbor(this.places);}
         this.distances = new Long[places.length];
         double radius = Double.parseDouble(options.earthRadius);
         for (int i = 1; i < places.length; i++)

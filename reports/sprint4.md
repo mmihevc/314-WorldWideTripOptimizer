@@ -119,15 +119,26 @@ We were unable to complete this epic because we did not reserve enough time to g
 
 ### What went well
 
+During this sprint we made enough tasks that the amount was not overwhelming but just enough that we were able to break down what we needed to accomplish. We also learned that meeting for at least 30 minutes after class allowed us to maintain team moral and check in with where people are or if they needed help with their task. 
+
 ### Problems encountered and resolutions
 
+The major problem we encountered this sprint was maintaining motivation throughout the duration of the sprint. We found it difficult to continue to function as well as we did on previous sprints. We found that we would get motivated for short bursts but we were unable to maintain motivation during the whole sprint. In order to resolve these problems we tried to check to check in on each other frequently to make sure everyone is doing alright. We also discovered that some of the tasks were more complicated than we originally anticipated. This forced us to spend more time working on certain tasks and inhibited us from accomplishing other tasks.
 
 ## Retrospective
 
 ### What we changed this sprint
 
+This sprint we made sure to check in more frequently, even for a short time, just to check in and see where everyone is at and if there is anything that people need help with. We also decreased the amount of tasks we created which make task completion more manageable. 
+
 ### What went well
+
+We found that maintaining constant communication was very important for our team because when we were not constantly communicating we tended to fall behind on task completion. We also discovered it is easier to complete epics when we break tasks into two steps. The first step dedicated to creating the react component and the second step dedicated to writing the code that interacts with the react component. 
 
 ### Potential improvements
 
+During the next sprint we will try to begin epics sooner so we can make sure that we have allotted enough time to complete everything in our backlog. We will also try to maintain a higher level of motivation in order to complete more tasks and epics during the allotted time. 
+
 ### What we will change next time
+
+During the next sprint we will try to begin epics sooner so we can make sure to complete what we plan on completing in the allotted time. We will also figure out something to do as a team over Microsoft Teams in order to maintain team morale which should help increase motivation. During this time it is very important to make sure that everyone is taking care of their mental health and staying healthy and by checking in with each other we will be able make sure that is happening.

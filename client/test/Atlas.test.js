@@ -1,9 +1,8 @@
 import './enzyme.config.js';
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import {mount, shallow} from 'enzyme';
 
 import Atlas from '../src/components/Atlas/Atlas';
-import {setInput} from "../src/utils/input";
 import {simulateOnClick} from "./buttonClick";
 
 function testInitialAppState() {
@@ -30,7 +29,6 @@ function testChangeStartingLocation() {
 }
 test("Testing Atlas's changeStartDestination", testChangeStartingLocation);
 
-
 function testGoToUserLocation() {
   const app = mount(<Atlas/>);
   const instance = app.instance();
@@ -43,7 +41,7 @@ function testGoToUserLocation() {
 }
 test("Testing Atlas goToUserLocation", testGoToUserLocation);
 
-/*
+
 function testUpdateRoundTripDistance() {
   const app = mount(<Atlas/>);
   const instance = app.instance();
@@ -56,4 +54,3 @@ function testUpdateRoundTripDistance() {
   simulateOnClick(app.find('Button[children="Add to trip"]'), app);
 }
 test("Testing updateRoundTripDistance", testUpdateRoundTripDistance);
- */

@@ -4,7 +4,7 @@ import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Papa from "papaparse";
 import Coordinates from 'coordinate-parser';
-import {EARTH_RADIUS_UNITS_DEFAULT} from "../Constants";
+import {EARTH_RADIUS_UNITS_DEFAULT, PROTOCOL_VERSION} from "../Constants";
 import {tripCall} from "../../utils/tripCalls";
 import {getCurrentLocation} from "../../utils/geolocation";
 import AtlasLine from "./AtlasLine";
@@ -67,7 +67,6 @@ export default class Atlas extends Component {
             construction: '',
             improvement: ''
         };
-        this.clearInputs();
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
     }
 
@@ -147,9 +146,7 @@ export default class Atlas extends Component {
 
     renderWhereAmI() {
         if (this.state.userLocation) {
-            return (
-                <Button onClick={_ => getCurrentLocation(this.goToUserLocation)}>Where Am I?</Button>
-            )
+            return ( <Button onClick={_ => getCurrentLocation(this.goToUserLocation)}>Where Am I?</Button>)
         }
     }
 
@@ -158,9 +155,7 @@ export default class Atlas extends Component {
             <Dropdown className='ml-1' isOpen={this.state.SettingsDropDownOpen} toggle={() => {
                 this.setState({SettingsDropDownOpen: !this.state.SettingsDropDownOpen})
             }}>
-                <DropdownToggle caret>
-                    Settings
-                </DropdownToggle>
+                <DropdownToggle caret>Settings</DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem header>Save Map</DropdownItem>
                     <DropdownItem divider />
@@ -186,16 +181,9 @@ export default class Atlas extends Component {
                         <InputGroup>
                             <Input id="response" placeholder="Enter desired response time: 1-60" onChange={this.connectOneTwoOrThreeOpt}/>
                         </InputGroup><br/>
-                        <FormGroup>
-                            <Label for="construction">Construction</Label>
-                            <Input type="select" id="construction" onChange={this.connectOneTwoOrThreeOpt}>
-                                <option>none</option><option>one</option><option>some</option>
-                            </Input><br/>
-                            <Label for="improvement">Improvement</Label>
-                            <Input type="select" id="improvement" onChange={this.connectOneTwoOrThreeOpt}>
-                                <option>none</option><option>2opt</option><option>3opt</option>
-                            </Input>
-                        </FormGroup>
+                        {this.renderSelect("Construction", "none", "one", "some")}
+                        <br/>
+                        {this.renderSelect("Improvement",  "none", "2opt", "3opt")}
                         {this.renderLoadTrip()}
                     </ModalBody>
                 </Modal>
@@ -203,13 +191,22 @@ export default class Atlas extends Component {
         )
     }
 
-    displayOptPopover() {
-        this.setState({showOpt : !this.state.showOpt});
+    renderSelect(id, opt1, opt2, opt3) {
+        return (
+            <FormGroup>
+                <Label for={id}>{id}</Label>
+                <Input type="select" id={id} onChange={this.connectOneTwoOrThreeOpt}>
+                    <option>{opt1}</option><option>{opt2}</option><option>{opt3}</option>
+                </Input>
+            </FormGroup>
+        )
     }
+
+    displayOptPopover() { this.setState({showOpt : !this.state.showOpt});}
 
     connectOneTwoOrThreeOpt(){
         let response = document.getElementById('response').value
-        if (response > 60 || response < 1) {
+        if (response != '' && (response > 60 || response < 1)) {
             alert("Invalid response time")
         }
         this.setState({
@@ -230,21 +227,17 @@ export default class Atlas extends Component {
         }
     }
 
-    displayStartBox() {
-        this.setState({showStartBox: !this.state.showStartBox})
-    }
+    displayStartBox() { this.setState({showStartBox: !this.state.showStartBox})}
 
     renderMultiple(numRenders, renderFunction) {
         let components = [];
         for (let i=0; i < numRenders; i++)
-            components.push(<div key={i}>{renderFunction(i)}</div>);
+            components.push(renderFunction(i));
         return components;
     }
 
     addToTripButton() {
-        return (
-            <Button onClick={this.addUserMarker} color="primary" size="sm">Add to trip</Button>
-        )
+        return ( <Button onClick={this.addUserMarker} color="primary" size="sm">Add to trip</Button> )
     }
 
     addUserMarker() {
@@ -288,8 +281,17 @@ export default class Atlas extends Component {
 
     loadTripData(tripData, format) {
         let data = format === 'json' ? tripData.places : tripData.data;
-        if (format === 'csv')
+        if (format === 'csv') {
             data.pop();
+            if (data[0].requestVersion !== PROTOCOL_VERSION.toString()) {
+                alert("Old trip version")
+            }
+        }
+        else {
+            if (tripData.requestVersion != PROTOCOL_VERSION){
+                alert("Old trip version")
+            }
+        }
         this.setState({
                 numInputs: data.length,
             }, () => {
@@ -317,7 +319,7 @@ export default class Atlas extends Component {
 
     renderInputBox(index) {
         return (
-            <AtlasInput id={index} index={index}
+            <AtlasInput key={"input"+index} id={index} index={index}
                         valid={this.state.inputError[index]}
                         invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "") && this.state.inputSubmitted[index]}
                         onChange={this.handleOnChange}
@@ -340,7 +342,7 @@ export default class Atlas extends Component {
 
     renderDestination(index) {
         return (
-            <AtlasMarker position={this.state.destinations[index]} name={this.state.destinations[index].name} pan={true}/>
+            <AtlasMarker key={"Marker"+index} position={this.state.destinations[index]} name={this.state.destinations[index].name} pan={true}/>
         )
     }
 
@@ -419,10 +421,12 @@ export default class Atlas extends Component {
     }
 
     reverseTrip() {
-        let oldDestinations = this.getOldDestinations(1);
-        for (let i=1; i < this.state.numInputs; i++) {
-            let newIndex = this.state.numInputs-i;
+        let oldDestinations = this.getOldDestinations(0);
+        let counter = this.state.numInputs;
+        for (let i=0; i < this.state.numInputs; i++) {
+            let newIndex = counter - 1;
             this.setInput(newIndex, oldDestinations[i]);
+            counter = counter - 1;
         }
         this.handleInputChange();
     }
