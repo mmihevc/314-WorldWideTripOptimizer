@@ -147,9 +147,7 @@ export default class Atlas extends Component {
 
     renderWhereAmI() {
         if (this.state.userLocation) {
-            return (
-                <Button className="ml-1" onClick={_ => getCurrentLocation(this.goToUserLocation)}>Where Am I?</Button>
-            )
+            return ( <Button className="ml-1" onClick={_ => getCurrentLocation(this.goToUserLocation)}>Where Am I?</Button>)
         }
     }
 
@@ -158,9 +156,7 @@ export default class Atlas extends Component {
             <Dropdown className='ml-1' isOpen={this.state.SettingsDropDownOpen} toggle={() => {
                 this.setState({SettingsDropDownOpen: !this.state.SettingsDropDownOpen})
             }}>
-                <DropdownToggle caret>
-                    Settings
-                </DropdownToggle>
+                <DropdownToggle caret>Settings</DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem header>Save Map</DropdownItem>
                     <DropdownItem divider />
@@ -186,16 +182,9 @@ export default class Atlas extends Component {
                         <InputGroup>
                             <Input id="response" placeholder="Enter desired response time: 1-60" onChange={this.connectOneTwoOrThreeOpt}/>
                         </InputGroup><br/>
-                        <FormGroup>
-                            <Label for="construction">Construction</Label>
-                            <Input type="select" id="construction" onChange={this.connectOneTwoOrThreeOpt}>
-                                <option>none</option><option>one</option><option>some</option>
-                            </Input><br/>
-                            <Label for="improvement">Improvement</Label>
-                            <Input type="select" id="improvement" onChange={this.connectOneTwoOrThreeOpt}>
-                                <option>none</option><option>2opt</option><option>3opt</option>
-                            </Input>
-                        </FormGroup>
+                        {this.renderSelect("Construction", "none", "one", "some")}
+                        <br/>
+                        {this.renderSelect("Improvement",  "none", "2opt", "3opt")}
                         {this.renderLoadTrip()}
                     </ModalBody>
                 </Modal>
@@ -203,13 +192,22 @@ export default class Atlas extends Component {
         )
     }
 
-    displayOptPopover() {
-        this.setState({showOpt : !this.state.showOpt});
+    renderSelect(id, opt1, opt2, opt3) {
+        return (
+            <FormGroup>
+                <Label for={id}>{id}</Label>
+                <Input type="select" id={id} onChange={this.connectOneTwoOrThreeOpt}>
+                    <option>{opt1}</option><option>{opt2}</option><option>{opt3}</option>
+                </Input>
+            </FormGroup>
+        )
     }
+
+    displayOptPopover() { this.setState({showOpt : !this.state.showOpt});}
 
     connectOneTwoOrThreeOpt(){
         let response = document.getElementById('response').value
-        if (response > 60 || response < 1) {
+        if (response != '' && (response > 60 || response < 1)) {
             alert("Invalid response time")
         }
         this.setState({
@@ -230,9 +228,7 @@ export default class Atlas extends Component {
         }
     }
 
-    displayStartBox() {
-        this.setState({showStartBox: !this.state.showStartBox})
-    }
+    displayStartBox() { this.setState({showStartBox: !this.state.showStartBox})}
 
     renderMultiple(numRenders, renderFunction) {
         let components = [];
@@ -242,9 +238,7 @@ export default class Atlas extends Component {
     }
 
     addToTripButton() {
-        return (
-            <Button onClick={this.addUserMarker} color="primary" size="sm">Add to trip</Button>
-        )
+        return ( <Button onClick={this.addUserMarker} color="primary" size="sm">Add to trip</Button> )
     }
 
     addUserMarker() {
