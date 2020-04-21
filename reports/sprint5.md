@@ -1,7 +1,7 @@
 # Sprint 5 - *T11* - *['Hip', 'Hip']*
 
 ## Goal: Finding more places to go!
-### Sprint Leader: *firstname lastname*
+### Sprint Leader: *Kai Griem*
 
 
 ## Definition of Done
@@ -16,6 +16,7 @@
 
 
 ## Policies
+* To work with a smile :)
 
 ### Mobile First Design
 * Design for mobile, tablet, laptop, desktop in that order.
@@ -44,9 +45,9 @@
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *count* | *count* |
-| Tasks |  *count*   | *count* | 
-| Story Points |  *sum*  | *sum* | 
+| Epics | *7* | *count* |
+| Tasks |  *27*   | *count* | 
+| Story Points |  *29*  | *sum* | 
 
 
 ## Scrums
