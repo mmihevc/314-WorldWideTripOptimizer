@@ -40,6 +40,33 @@
 
 ## Planned Epics
 
+*Protocol Version 4*
+
+This epic is mostly completed, however we need to implement 3-opt still which we plan to do during this sprint. 
+
+*Optimize*
+
+This epic has mostly been completed already, however we need to apply the optimization levels that the user choose to the itinerary and have the itinerary reflect the optimization. 
+
+*Concurrency*
+
+We are responisible for taking advantage of everything running at the same time to reduce computation time spent on optimization in order to provide the user with better results.
+
+*Protocol Version 5*
+
+In this epic we are responsible for implementing version 5 in order to support interoperability. We will also be implementing a find request that searches for locations based on user input.
+
+*Find*
+
+We are responsible for creating an interactive UI that allows users to search for regions, municipalities, and/or regions. Then filter those searches so the user is not overwhelemed but what is eventually displayed to them.
+
+*Itinerary Search*
+
+In this epic we are responsible for creating an UI component that allows the user to search the itinerary for certain places based on supplied keywords.
+
+*User Experience*
+
+Through this task we plan on improving out UI in order to make it easier for the user to understand how to navigate our interface. We also hope to clean up our interface so when in mobile mode it is easier to see everything.
 
 ## Metrics
 
