@@ -343,6 +343,7 @@ export default class Atlas extends Component {
     }
 
      handleInputChange () {
+        alert(this.state.improvement);
         this.state.destinations = [];
         this.state.markerPosition = null;
         for (let i=0; i < this.state.numInputs; i++) {

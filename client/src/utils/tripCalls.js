@@ -26,8 +26,7 @@ export function tripCall(destinations, rad, port, callback, response , construct
         function(){let d2=new Date();
             let seconds = d2.getSeconds()-d1.getSeconds();
             let ms=d2.getMilliseconds()-d1.getMilliseconds();
-            alert(seconds*1000 + ms)}).then(
-    )
+            alert(seconds*1000 + ms)});
 
 
 }
@@ -37,6 +36,7 @@ function processTripResponse(atrip, callback){
         alert('error fetching trip')
     } else if (atrip.statusCode === HTTP_OK){
         callback(atrip.body.distances);
+        callback(alert(atrip.body.places[1].name));
         return atrip;
     }
 }
