@@ -20,7 +20,16 @@ export function tripCall(destinations, rad, port, callback, response , construct
             longitude: destinations[i].lng.toString(),
         }
     }
-    sendServerRequestWithBody('trip', values, port).then( atrip => processTripResponse(atrip, callback));
+    let d1 = new Date();
+    sendServerRequestWithBody('trip', values, port).then(
+        atrip => processTripResponse(atrip, callback)).then(
+        function(){let d2=new Date();
+            let seconds = d2.getSeconds()-d1.getSeconds();
+            let ms=d2.getMilliseconds()-d1.getMilliseconds();
+            alert(seconds*1000 + ms)}).then(
+    )
+
+
 }
 
 function processTripResponse(atrip, callback){

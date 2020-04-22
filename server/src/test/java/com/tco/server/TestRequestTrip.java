@@ -30,7 +30,6 @@ public class TestRequestTrip {
 
     @Test
     public void testDistancesT05() {
-
         trip.options = new Option("6371.0", "World Ski Resorts -> 51,794", "1", "none", "none");
         trip.places = new Place[6];
         trip.places[0] = new Place("45.415498", "6.634682", "Courchevel Tourisme");
@@ -43,6 +42,8 @@ public class TestRequestTrip {
         long tripDistance = 0;
         for (long dist : trip.distances)
             tripDistance += dist;
+        assertEquals("trip requestDistancesT05", 51794, tripDistance);
+        trip.options = new Option("6371.0", "World Ski Resorts -> 51,794");
         assertEquals("trip requestDistancesT05", 51794, tripDistance);
     }
 
