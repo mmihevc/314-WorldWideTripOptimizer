@@ -1,4 +1,9 @@
-import {getGeoJSON} from '../src/utils/save';
+import './enzyme.config.js';
+import {getGeoJSON, saveSVG} from '../src/utils/save';
+import React from 'react';
+import {mount} from "enzyme";
+import Atlas from "../src/components/Atlas/Atlas";
+import {simulateOnClick} from "./buttonClick";
 
 function testGetGeoJSON() {
     let destinations = [
@@ -55,3 +60,12 @@ function testGetGeoJSON() {
     expect(geoJSON).toEqual(expectedJSON);
 }
 test("testing getGeoJSON", testGetGeoJSON);
+
+function testSaveSVG() {
+    const app = mount(<Atlas/>);
+    const instance = app.instance();
+    let svg = saveSVG(instance.leafletMap.leafletElement, true);
+    let expectedSVG = "<?xml version=\"1.0\" standalone=\"no\"?><!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\"   \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\"><svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink= \"http://www.w3.org/1999/xlink\" width=\"0\" height=\"0\"></svg>";
+    expect(svg).toEqual(expectedSVG);
+}
+test("testing save as SVG", testSaveSVG);

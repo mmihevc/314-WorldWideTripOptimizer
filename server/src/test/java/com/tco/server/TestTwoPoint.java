@@ -7,8 +7,6 @@ import static org.junit.Assert.*;
 public class TestTwoPoint {
     @Test
     public void testTwoPoint(){
-        long optimalDistance=0;
-        long originalDistance=0;
         Place[] atrip = new Place[6];
         Place[] btrip = new Place[6];
         atrip[0] = new Place("45.415498", "6.634682", "Courchevel Tourisme");

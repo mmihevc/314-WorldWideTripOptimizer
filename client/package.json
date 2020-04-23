@@ -15,7 +15,6 @@
     "cross-env": "^5.1.1",
     "css-loader": "^2.1.0",
     "file-loader": "^3.0.1",
-    "geojson2svg": "^1.2.3",
     "leaflet": "^1.4.0",
     "papaparse": "^5.1.1",
     "react": "^16.7.0",
@@ -24,11 +23,11 @@
     "react-leaflet": "^2.2.0",
     "reactstrap": "^7.0.2",
     "style-loader": "^0.23.1",
+    "styled-components": "latest",
     "tokml": "^0.4.0",
     "ulog": "^1.1.0",
     "webpack": "^4.28.4",
-    "webpack-cli": "^3.2.1",
-    "styled-components": "latest"
+    "webpack-cli": "^3.2.1"
   },
   "devDependencies": {
     "ajv": "^6.10.2",
