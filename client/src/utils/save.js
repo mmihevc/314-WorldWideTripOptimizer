@@ -1,29 +1,33 @@
 import tokml from 'tokml';
-import geojson2svg from 'geojson2svg';
 import {downloadFile} from "./fileIO";
 import {getLines} from "./dateline";
+
+const SVG_HEADER = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC ' +
+                    '"-//W3C//DTD SVG 1.1//EN"   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
 
 const KML_MIME_TYPE = 'application/vnd.google-earth.kml+xml';
 const SVG_MIME_TYPE = 'image/svg+xml';
 const JSON_MIME_TYPE = 'application/json';
 const CSV_MIME_TYPE = 'text/csv';
-const SVG_OPTIONS = {
-    viewportSize: {
-        width: 500,
-        height: 500
-    },
-    output: 'svg',
-    fitTo: 'width'
-};
 
 export function saveKML(destinations) {
     let kml = tokml(getGeoJSON(destinations));
     downloadFile(KML_MIME_TYPE, 'map.kml', kml);
 }
 
-export function saveSVG(destinations) {
-    let svg = geojson2svg(SVG_OPTIONS).convert(getGeoJSON(destinations), SVG_OPTIONS);
-    svg = '<svg width="500" height="500">\n' + svg.join('\n') + '\n</svg>';
+export function saveSVG(map) {
+    let tileCollection = document.getElementsByClassName("leaflet-tile-loaded");
+    let tiles = Array.prototype.slice.call(tileCollection);
+    console.log(tiles);
+    let size = map.getSize();
+    let svg = SVG_HEADER + '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink= "http://www.w3.org/1999/xlink" width="' +
+                            size.x + '" height="' + size.y + '">';
+    for (let i=0; i < tiles.length; i++) {
+        svg += '<image href="' + tiles[i].src + '" ';
+        svg += 'x="' + tiles[i]._leaflet_pos.x + '" y="'+ tiles[i]._leaflet_pos.y + '" ';
+        svg += 'width="' + tiles[i].width + '" height="' + tiles[i].height + '"/>';
+    }
+    svg += '</svg>';
     downloadFile(SVG_MIME_TYPE, 'map.svg', svg);
 }
 export function saveJSON(destinations){

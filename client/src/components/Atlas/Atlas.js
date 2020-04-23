@@ -160,7 +160,7 @@ export default class Atlas extends Component {
                     <DropdownItem header>Save Map</DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem onClick={() => {saveKML(this.state.destinations)}}>KML</DropdownItem>
-                    <DropdownItem onClick={() => {saveSVG(this.state.destinations)}}>SVG</DropdownItem>
+                    <DropdownItem onClick={() => {saveSVG(this.leafletMap.leafletElement)}}>SVG</DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem header>Save Itinerary</DropdownItem>
                     <DropdownItem divider />
