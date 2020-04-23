@@ -6,9 +6,14 @@ public class Optimization {
     protected String improvement;
 
     Optimization(){
-        response="1";
-        construction="none";
-        improvement="none";
+        this.response="1";
+        this.construction="none";
+        this.improvement="none";
+    }
+    Optimization(String response, String construction, String improvement){
+        this.response=response;
+        this.construction=construction;
+        this.improvement=improvement;
     }
 
 }

@@ -181,9 +181,16 @@ export default class Atlas extends Component {
                         <InputGroup>
                             <Input id="response" placeholder="Enter desired response time: 1-60" onChange={this.connectOneTwoOrThreeOpt}/>
                         </InputGroup><br/>
-                        {this.renderSelect("Construction", "none", "one", "some")}
-                        <br/>
-                        {this.renderSelect("Improvement",  "none", "2opt", "3opt")}
+                        <FormGroup>
+                            <Label for="construction">Construction</Label>
+                            <Input type="select" id="construction" onChange={this.connectOneTwoOrThreeOpt}>
+                                <option>none</option><option>one</option><option>some</option>
+                            </Input><br/>
+                            <Label for="improvement">Improvement</Label>
+                            <Input type="select" id="improvement" onChange={this.connectOneTwoOrThreeOpt}>
+                                <option>none</option><option>2opt</option><option>3opt</option>
+                            </Input>
+                        </FormGroup>
                         {this.renderLoadTrip()}
                     </ModalBody>
                 </Modal>
