@@ -2,7 +2,7 @@ import {isJsonResponseValid, sendServerRequestWithBody} from "./restfulAPI";
 import {HTTP_OK, PROTOCOL_VERSION} from "../components/Constants";
 import * as tripSchema from "../../schemas/TripResponse";
 import * as distanceSchema from "../../schemas/DistanceResponse";
-
+import {goToDestinations} from "../components/Atlas/Atlas"
 export function tripCall(destinations, rad, port, callback, response , construction, improvement){
     if(response.length==0) response="1";
     if(construction.length==0) construction="none";
@@ -27,16 +27,17 @@ export function tripCall(destinations, rad, port, callback, response , construct
             let seconds = d2.getSeconds()-d1.getSeconds();
             let ms=d2.getMilliseconds()-d1.getMilliseconds();
             alert(seconds*1000 + ms)});
-
-
 }
 
 function processTripResponse(atrip, callback){
     if (!isJsonResponseValid(atrip.body, tripSchema)){
         alert('error fetching trip')
     } else if (atrip.statusCode === HTTP_OK){
+        callback(values = JSON.parse(atrip));
+        callback(alert(values.places.length));
+        //callback(alert(atrip.body.places[1].name));
         callback(atrip.body.distances);
-        callback(alert(atrip.body.places[1].name));
+        //callback(goToDestinations(atrip.body.places));
         return atrip;
     }
 }

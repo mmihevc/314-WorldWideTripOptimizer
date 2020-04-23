@@ -10,9 +10,6 @@ public class Option {
         this.earthRadius=earthRadius;
         this.title=title;
         this.optimization=new Optimization();
-        //this.response=1;
-        //this.improvement="none";
-        //this.construction="none";
     }
     Option(String earthRadius, String title, String response, String construction, String improvement){
         this.earthRadius=earthRadius;

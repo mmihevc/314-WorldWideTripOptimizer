@@ -13,6 +13,7 @@ public class RequestTrip extends RequestHeader {
 
     @Override
     public void buildResponse() {
+        //if 3opt return 400
         if (this.options.optimization.improvement.equals("2opt")) {
             this.places = twoPointOptimization.optimize(this.places, Double.parseDouble(options.earthRadius));
         }
