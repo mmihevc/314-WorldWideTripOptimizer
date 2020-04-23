@@ -33,9 +33,6 @@ function processTripResponse(atrip, callback){
     if (!isJsonResponseValid(atrip.body, tripSchema)){
         alert('error fetching trip')
     } else if (atrip.statusCode === HTTP_OK){
-        callback(values = JSON.parse(atrip));
-        callback(alert(values.places.length));
-        //callback(alert(atrip.body.places[1].name));
         callback(atrip.body.distances);
         //callback(goToDestinations(atrip.body.places));
         return atrip;
