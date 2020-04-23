@@ -63,9 +63,9 @@ export default class Atlas extends Component {
             SettingsDropDownOpen: false,
             showStartBox: false,
             showOpt: false,
-            response: '',
-            construction: '',
-            improvement: ''
+            response: {name: ''},
+            construction: {name: ''},
+            improvement: {name: ''}
         };
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
     }
