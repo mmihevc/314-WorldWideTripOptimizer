@@ -16,7 +16,7 @@ export function saveKML(destinations) {
     downloadFile(KML_MIME_TYPE, 'map.kml', kml);
 }
 
-export function saveSVG(map) {
+export function saveSVG(map, testing) {
     let size = map.getSize();
     let svg = SVG_HEADER + '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink= "http://www.w3.org/1999/xlink" ';
     svg += 'width="' + size.x + '" height="' + size.y+ '">';
@@ -25,8 +25,9 @@ export function saveSVG(map) {
     svg += getPolylineSVG(map, mapPaneOffset);
     svg += getMarkerSVG(map, mapPaneOffset);
     svg += '</svg>';
-    console.log(svg);
-    downloadFile(SVG_MIME_TYPE, 'map.svg', svg);
+    if (!testing)
+        downloadFile(SVG_MIME_TYPE, 'map.svg', svg);
+    return svg;
 }
 
 function getTileLayerAsSVG(map, offset) {
@@ -34,7 +35,6 @@ function getTileLayerAsSVG(map, offset) {
     let tileSVG = '';
     for (let i=0; i < tiles.length; i++) {
         let tileOffset = parseElementTransform(tiles[i]);
-        console.log(tileOffset);
         tileSVG += '<image href="' + tiles[i].src + '" ';
         tileSVG += 'x="' + (tileOffset.x+offset.x) + '" y="'+ (tileOffset.y+offset.y) + '" ';
         tileSVG += 'width="' + tiles[i].width + '" height="' + tiles[i].height + '"/>';
