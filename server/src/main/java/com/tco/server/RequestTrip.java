@@ -15,7 +15,7 @@ public class RequestTrip extends RequestHeader {
     public void buildResponse() {
         //if 3opt return 400
         if (this.options.optimization.improvement.equals("2opt")) {
-            this.places = twoPointOptimization.optimize(this.places, Double.parseDouble(options.earthRadius));
+            twoPointOptimization.optimize(this.places);
         }
         if (this.options.optimization.construction.equals("one")) {
             this.places = NearestNeighbor.nearestNeighbor(this.places);

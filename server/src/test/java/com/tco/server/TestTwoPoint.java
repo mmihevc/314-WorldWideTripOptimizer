@@ -2,9 +2,14 @@ package com.tco.server;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static org.junit.Assert.*;
 
 public class TestTwoPoint {
+    private final Logger log = LoggerFactory.getLogger(TestTwoPoint.class);
+
     @Test
     public void testTwoPoint(){
         Place[] atrip = new Place[6];
@@ -21,7 +26,21 @@ public class TestTwoPoint {
         btrip[3]=atrip[5];
         btrip[4]=atrip[3];
         btrip[5]=atrip[2];
-        atrip=twoPointOptimization.optimize(atrip, 6371.0);
+        twoPointOptimization.optimize(atrip);
         assertArrayEquals("msg", atrip, btrip);
+    }
+
+    @Test
+    public void testTwoOptReverse() {
+        Place[] route = new Place[3];
+        Place[] reversedRoute = new Place[3];
+        route[0] = new Place("45.415498", "6.634682", "Courchevel Tourisme");
+        route[1] = new Place("47.137390", "10.269852", "St Anton am Arlberg");
+        route[2] = new Place("40.635036", "-111.476452", "Deer Valley Resort");
+        reversedRoute[0] = route[2];
+        reversedRoute[1] = route[1];
+        reversedRoute[2] = route[0];
+        twoPointOptimization.optReverse(route, 0, 2);
+        assertArrayEquals("2optReverse", reversedRoute, route);
     }
 }
