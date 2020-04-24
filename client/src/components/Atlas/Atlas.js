@@ -402,6 +402,9 @@ export default class Atlas extends Component {
                 cumulativeDistance += mytrip.distances[i];
                 destination.distance = mytrip.distances[i];
                 destination.cumulativeDistance = cumulativeDistance;
+                destination.lat=parseFloat(mytrip.places[i].latitude);
+                destination.lng=parseFloat(mytrip.places[i].longitude);
+                destination.name=mytrip.places[i].name;
                 return destination;
             })
         }, () => {
@@ -409,6 +412,7 @@ export default class Atlas extends Component {
                 roundTripDistance: cumulativeDistance
             });
         });
+        this.goToDestinations(this.state.destinations);
     }
 
     goToDestinations(destinations) {
