@@ -63,9 +63,9 @@ export default class Atlas extends Component {
             SettingsDropDownOpen: false,
             showStartBox: false,
             showOpt: false,
-            response: {name: ''},
-            construction: {name: ''},
-            improvement: {name: ''}
+            response: '',
+            construction: '',
+            improvement: ''
         };
         getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
     }
@@ -395,12 +395,12 @@ export default class Atlas extends Component {
         this.leafletMap.leafletElement.setView({lat: this.state.userLocation.latitude, lng: this.state.userLocation.longitude}, MAP_ZOOM_MAX);
     }
 
-    updateRoundTripDistance(distances) {
+    updateRoundTripDistance(mytrip) {
         let cumulativeDistance = 0;
         this.setState({
             destinations: this.state.destinations.map((destination, i) => {
-                cumulativeDistance += distances[i];
-                destination.distance = distances[i];
+                cumulativeDistance += mytrip.distances[i];
+                destination.distance = mytrip.distances[i];
                 destination.cumulativeDistance = cumulativeDistance;
                 return destination;
             })
