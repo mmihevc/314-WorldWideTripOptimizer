@@ -14,12 +14,12 @@ public class RequestTrip extends RequestHeader {
     @Override
     public void buildResponse() {
         //if 3opt return 400
-        if (this.options.optimization.improvement.equals("2opt")) {
-            this.places = twoPointOptimization.optimize(this.places, Double.parseDouble(options.earthRadius));
-        }
-        if (this.options.optimization.construction.equals("one")) {
+        if (this.options.optimization.construction.equals("one"))
             this.places = NearestNeighbor.nearestNeighbor(this.places);
-        }
+        if (this.options.optimization.improvement.equals("2opt"))
+            twoPointOptimization.optimize(this.places);
+        else if (this.options.optimization.improvement.equals("3opt"))
+            threePointOptimization.optimize(this.places);
         this.distances = new Long[places.length];
         double radius = Double.parseDouble(options.earthRadius);
         for (int i = 1; i < places.length; i++)
