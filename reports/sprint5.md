@@ -82,6 +82,7 @@ Through this task we plan on improving out UI in order to make it easier for the
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
 | 4/22 | | 320 | |
+| 4/24 | 324, 441  | 320, 434, 315 | |
 | *date* | *#task, ...* | *#task, ...* |  | 
 
 
