@@ -1,46 +1,57 @@
 package com.tco.server;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class twoPointOptimization {
 
-    private final static Logger log = LoggerFactory.getLogger(twoPointOptimization.class);
-
-    public static void optReverse(Place[] route, int i1, int k) { // reverse in place
+    public static void optReverse(int[] route, int i1, int k) { // reverse in place
         while (i1 < k) {
-            Place temp = route[i1];
+            int temp = route[i1];
             route[i1] = route[k];
             route[k] = temp;
             i1++; k--;
         }
     }
 
-    public static long dis(Place[] route, int i, int j) {
-        return Utility.getDistance(route[i], route[j], 3958.8);
+    public static long[][] routeDistanceMatrix(Place[] places) {
+        Place[] route = new Place[places.length+1];
+        System.arraycopy(places, 0, route, 0, places.length);
+        route[route.length-1] = places[0];
+        return NearestNeighbor.buildDistanceMatrix(route);
     }
 
-    public static void optimize(Place places[]) {
-        Place route[]= new Place[places.length+1];
-        System.arraycopy(places, 0, route, 0, places.length);
-        route[route.length-1] = new Place(places[0].latitude, places[0].longitude, places[0].name);
+    public static void useRoute(int[] route, Place[] places) {
+        Place[] newPlaces = new Place[places.length];
+        for (int i=0; i < places.length; i++)
+            newPlaces[i] = places[route[i]];
+        for (int i=0; i < places.length; i++)
+            places[i] = newPlaces[i];
+    }
 
+    public static int[] newRoute(Place[] places) {
+        int[] route = new int[places.length + 1];
+        for (int i=0; i < places.length; i++)
+            route[i] = i;
+        route[route.length-1] = route[0];
+        return route;
+    }
+
+    public static void optimize(Place[] places) {
+        int[] route = newRoute(places);
+        long[][] distanceMatrix = routeDistanceMatrix(places);
         int n = places.length;
-
         boolean improvement = true;
         while (improvement) {
             improvement = false;
             for (int i = 0; i <= n-3; i++) {  // assert n>4
                 for (int k = i + 2; k <= n-1; k++) {
-                    long delta = -dis(route,i,i+1)-dis(route,k,k+1)+dis(route,i,k)+dis(route,i+1,k+1);
-                    if (delta < 0) { //improvement?
+                    long curDist = distanceMatrix[route[i]][route[i+1]] + distanceMatrix[route[k]][route[k+1]];
+                    long newDist = distanceMatrix[route[i]][route[k]] + distanceMatrix[route[i+1]][route[k+1]];
+                    if (newDist < curDist) { //improvement?
                         optReverse(route, i+1, k);
                         improvement = true;
                     }
                 }
             }
         }
-
-        System.arraycopy(route, 0, places, 0, places.length);
+        useRoute(route, places);
     }
 }
