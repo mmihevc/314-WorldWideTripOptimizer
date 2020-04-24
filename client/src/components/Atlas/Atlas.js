@@ -395,13 +395,16 @@ export default class Atlas extends Component {
         this.leafletMap.leafletElement.setView({lat: this.state.userLocation.latitude, lng: this.state.userLocation.longitude}, MAP_ZOOM_MAX);
     }
 
-    updateRoundTripDistance(distances) {
+    updateRoundTripDistance(mytrip) {
         let cumulativeDistance = 0;
         this.setState({
             destinations: this.state.destinations.map((destination, i) => {
-                cumulativeDistance += distances[i];
-                destination.distance = distances[i];
+                cumulativeDistance += mytrip.distances[i];
+                destination.distance = mytrip.distances[i];
                 destination.cumulativeDistance = cumulativeDistance;
+                destination.lat=parseFloat(mytrip.places[i].latitude);
+                destination.lng=parseFloat(mytrip.places[i].longitude);
+                destination.name=mytrip.places[i].name;
                 return destination;
             })
         }, () => {
@@ -409,6 +412,7 @@ export default class Atlas extends Component {
                 roundTripDistance: cumulativeDistance
             });
         });
+        this.goToDestinations(this.state.destinations);
     }
 
     goToDestinations(destinations) {
