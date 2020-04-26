@@ -81,6 +81,15 @@ export default class Atlas extends Component {
                             {this.renderSettings()}
                             {this.renderOptimizationOptions()}
                         </ButtonGroup>
+                        <FormGroup>
+                            <Label for="semanticSearch">Search Place</Label>
+                            <Input
+                                type="search"
+                                name="search"
+                                id="semanticSearch"
+                                placeholder="Place name, municipality, region, and/or country"
+                            />
+                        </FormGroup>
                         <Itinerary destinations={this.state.destinations}/>
                         {this.renderRoundTripDistance()}
                         {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
