@@ -67,7 +67,7 @@ class MicroServer {
   }
 
   private String processConfigRequest(Request request, Response response) {
-    String CONFIG_REQUEST_BODY = "{\"requestType\" : \"config\", \"requestVersion\" : 4}";
+    String CONFIG_REQUEST_BODY = "{\"requestType\" : \"config\", \"requestVersion\" : 5}";
     logRequest(request);
     return processHttpRequest(RequestConfig.class, CONFIG_REQUEST_BODY, response);
   }
