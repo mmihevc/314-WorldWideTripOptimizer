@@ -83,6 +83,7 @@ Through this task we plan on improving out UI in order to make it easier for the
 | :--- | :--- | :--- | :--- |
 | 4/22 | | 320 | |
 | 4/24 | 324, 441  | 320, 434, 315 | |
+| 4/27 | 435, 315 | 448, 440, 433, 432, 320, 434, 312 | |
 | *date* | *#task, ...* | *#task, ...* |  | 
 
 
