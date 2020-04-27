@@ -1,24 +1,70 @@
 package com.tco.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class NearestNeighbor {
+
+    private static final Logger log = LoggerFactory.getLogger(NearestNeighbor.class);
 
     public static Place[] nearestNeighbor(Place[] places) {
         if (places.length <= 3)
             return places;
         long[][] distanceMatrix = buildDistanceMatrix(places);
-        Tour bestTour = new Tour(places.length, 0, distanceMatrix);
+        ExecutorService executorService = getThreadExecutor();
+        Set<Callable<TourResult>> tasks = new HashSet<>();
+        for (int placeIndex=0; placeIndex < places.length; placeIndex++)
+            tasks.add(new Tour(places.length, placeIndex, distanceMatrix));
+        List<Future<TourResult>> results;
+        try {
+            results = executorService.invokeAll(tasks);
+        } catch (InterruptedException ie) {
+            log.error("Error running nearestNeighbor threads\n" + ie.getMessage());
+            return places;
+        }
+        executorService.shutdown();
+        int[] bestTour = processTourResults(results);
+        return getTourAsPlaceArray(places, bestTour);
+    }
+
+    public static int[] processTourResults(List<Future<TourResult>> tourResults) {
+        int[] bestTour = new int[tourResults.size()];
         long bestDistance = Long.MAX_VALUE;
-        for (int placeIndex=0; placeIndex < places.length; placeIndex++) {
-            Tour curTour = new Tour(places.length, placeIndex, distanceMatrix);
-            long curDistance = curTour.getTotalDistance(distanceMatrix);
-            if (curDistance < bestDistance) {
-                bestDistance = curDistance;
-                bestTour = curTour;
+        for (Future<TourResult> tourResult: tourResults) {
+            TourResult tour;
+            try {
+                tour = tourResult.get();
+            } catch (Exception e) {
+                log.error("Error processing tour results\n" + e.getMessage());
+                return bestTour;
+            }
+            if (tour.distance < bestDistance) {
+                bestDistance = tour.distance;
+                bestTour = tour.tour;
             }
         }
-        return bestTour.getTour(places);
+        return bestTour;
+    }
+
+    public static ExecutorService getThreadExecutor() {
+        int logicalThreads = Runtime.getRuntime().availableProcessors();
+        return Executors.newFixedThreadPool(logicalThreads/2);
+    }
+
+    public static Place[] getTourAsPlaceArray(Place[] places, int[] tour) {
+        Place[] newPlaces = new Place[places.length];
+        for (int placeIndex=0; placeIndex < places.length; placeIndex++)
+            newPlaces[placeIndex] = places[tour[placeIndex]];
+        return newPlaces;
     }
 
     protected static int getClosestPlace(long[][] distanceMatrix, int startPlace, boolean[] unvisitedPlaces) {
@@ -56,76 +102,6 @@ public class NearestNeighbor {
             return distanceMatrix[j][i];
         else
             return Utility.getDistance(places[i], places[j], 3958.8);
-    }
-
-}
-
-class Tour {
-    private long[][] distanceMatrix;
-    private int[] tour;
-    private boolean[] unvisitedPlaces;
-    private int tourIndex;
-
-    Tour(int size, int startPlace, long[][] distanceMatrix) {
-        this.distanceMatrix = distanceMatrix;
-        this.initializeTour(size, startPlace);
-        this.buildTour();
-    }
-
-    private void initializeTour(int size, int startPlace) {
-        this.tour = new int[size];
-        this.unvisitedPlaces = new boolean[size];
-        Arrays.fill(this.tour, -1);
-        Arrays.fill(this.unvisitedPlaces, true);
-        this.tour[0] = startPlace;
-        this.unvisitedPlaces[startPlace] = false;
-        this.tourIndex = 1;
-    }
-
-    private void buildTour() {
-        while (this.placesAreUnvisited())
-            this.visitNextPlace();
-    }
-
-    private void visitNextPlace() {
-        int lastPlace = this.getLastPlace();
-        int nextPlace = NearestNeighbor.getClosestPlace(distanceMatrix, lastPlace, unvisitedPlaces);
-        this.addPlace(nextPlace);
-        this.unvisitedPlaces[nextPlace] = false;
-    }
-
-    private void addPlace(int place) {
-        this.tour[this.tourIndex] = place;
-        this.tourIndex++;
-    }
-
-    private int getLastPlace() {
-        return this.tour[this.tourIndex-1];
-    }
-
-    private boolean placesAreUnvisited() {
-        for (boolean unvisitedPlace : unvisitedPlaces)
-            if (unvisitedPlace)
-                return true;
-        return false;
-    }
-
-    public Place[] getTour(Place[] places) {
-        Place[] newPlaces = new Place[places.length];
-        for (int placeIndex=0; placeIndex < places.length; placeIndex++)
-            newPlaces[placeIndex] = places[this.tour[placeIndex]];
-        return newPlaces;
-    }
-
-    public long getTotalDistance(long[][] distanceMatrix) {
-        long distance = 0;
-        for (int placeIndex=0; placeIndex < this.tour.length-1; placeIndex++) {
-            int start = this.tour[placeIndex];
-            int finish = this.tour[placeIndex+1];
-            distance += distanceMatrix[start][finish];
-        }
-        distance += distanceMatrix[this.tour[this.tour.length-1]][this.tour[0]];
-        return distance;
     }
 
 }
