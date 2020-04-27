@@ -11,7 +11,7 @@
 | Name | Preparation Time |
 | ---- | ---- |
 | Kellyn Dassler | 30 min  |
-|  |  |
+| Kai Griem | 30 min |
 
 ### Problems found
 
@@ -27,4 +27,7 @@
 | Atlas.test.js:55/Atlas.js 106 | Need to add a test for onMapClick| med | Kellyn Dassler | |
 | Atlas.test.js:55/Atlas.js 162-168 | Need to add a test for saving SVG, KML, JSON, CSV| med | Kellyn Dassler | |
 | Atlas.test.js:55/Atlas.js 276-281 | Need to add a test for parseJSOn method| med | Kellyn Dassler | |
+| Atlas.test.js | no test for loadfile | medium | Kai Griem |
+| Atlas.test.js | no test for determineoldtrip | medium | Kai Griem |
+| Atlas.test.js | no tets for getInput | medium | Kai Griem |
 |  | | | | |
