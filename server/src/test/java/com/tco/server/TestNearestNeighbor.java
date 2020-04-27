@@ -8,6 +8,8 @@ import static org.junit.Assert.*;
 
 public class TestNearestNeighbor {
 
+    private static final Logger log = LoggerFactory.getLogger(TestNearestNeighbor.class);
+
     @Test
     public void testNearestNeighbor() {
         Place[] places = new Place[6];
@@ -18,14 +20,14 @@ public class TestNearestNeighbor {
         places[4] = new Place("39.76", "-105.23", "Golden");
         places[5] = new Place("40.41", "-104.71", "Greeley");
         Place[] sortedPlaces = NearestNeighbor.nearestNeighbor(places);
-        Place[] expectedPlaces = new Place[6];
-        expectedPlaces[0] = places[2];
-        expectedPlaces[1] = places[4];
-        expectedPlaces[2] = places[0];
-        expectedPlaces[3] = places[5];
-        expectedPlaces[4] = places[1];
-        expectedPlaces[5] = places[3];
-        assertArrayEquals("NearestNeighbor nearestNeighbor", expectedPlaces, sortedPlaces);
+        long totalDistance = 0;
+        long expectedDistance = 145;
+        for (int i = 0; i < places.length-1; i++)
+            totalDistance += Utility.getDistance(sortedPlaces[i], sortedPlaces[i+1], 3958.8);
+        totalDistance += Utility.getDistance(sortedPlaces[sortedPlaces.length-1], sortedPlaces[0], 3958.8);
+        for (Place place : sortedPlaces)
+            log.error(place.name);
+        assertEquals("NearestNeighbor nearestNeighbor", expectedDistance, totalDistance);
     }
 
     @Test
