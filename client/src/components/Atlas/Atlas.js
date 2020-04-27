@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, FormGroup, Input, InputGroup, Label, Modal, ModalBody, ModalHeader, Row} from 'reactstrap';
+import Control from 'react-leaflet-control';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import './mapbuttonstyle.css';
 import Papa from "papaparse";
 import Coordinates from 'coordinate-parser';
 import {EARTH_RADIUS_UNITS_DEFAULT, PROTOCOL_VERSION} from "../Constants";
@@ -15,6 +17,7 @@ import Itinerary from "./Itinerary";
 import {latLngToString, parseIndex, parseStateName} from "../../utils/input";
 import {saveCSV, saveJSON, saveKML, saveSVG} from "../../utils/save";
 import Dropdown from "reactstrap/lib/Dropdown";
+import WhereAmIIcon from "./images/where_am_i.png";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -77,7 +80,6 @@ export default class Atlas extends Component {
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
                         <ButtonGroup>
-                            {this.renderWhereAmI()}
                             {this.renderSettings()}
                             {this.renderOptimizationOptions()}
                         </ButtonGroup>
@@ -118,6 +120,7 @@ export default class Atlas extends Component {
                 <AtlasMarker position={this.state.markerPosition} pan={false} addon={this.addToTripButton} popup={true}/>
                 {this.renderMultiple(this.state.destinations.length, this.renderDestination)}
                 {this.renderLines(this.state.destinations)}
+                {this.renderWhereAmI()}
             </Map>
         )
     }
@@ -155,13 +158,19 @@ export default class Atlas extends Component {
 
     renderWhereAmI() {
         if (this.state.userLocation) {
-            return ( <Button onClick={_ => getCurrentLocation(this.goToUserLocation)}>Where Am I?</Button>)
+            return (
+                <Control position="topleft">
+                    <Button className="leaflet-button" title="Where Am I?" onClick={_ => getCurrentLocation(this.goToUserLocation)}>
+                        <img src={WhereAmIIcon}/>
+                    </Button>
+                </Control>
+            )
         }
     }
 
     renderSettings(){
         return (
-            <Dropdown className='ml-1' isOpen={this.state.SettingsDropDownOpen} toggle={() => {
+            <Dropdown isOpen={this.state.SettingsDropDownOpen} toggle={() => {
                 this.setState({SettingsDropDownOpen: !this.state.SettingsDropDownOpen})
             }}>
                 <DropdownToggle caret>Settings</DropdownToggle>
