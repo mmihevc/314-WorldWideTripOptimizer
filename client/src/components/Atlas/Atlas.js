@@ -18,6 +18,7 @@ import {latLngToString, parseIndex, parseStateName} from "../../utils/input";
 import {saveCSV, saveJSON, saveKML, saveSVG} from "../../utils/save";
 import Dropdown from "reactstrap/lib/Dropdown";
 import WhereAmIIcon from "./images/where_am_i.png";
+import DownloadIcon from "./images/download.png";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -63,7 +64,7 @@ export default class Atlas extends Component {
             markerArray : [],
             numInputs: 0,
             showItinerary: false,
-            SettingsDropDownOpen: false,
+            saveDropdownOpen: false,
             showStartBox: false,
             showOpt: false,
             response: '',
@@ -79,10 +80,7 @@ export default class Atlas extends Component {
                 <Row>
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
-                        <ButtonGroup>
-                            {this.renderSettings()}
-                            {this.renderOptimizationOptions()}
-                        </ButtonGroup>
+                        {this.renderOptimizationOptions()}
                         <FormGroup>
                             <Label for="semanticSearch">Search Place</Label>
                             <Input
@@ -120,7 +118,8 @@ export default class Atlas extends Component {
                 <AtlasMarker position={this.state.markerPosition} pan={false} addon={this.addToTripButton} popup={true}/>
                 {this.renderMultiple(this.state.destinations.length, this.renderDestination)}
                 {this.renderLines(this.state.destinations)}
-                {this.renderWhereAmI()}
+                {this.state.userLocation && this.renderWhereAmI()}
+                {this.renderSaveButton()}
             </Map>
         )
     }
@@ -157,42 +156,43 @@ export default class Atlas extends Component {
     }
 
     renderWhereAmI() {
-        if (this.state.userLocation) {
-            return (
-                <Control position="topleft">
-                    <Button className="leaflet-button" title="Where Am I?" onClick={_ => getCurrentLocation(this.goToUserLocation)}>
-                        <img src={WhereAmIIcon}/>
-                    </Button>
-                </Control>
-            )
-        }
+        return (
+            <Control position="topleft">
+                <Button className="leaflet-button" title="Where Am I?" onClick={_ => getCurrentLocation(this.goToUserLocation)}>
+                    <img src={WhereAmIIcon}/>
+                </Button>
+            </Control>
+        )
     }
 
-    renderSettings(){
+    renderSaveButton(){
         return (
-            <Dropdown isOpen={this.state.SettingsDropDownOpen} toggle={() => {
-                this.setState({SettingsDropDownOpen: !this.state.SettingsDropDownOpen})
-            }}>
-                <DropdownToggle caret>Settings</DropdownToggle>
-                <DropdownMenu>
-                    <DropdownItem header>Save Map</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem onClick={() => {saveKML(this.state.destinations)}}>KML</DropdownItem>
-                    <DropdownItem onClick={() => {saveSVG(this.leafletMap.leafletElement)}}>SVG</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem header>Save Itinerary</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem onClick={() => {saveJSON(this.state.destinations)}}>JSON</DropdownItem>
-                    <DropdownItem onClick={() =>{saveCSV(this.state.destinations)}}>CSV</DropdownItem>
-                </DropdownMenu>
-            </Dropdown>
+            <Control position="bottomleft">
+                <Dropdown className="leaflet-control-container" direction="up" isOpen={this.state.saveDropdownOpen}
+                          toggle={_ => {this.setState({saveDropdownOpen: !this.state.saveDropdownOpen})}}>
+                    <DropdownToggle className="leaflet-button" title="Save Trip">
+                        <img src={DownloadIcon}/>
+                    </DropdownToggle>
+                    <DropdownMenu>
+                        <DropdownItem header>Save Map</DropdownItem>
+                        <DropdownItem divider/>
+                        <DropdownItem onClick={() => {saveKML(this.state.destinations)}}>KML</DropdownItem>
+                        <DropdownItem onClick={() => {saveSVG(this.leafletMap.leafletElement)}}>SVG</DropdownItem>
+                        <DropdownItem divider/>
+                        <DropdownItem header>Save Itinerary</DropdownItem>
+                        <DropdownItem divider/>
+                        <DropdownItem onClick={() => {saveJSON(this.state.destinations)}}>JSON</DropdownItem>
+                        <DropdownItem onClick={() =>{saveCSV(this.state.destinations)}}>CSV</DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
+            </Control>
         )
     }
 
     renderOptimizationOptions() {
         return (
             <Form onSubmit={handleSubmit}>
-                <Button className="ml-1" onClick={this.displayOptPopover}>Opt Options</Button>
+                <Button onClick={this.displayOptPopover}>Opt Options</Button>
                 <Modal isOpen={this.state.showOpt} toggle={this.displayOptPopover}>
                     <ModalHeader toggle={this.displayOptPopover}>Select Options Before Loading File</ModalHeader>
                     <ModalBody>
