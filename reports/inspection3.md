@@ -11,6 +11,7 @@
 | Name | Preparation Time |
 | ---- | ---- |
 | Kellyn Dassler | 30 min  |
+| Kai Griem | 30 min |
 | Kevin Schroeder | 30 min |
 |  |  |
 
@@ -28,6 +29,11 @@
 | Atlas.test.js:55/Atlas.js 106 | Need to add a test for onMapClick| med | Kellyn Dassler | |
 | Atlas.test.js:55/Atlas.js 162-168 | Need to add a test for saving SVG, KML, JSON, CSV| med | Kellyn Dassler | |
 | Atlas.test.js:55/Atlas.js 276-281 | Need to add a test for parseJSOn method| med | Kellyn Dassler | |
+| Atlas.test.js | handlbar access denied warning | low | Kai Griem | |
+| Atlas.test.js | no test for loadfile | medium | Kai Griem | |
+| Atlas.test.js | Warning: componentWillReceiveProps renamed | low | Kai Griem | |
+| Atlas.test.js | no test for determineoldtrip | medium | Kai Griem | |
+| Atlas.test.js | no test for getInput | medium | Kai Griem | |
 | Atlas.test.js:1-55 | Test Result warnings: handlebarsjs acess denied | low | Kevin Schroeder | |
 | Atlas.test.js:1-55 | Test Result warnings: react-dom functions renamed, update Modal | low | Kevin Schroeder | |
 | Atlas.test.js:1-55 | testUpdateRoundTripDistance should be finished | high | Kevin Schroeder | |
