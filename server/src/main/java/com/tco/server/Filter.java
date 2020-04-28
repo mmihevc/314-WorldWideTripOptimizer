@@ -7,9 +7,9 @@ public class Filter {
     protected String where;
 
     Filter(){
-        this.response="1"; //check this number
-        this.type="airport"; //["airport", "balloon", "helicopter"]
-        this.where="country"; //["country", "country and region", "country and region and municipality", "region name or municipality"]
+        this.response="1";
+        this.type="airport";
+        this.where="country";
     }
     Filter(String response, String type, String where){
         this.response=response;

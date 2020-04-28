@@ -4,6 +4,7 @@ public class Option {
     protected String earthRadius;
     protected String title;
     protected Optimization optimization;
+    protected Filter filter;
 
 
     Option(String earthRadius, String title){
@@ -15,5 +16,9 @@ public class Option {
         this.earthRadius=earthRadius;
         this.title=title;
         this.optimization=new Optimization(response, construction, improvement);
+    }
+    Option(String earthRadius, String response, String type, String where){
+        this.earthRadius=earthRadius;
+        this.filter=new Filter(response, type, where);
     }
 }

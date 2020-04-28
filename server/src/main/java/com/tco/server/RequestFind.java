@@ -8,9 +8,6 @@ public class RequestFind extends RequestHeader {
 
     private final transient Logger log = LoggerFactory.getLogger(RequestFind.class);
 
-    //["airport", "balloon", "helicopter"]
-    //["country", "country and region", "country and region and municipality", "region name or municipality"]
-
     @Override
     public void buildResponse() {
         if(filters.type.equals("airport")){ /*do something*/}
