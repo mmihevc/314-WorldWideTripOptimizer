@@ -27,7 +27,7 @@ public class TestJSONValidator {
 
     @Test
     public void testRequestConfigPass() {
-        test("{\"requestType\":\"config\",\"requestVersion\":1}", RequestConfig.class, true);
+        test("{\"requestType\":\"config\",\"requestVersion\":5}", RequestConfig.class, true);
     }
 
     @Test

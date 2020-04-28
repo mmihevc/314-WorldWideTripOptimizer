@@ -24,7 +24,7 @@ public class RequestConfig extends RequestHeader {
   private String serverName;
   private String[] supportedRequests;
 
-  private final static String[] SUPPORTED_REQUESTS = {"config", "distance", "trip"};
+  private final static String[] SUPPORTED_REQUESTS = {"config", "distance", "trip", "find"};
 
   private final transient Logger log = LoggerFactory.getLogger(RequestConfig.class);
 
@@ -59,7 +59,5 @@ public class RequestConfig extends RequestHeader {
     return this.requestVersion;
   }
 
-  String[] getSupportedRequests() {
-    return this.supportedRequests;
-  }
+  String[] getSupportedRequests() { return this.supportedRequests; }
 }
