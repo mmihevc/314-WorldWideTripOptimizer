@@ -40,13 +40,7 @@
               ]
             },
             "where": {
-              "type": "string",
-              "enum": [
-                "country",
-                "country and region",
-                "country and region and municipality",
-                "region name or municipality"
-              ]
+              "type": "string"
             }
           }
         }
@@ -56,6 +50,6 @@
       ]
     }
   },
-  "required":["requestVersion","requestType","options","places","distances"],
+  "required":["requestVersion","requestType","options"],
   "additionalProperties": false
 }
