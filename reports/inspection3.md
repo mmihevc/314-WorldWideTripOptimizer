@@ -13,7 +13,7 @@
 | Kellyn Dassler | 30 min  |
 | Kai Griem | 30 min |
 | Kevin Schroeder | 30 min |
-|  |  |
+| Maddie Mihevc | 30 min |
 
 ### Problems found
 
@@ -41,4 +41,8 @@
 | Atlas.test.js:1-55 | Need testing for all functional code in Atlas.js | high | Kevin Schroeder | |
 | Atlas.test.js:1-55 | Need testing for all state-changes in Atlas.js | high | Kevin Schroeder | |
 | Atlas.test.js:1-55 | Need functions to mock server responses for Atlas.js testing | med | Kevin Schroeder | |
-|  | | | | |
+| Atlas.test.js:1-55 | Does not test to see what happens when invalid coordinates are provided | low |  Maddie Mihevc| |
+| Atlas.test.js:1-55 | Need testing for all of the render methods | med | Maddie Mihevc | |
+| Atlas.test.js:1-55 | Add testing to test loading an invalid file | med | Maddie Mihevc | |
+| Atlas.test.js:1-55 | Need testing for reversing a trip | low | Maddie Mihevc | |
+
