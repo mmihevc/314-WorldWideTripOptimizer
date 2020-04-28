@@ -8,7 +8,7 @@
     "requestVersion": {
       "description":"the TIP protocol version",
       "type":"integer",
-      "minimum": 1
+      "minimum": 5
     },
     "requestType": {
       "description":"the TIP object type should be config",
@@ -25,7 +25,7 @@
       "type": "array",
       "items": {
         "type": "string",
-        "enum": ["config","distance","trip"]
+        "enum": ["config","distance","trip", "find"]
       }
     },
     "optimization": {
@@ -37,7 +37,11 @@
           "type": "array",
           "items": {
             "type": "string",
-            "enum": ["none", "one", "some"]
+            "enum": [
+              "none",
+              "one",
+              "some"
+            ]
           }
         },
         "improvement": {
@@ -45,12 +49,37 @@
           "type": "array",
           "items": {
             "type": "string",
-            "enum": ["none", "2opt", "3opt"]
+            "enum": [
+              "none",
+              "2opt",
+              "3opt"
+            ]
           }
         }
+      },
+      "additionalProperties": false
+    },
+      "filter" : {
+        "description": "supported filters for find requests.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["airport","balloonport","heliport"]
+            }
+          },
+          "where": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
       }
-    }
-  },
+    },
   "required":["requestVersion","requestType","serverName","supportedRequests"],
   "additionalProperties": false
 }
