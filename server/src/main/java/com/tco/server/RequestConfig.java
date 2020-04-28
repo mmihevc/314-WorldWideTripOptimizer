@@ -59,7 +59,5 @@ public class RequestConfig extends RequestHeader {
     return this.requestVersion;
   }
 
-  String[] getSupportedRequests() {
-    return this.supportedRequests;
-  }
+  String[] getSupportedRequests() { return this.supportedRequests; }
 }
