@@ -19,6 +19,7 @@ import {saveCSV, saveJSON, saveKML, saveSVG} from "../../utils/save";
 import Dropdown from "reactstrap/lib/Dropdown";
 import WhereAmIIcon from "./images/where_am_i.png";
 import DownloadIcon from "./images/download.png";
+import UploadIcon from "./images/upload.png";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -35,23 +36,12 @@ export default class Atlas extends Component {
         this.goToUserLocation = this.goToUserLocation.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.goToDestinations = this.goToDestinations.bind(this);
-        this.renderDestination = this.renderDestination.bind(this);
         this.renderInputBox = this.renderInputBox.bind(this);
-        this.updateRoundTripDistance = this.updateRoundTripDistance.bind(this);
-        this.loadFile = this.loadFile.bind(this);
         this.parseJSON = this.parseJSON.bind(this);
-        this.parseCSV = this.parseCSV.bind(this);
-        this.addToTripButton = this.addToTripButton.bind(this);
-        this.addUserMarker = this.addUserMarker.bind(this);
-        this.reverseTrip = this.reverseTrip.bind(this);
-        this.handleSwitch = this.handleSwitch.bind(this);
-        this.displayStartBox = this.displayStartBox.bind(this);
         this.displayOptPopover = this.displayOptPopover.bind(this);
-        this.handleOnChange = this.handleOnChange.bind(this);
         this.setInput = this.setInput.bind(this);
         this.getInput = this.getInput.bind(this);
         this.connectOneTwoOrThreeOpt = this.connectOneTwoOrThreeOpt.bind(this);
-        this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -96,10 +86,10 @@ export default class Atlas extends Component {
                         {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
                         <ButtonGroup>
                             <Button onClick={() => {this.addInputBox()}}>+</Button>
-                            <Button className="ml-1" onClick={this.displayStartBox}>Start</Button>
+                            <Button className="ml-1" onClick={this.displayStartBox.bind(this)}>Start</Button>
                         </ButtonGroup>
                         {this.renderModifyButtons()}
-                        {this.renderLoadTrip()}
+                        <Input innerRef={input => {this.tripInput = input;}} type='file' name='file' onChange={this.loadFile.bind(this)}/>
                     </Col>
                 </Row>
             </Container>
@@ -115,21 +105,26 @@ export default class Atlas extends Component {
                  onClick={(mapClickInfo) => {this.setState({markerPosition: mapClickInfo.latlng});}}
                  style={{height: MAP_STYLE_LENGTH, maxWidth: MAP_STYLE_LENGTH}}>
                 <TileLayer url={MAP_LAYER_URL} attribution={MAP_LAYER_ATTRIBUTION}/>
-                <AtlasMarker position={this.state.markerPosition} pan={false} addon={this.addToTripButton} popup={true}/>
-                {this.renderMultiple(this.state.destinations.length, this.renderDestination)}
+                <AtlasMarker position={this.state.markerPosition} pan={false} addon={this.addToTripButton.bind(this)} popup={true}/>
+                {this.renderMultiple(this.state.destinations.length, this.renderDestination.bind(this))}
                 {this.renderLines(this.state.destinations)}
                 {this.state.userLocation && this.renderWhereAmI()}
-                {this.renderSaveButton()}
+                <Control position="bottomleft"  className="leaflet-control-container leaflet-shadow">
+                    {this.renderLoadTrip()}
+                    {this.renderSaveButton()}
+                </Control>
             </Map>
         )
     }
 
     renderLoadTrip() {
         return (
-            <p className="mt-2">
-                Load Trip:
-                <Input type='file' name='file' onChange={this.loadFile}/>
-            </p>
+                <Button className="leaflet-button leaflet-button-top" title="Load Trip" onClick={_ => {
+                    if (this.tripInput)
+                        this.tripInput.click();
+                }}>
+                    <img src={UploadIcon} alt="Load Trip Icon"/>
+                </Button>
         )
     }
 
@@ -159,7 +154,7 @@ export default class Atlas extends Component {
         return (
             <Control position="topleft">
                 <Button className="leaflet-button" title="Where Am I?" onClick={_ => getCurrentLocation(this.goToUserLocation)}>
-                    <img src={WhereAmIIcon}/>
+                    <img src={WhereAmIIcon} alt="Where Am I Icon"/>
                 </Button>
             </Control>
         )
@@ -167,11 +162,10 @@ export default class Atlas extends Component {
 
     renderSaveButton(){
         return (
-            <Control position="bottomleft">
-                <Dropdown className="leaflet-control-container" direction="up" isOpen={this.state.saveDropdownOpen}
+                <Dropdown direction="up" isOpen={this.state.saveDropdownOpen}
                           toggle={_ => {this.setState({saveDropdownOpen: !this.state.saveDropdownOpen})}}>
-                    <DropdownToggle className="leaflet-button" title="Save Trip">
-                        <img src={DownloadIcon}/>
+                    <DropdownToggle className="leaflet-button leaflet-button-bottom" title="Save Trip">
+                        <img src={DownloadIcon} alt="Download Icon"/>
                     </DropdownToggle>
                     <DropdownMenu>
                         <DropdownItem header>Save Map</DropdownItem>
@@ -185,7 +179,6 @@ export default class Atlas extends Component {
                         <DropdownItem onClick={() =>{saveCSV(this.state.destinations)}}>CSV</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
-            </Control>
         )
     }
 
@@ -245,7 +238,7 @@ export default class Atlas extends Component {
         if (this.state.numInputs >= 1) {
             return (
                 <ButtonGroup>
-                    <Button className="ml-1" onClick={this.reverseTrip}>{UNICODE_REVERSE_SYMBOL}</Button>
+                    <Button className="ml-1" onClick={this.reverseTrip.bind(this)}>{UNICODE_REVERSE_SYMBOL}</Button>
                     <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
                 </ButtonGroup>
             )
@@ -262,7 +255,7 @@ export default class Atlas extends Component {
     }
 
     addToTripButton() {
-        return ( <Button onClick={this.addUserMarker} color="primary" size="sm">Add to trip</Button> )
+        return ( <Button onClick={this.addUserMarker.bind(this)} color="primary" size="sm">Add to trip</Button> )
     }
 
     addUserMarker() {
@@ -282,7 +275,7 @@ export default class Atlas extends Component {
         } else if (file.type === 'text/csv') {
             let config = {
                 header: true,
-                complete: this.parseCSV
+                complete: this.parseCSV.bind(this)
             };
             Papa.parse(file, config);
         }else{
@@ -343,11 +336,11 @@ export default class Atlas extends Component {
             <AtlasInput key={"input"+index} id={index} index={index}
                         valid={this.state.inputError[index]}
                         invalid={!this.state.inputError[index] && (this.state.inputCoords[index] !== "") && this.state.inputSubmitted[index]}
-                        onChange={this.handleOnChange}
+                        onChange={this.handleOnChange.bind(this)}
                         nameValue={this.state.inputNames[index]}
                         coordsValue={this.state.inputCoords[index]}
-                        handleSwitch= {this.handleSwitch}
-                        handleDeleteFunction = {this.handleDeleteFunction}/>
+                        handleSwitch= {this.handleSwitch.bind(this)}
+                        handleDeleteFunction = {this.handleDeleteFunction.bind(this)}/>
         )
     }
 
@@ -382,7 +375,7 @@ export default class Atlas extends Component {
         }, () => {
             this.goToDestinations(this.state.destinations);
             if(this.state.destinations.length >= 2)
-                tripCall(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.props.serverPort, this.updateRoundTripDistance, this.state.response, this.state.construction, this.state.improvement);
+                tripCall(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.props.serverPort, this.updateRoundTripDistance.bind(this), this.state.response, this.state.construction, this.state.improvement);
         });
     };
 
