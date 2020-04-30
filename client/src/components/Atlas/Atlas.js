@@ -42,6 +42,8 @@ export default class Atlas extends Component {
         this.setInput = this.setInput.bind(this);
         this.getInput = this.getInput.bind(this);
         this.connectOneTwoOrThreeOpt = this.connectOneTwoOrThreeOpt.bind(this);
+        this.displaySIPopover = this.displaySIPopover.bind(this);
+
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -51,17 +53,20 @@ export default class Atlas extends Component {
             inputError: [],
             inputSubmitted: [],
             destinations: [],
-            markerArray : [],
+            markerArray: [],
             numInputs: 0,
             showItinerary: false,
             saveDropdownOpen: false,
             showStartBox: false,
             showOpt: false,
+            showSI: false,
             response: '',
             construction: '',
             improvement: ''
         };
-        getCurrentLocation(this.setUserLocation.bind(this), () => {this.setState({userLocation: false})});
+        getCurrentLocation(this.setUserLocation.bind(this), () => {
+            this.setState({userLocation: false})
+        });
     }
 
     render() {
@@ -209,6 +214,25 @@ export default class Atlas extends Component {
         )
     }
 
+    renderSearchItineraryButton(){
+        return(
+            <Form onSubmit={handleSubmit}>
+                <Button onClick={this.displaySIPopover}>Search Itinerary</Button>
+                <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
+                    <ModalBody>
+                        <Label for="itinerarySearch">Search Itinerary</Label>
+                        <Input
+                            type="search"
+                            name="search"
+                            id="itinerarySearch"
+                            placeholder="this doesn't actually do anything rn"
+                        />
+                    </ModalBody>
+                </Modal>
+            </Form>
+        )
+    }
+
     renderSelect(id, opt1, opt2, opt3) {
         return (
             <FormGroup>
@@ -221,6 +245,8 @@ export default class Atlas extends Component {
     }
 
     displayOptPopover() { this.setState({showOpt : !this.state.showOpt});}
+
+    displaySIPopover() { this.setState({showSI : !this.state.showSI});}
 
     connectOneTwoOrThreeOpt(){
         let response = document.getElementById('response').value;
@@ -240,6 +266,7 @@ export default class Atlas extends Component {
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip.bind(this)}>{UNICODE_REVERSE_SYMBOL}</Button>
                     <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
+                    {this.renderSearchItineraryButton()}
                 </ButtonGroup>
             )
         }
