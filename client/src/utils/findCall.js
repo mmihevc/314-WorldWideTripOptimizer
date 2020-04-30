@@ -14,7 +14,7 @@ export function findCall(match, limit, type, where, found = 1, port) {
     }
     sendServerRequestWithBody('find', values, port).then(
         aTrip => processFindResponse(aTrip)
-    )
+    );
 }
 
 function processFindResponse(aTrip, callback){
