@@ -135,7 +135,8 @@ export default class Atlas extends Component {
     }
 
     handleDeleteEntireItinerary() {
-        //implement delete every atlasinput and clear itinerary
+            this.setState({numInputs: 0}, this.handleInputChange);
+        // clear itinerary too?
     }
 
     renderRoundTripDistance() {
