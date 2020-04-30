@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, FormGroup, Input, InputGroup, Label, Modal, ModalBody, ModalHeader, Row} from 'reactstrap';
+import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Row, Nav, NavItem, NavLink, TabContent, TabPane, Form, Modal, ModalBody} from 'reactstrap';
 import Control from 'react-leaflet-control';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -12,7 +12,6 @@ import {getCurrentLocation} from "../../utils/geolocation";
 import AtlasLine from "./AtlasLine";
 import AtlasMarker from "./AtlasMarker";
 import AtlasInput from "./AtlasInput";
-import handleSubmit from "./AtlasInput";
 import Itinerary from "./Itinerary";
 import {latLngToString, parseIndex, parseStateName} from "../../utils/input";
 import {saveCSV, saveJSON, saveKML, saveSVG} from "../../utils/save";
@@ -20,6 +19,7 @@ import Dropdown from "reactstrap/lib/Dropdown";
 import WhereAmIIcon from "./images/where_am_i.png";
 import DownloadIcon from "./images/download.png";
 import UploadIcon from "./images/upload.png";
+import SearchIcon from "./images/search.png";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -62,7 +62,8 @@ export default class Atlas extends Component {
             showSI: false,
             response: '',
             construction: '',
-            improvement: ''
+            improvement: '',
+            activeTab: "Trip",
         };
         getCurrentLocation(this.setUserLocation.bind(this), () => {
             this.setState({userLocation: false})
@@ -75,25 +76,7 @@ export default class Atlas extends Component {
                 <Row>
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
-                        {this.renderOptimizationOptions()}
-                        <FormGroup>
-                            <Label for="semanticSearch">Search Place</Label>
-                            <Input
-                                type="search"
-                                name="search"
-                                id="semanticSearch"
-                                placeholder="Place name, municipality, region, and/or country"
-                            />
-                        </FormGroup>
-                        <Itinerary destinations={this.state.destinations}/>
-                        {this.renderRoundTripDistance()}
-                        {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
-                        {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
-                        <ButtonGroup>
-                            <Button onClick={() => {this.addInputBox()}}>+</Button>
-                            <Button className="ml-1" onClick={this.displayStartBox.bind(this)}>Start</Button>
-                        </ButtonGroup>
-                        {this.renderModifyButtons()}
+                        {this.renderTabs()}
                         <Input innerRef={input => {this.tripInput = input;}} type='file' name='file' onChange={this.loadFile.bind(this)}/>
                     </Col>
                 </Row>
@@ -117,6 +100,11 @@ export default class Atlas extends Component {
                 <Control position="bottomleft"  className="leaflet-control-container leaflet-shadow">
                     {this.renderLoadTrip()}
                     {this.renderSaveButton()}
+                </Control>
+                <Control position="topright">
+                    <Button className="leaflet-button">
+                        <img src={SearchIcon} alt="Search Icon"/>
+                    </Button>
                 </Control>
             </Map>
         )
@@ -187,37 +175,73 @@ export default class Atlas extends Component {
         )
     }
 
+    renderTabs() {
+        return (
+            <div className="mt-1">
+                <Nav tabs>
+                    <NavItem>
+                        <NavLink active={this.state.activeTab === "Trip"} onClick={_ => this.setState({activeTab: "Trip"})}>
+                            Trip
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink active={this.state.activeTab === "Settings"} onClick={_ => this.setState({activeTab: "Settings"})}>
+                            Optimization
+                        </NavLink>
+                    </NavItem>
+                </Nav>
+                <TabContent activeTab={this.state.activeTab}>
+                    <TabPane tabId="Trip" className="mt-1">
+                        <FormGroup>
+                            <Label for="semanticSearch">Search Place</Label>
+                            <Input
+                                type="search"
+                                name="search"
+                                id="semanticSearch"
+                                placeholder="Place name, municipality, region, and/or country"
+                            />
+                        </FormGroup>
+                        <Itinerary destinations={this.state.destinations}/>
+                        {this.renderRoundTripDistance()}
+                        {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
+                        {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
+                        <ButtonGroup>
+                            <Button onClick={() => {this.addInputBox()}}>+</Button>
+                            <Button className="ml-1" onClick={this.displayStartBox.bind(this)}>Start</Button>
+                        </ButtonGroup>
+                        {this.renderModifyButtons()}
+                    </TabPane>
+                    <TabPane tabId="Settings" className="mt-1">
+                        {this.renderOptimizationOptions()}
+                    </TabPane>
+                </TabContent>
+            </div>
+        )
+    }
+
     renderOptimizationOptions() {
         return (
-            <Form onSubmit={handleSubmit}>
-                <Button onClick={this.displayOptPopover}>Opt Options</Button>
-                <Modal isOpen={this.state.showOpt} toggle={this.displayOptPopover}>
-                    <ModalHeader toggle={this.displayOptPopover}>Select Options Before Loading File</ModalHeader>
-                    <ModalBody>
-                        <InputGroup>
-                            <Input id="response" placeholder="Enter desired response time: 1-60" onChange={this.connectOneTwoOrThreeOpt}/>
-                        </InputGroup><br/>
-                        <FormGroup>
-                            <Label for="construction">Construction</Label>
-                            <Input type="select" id="construction" onChange={this.connectOneTwoOrThreeOpt}>
-                                <option>none</option><option>one</option><option>some</option>
-                            </Input><br/>
-                            <Label for="improvement">Improvement</Label>
-                            <Input type="select" id="improvement" onChange={this.connectOneTwoOrThreeOpt}>
-                                <option>none</option><option>2opt</option><option>3opt</option>
-                            </Input>
-                        </FormGroup>
-                        {this.renderLoadTrip()}
-                    </ModalBody>
-                </Modal>
-            </Form>
+            <div>
+                <FormGroup>
+                    <Label for="response">Response Time</Label>
+                    <Input id="response" placeholder="Enter desired response time: 1-60" onChange={this.connectOneTwoOrThreeOpt}/><br/>
+                    <Label for="construction">Construction</Label>
+                    <Input type="select" id="construction" onChange={this.connectOneTwoOrThreeOpt}>
+                        <option>none</option><option>one</option><option>some</option>
+                    </Input><br/>
+                    <Label for="improvement">Improvement</Label>
+                    <Input type="select" id="improvement" onChange={this.connectOneTwoOrThreeOpt}>
+                        <option>none</option><option>2opt</option><option>3opt</option>
+                    </Input>
+                </FormGroup>
+            </div>
         )
     }
 
     renderSearchItineraryButton(){
         return(
-            <Form onSubmit={handleSubmit}>
-                <Button onClick={this.displaySIPopover}>Search Itinerary</Button>
+            <div>
+                <Button onClick={this.displaySIPopover} className="ml-1">Search Itinerary</Button>
                 <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
                     <ModalBody>
                         <Label for="itinerarySearch">Search Itinerary</Label>
@@ -229,7 +253,7 @@ export default class Atlas extends Component {
                         />
                     </ModalBody>
                 </Modal>
-            </Form>
+            </div>
         )
     }
 
