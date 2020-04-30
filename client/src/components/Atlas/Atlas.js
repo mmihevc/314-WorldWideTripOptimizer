@@ -180,18 +180,20 @@ export default class Atlas extends Component {
             <div className="mt-1">
                 <Nav tabs>
                     <NavItem>
-                        <NavLink active={this.state.activeTab === "Trip"} onClick={_ => this.setState({activeTab: "Trip"})}>
-                            Trip
-                        </NavLink>
+                        <NavLink active={this.state.activeTab === "Trip"} onClick={_ => this.setState({activeTab: "Trip"})}>Trip</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink active={this.state.activeTab === "Settings"} onClick={_ => this.setState({activeTab: "Settings"})}>
-                            Optimization
-                        </NavLink>
+                        <NavLink active={this.state.activeTab === "Find"} onClick={_ => this.setState({activeTab: "Find"})}>Find</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink active={this.state.activeTab === "Settings"} onClick={_ => this.setState({activeTab: "Settings"})}>Optimization</NavLink>
                     </NavItem>
                 </Nav>
                 <TabContent activeTab={this.state.activeTab}>
                     <TabPane tabId="Trip" className="mt-1">
+                        {this.renderTripTab()}
+                    </TabPane>
+                    <TabPane tabId="Find" className="mt-1">
                         <FormGroup>
                             <Label for="semanticSearch">Search Place</Label>
                             <Input
@@ -201,20 +203,28 @@ export default class Atlas extends Component {
                                 placeholder="Place name, municipality, region, and/or country"
                             />
                         </FormGroup>
-                        <Itinerary destinations={this.state.destinations}/>
-                        {this.renderRoundTripDistance()}
-                        {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
-                        {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
-                        <ButtonGroup>
-                            <Button onClick={() => {this.addInputBox()}}>+</Button>
-                            <Button className="ml-1" onClick={this.displayStartBox.bind(this)}>Start</Button>
-                        </ButtonGroup>
-                        {this.renderModifyButtons()}
                     </TabPane>
                     <TabPane tabId="Settings" className="mt-1">
                         {this.renderOptimizationOptions()}
                     </TabPane>
                 </TabContent>
+            </div>
+        )
+    }
+
+    renderTripTab() {
+        return (
+            <div>
+
+            <Itinerary destinations={this.state.destinations}/>
+            {this.renderRoundTripDistance()}
+            {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
+            {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
+            <ButtonGroup>
+                <Button onClick={() => {this.addInputBox()}}>+</Button>
+                <Button className="ml-1" onClick={this.displayStartBox.bind(this)}>Start</Button>
+            </ButtonGroup>
+            {this.renderModifyButtons()}
             </div>
         )
     }
