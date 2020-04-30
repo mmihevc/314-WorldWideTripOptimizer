@@ -97,9 +97,10 @@ export default class Atlas extends Component {
                         <ButtonGroup>
                             <Button onClick={() => {this.addInputBox()}}>+</Button>
                             <Button className="ml-1" onClick={this.displayStartBox}>Start</Button>
-                            <Button className="ml-1" onClick={this.handleDeleteEntireItinerary()}>✕️</Button>
+
                         </ButtonGroup>
                         {this.renderModifyButtons()}
+                        <Button className="ml-1" onClick={this.handleDeleteEntireItinerary()}>Delete All️</Button>
                         {this.renderLoadTrip()}
                     </Col>
                 </Row>
@@ -135,7 +136,7 @@ export default class Atlas extends Component {
     }
 
     handleDeleteEntireItinerary() {
-            this.setState({numInputs: 0}, this.handleInputChange);
+            //this.setState({numInputs: thissta}, this.handleInputChange);
         // clear itinerary too?
     }
 
