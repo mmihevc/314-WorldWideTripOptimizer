@@ -7,9 +7,9 @@ export function findCall(match, limit, type, where, found = 1, port) {
         requestVersion: PROTOCOL_VERSION,
         requestType: 'find',
         match: match,
-        narrow: [],
         limit: limit,
         found: found,
+        narrow: [],
         places: []
     }
     sendServerRequestWithBody('find', values, port).then(
