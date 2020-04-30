@@ -97,6 +97,7 @@ export default class Atlas extends Component {
                         <ButtonGroup>
                             <Button onClick={() => {this.addInputBox()}}>+</Button>
                             <Button className="ml-1" onClick={this.displayStartBox}>Start</Button>
+                            <Button className="ml-1" onClick={this.handleDeleteEntireItinerary()}>✕️</Button>
                         </ButtonGroup>
                         {this.renderModifyButtons()}
                         {this.renderLoadTrip()}
@@ -131,6 +132,10 @@ export default class Atlas extends Component {
                 <Input type='file' name='file' onChange={this.loadFile}/>
             </p>
         )
+    }
+
+    handleDeleteEntireItinerary() {
+        //implement delete every atlasinput and clear itinerary
     }
 
     renderRoundTripDistance() {
