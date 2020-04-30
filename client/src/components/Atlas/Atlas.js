@@ -12,7 +12,6 @@ import {getCurrentLocation} from "../../utils/geolocation";
 import AtlasLine from "./AtlasLine";
 import AtlasMarker from "./AtlasMarker";
 import AtlasInput from "./AtlasInput";
-import handleSubmit from "./AtlasInput";
 import Itinerary from "./Itinerary";
 import {latLngToString, parseIndex, parseStateName} from "../../utils/input";
 import {saveCSV, saveJSON, saveKML, saveSVG} from "../../utils/save";
@@ -20,6 +19,7 @@ import Dropdown from "reactstrap/lib/Dropdown";
 import WhereAmIIcon from "./images/where_am_i.png";
 import DownloadIcon from "./images/download.png";
 import UploadIcon from "./images/upload.png";
+import SearchIcon from "./images/search.png";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -101,6 +101,11 @@ export default class Atlas extends Component {
                     {this.renderLoadTrip()}
                     {this.renderSaveButton()}
                 </Control>
+                <Control position="topright">
+                    <Button className="leaflet-button">
+                        <img src={SearchIcon} alt="Search Icon"/>
+                    </Button>
+                </Control>
             </Map>
         )
     }
@@ -181,7 +186,7 @@ export default class Atlas extends Component {
                     </NavItem>
                     <NavItem>
                         <NavLink active={this.state.activeTab === "Settings"} onClick={_ => this.setState({activeTab: "Settings"})}>
-                            Settings
+                            Optimization
                         </NavLink>
                     </NavItem>
                 </Nav>
@@ -235,8 +240,8 @@ export default class Atlas extends Component {
 
     renderSearchItineraryButton(){
         return(
-            <Form onSubmit={handleSubmit}>
-                <Button onClick={this.displaySIPopover}>Search Itinerary</Button>
+            <div>
+                <Button onClick={this.displaySIPopover} className="ml-1">Search Itinerary</Button>
                 <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
                     <ModalBody>
                         <Label for="itinerarySearch">Search Itinerary</Label>
@@ -248,7 +253,7 @@ export default class Atlas extends Component {
                         />
                     </ModalBody>
                 </Modal>
-            </Form>
+            </div>
         )
     }
 
