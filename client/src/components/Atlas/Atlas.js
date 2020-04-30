@@ -42,6 +42,7 @@ export default class Atlas extends Component {
         this.setInput = this.setInput.bind(this);
         this.getInput = this.getInput.bind(this);
         this.connectOneTwoOrThreeOpt = this.connectOneTwoOrThreeOpt.bind(this);
+        this.displaySIPopover = this.displaySIPopover.bind(this);
 
         this.state = {
             userLocation: null,
@@ -58,6 +59,7 @@ export default class Atlas extends Component {
             saveDropdownOpen: false,
             showStartBox: false,
             showOpt: false,
+            showSI: false,
             response: '',
             construction: '',
             improvement: ''
@@ -98,89 +100,7 @@ export default class Atlas extends Component {
             </Container>
         )
     }
-/*
-    renderTabs(){
-        const [activeTab, setActiveTab] = setState('1');
 
-        const toggle = tab => {
-            if(activeTab !== tab) setActiveTab(tab);
-        }
-        return (
-            <div>
-                <Nav tabs>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({ active: activeTab === '1' })}
-                            onClick={() => { toggle('1'); }}
-                        >
-                            Tab1
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({ active: activeTab === '2' })}
-                            onClick={() => { toggle('2'); }}
-                        >
-                            Tab2
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <Navlink
-                            className={classnames({ active: activeTab === '3' })}
-                            onClick={() => { toggle('3'); }}
-                        >
-                            Tab3
-                        </Navlink>
-                    </NavItem>
-                </Nav>
-                <TabContent activeTab={activeTab}>
-                    <TabPane tabId="1">
-                        <Row>
-                            <Col sm={12} md={{size: 6, offset: 3}}>
-                                {this.renderOptimizationOptions()}
-                            </Col>
-                        </Row>
-                    </TabPane>
-                    <TabPane tabId="2">
-                        <Row>
-                            <Col sm={12} md={{size: 6, offset: 3}}>
-                                <Itinerary destinations={this.state.destinations}/>
-                                {this.renderRoundTripDistance()}
-                                {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
-                                {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
-                                <ButtonGroup>
-                                    <Button onClick={() => {
-                                        this.addInputBox()
-                                    }}>+</Button>
-                                    <Button className="ml-1" onClick={this.displayStartBox.bind(this)}>Start</Button>
-                                </ButtonGroup>
-                                {this.renderModifyButtons()}
-                                <Input innerRef={input => {
-                                    this.tripInput = input;
-                                }} type='file' name='file' onChange={this.loadFile.bind(this)}/>
-                            </Col>
-                        </Row>
-                    </TabPane>
-                    <TabPane tabId="3">
-                        <Row>
-                            <Col sm={12} md={{size: 6, offset: 3}}>
-                                <FormGroup>
-                                    <Label for="semanticSearch">Search Place</Label>
-                                    <Input
-                                        type="search"
-                                        name="search"
-                                        id="semanticSearch"
-                                        placeholder="Place name, municipality, region, and/or country"
-                                    />
-                                </FormGroup>
-                            </Col>
-                        </Row>
-                    </TabPane>
-                </TabContent>
-            </div>
-        );
-    }
-*/
     renderLeafletMap() {
         return (
             <Map ref={map => {this.leafletMap = map;}}
@@ -294,6 +214,25 @@ export default class Atlas extends Component {
         )
     }
 
+    renderSearchItineraryButton(){
+        return(
+            <Form onSubmit={handleSubmit}>
+                <Button onClick={this.displaySIPopover}>Search Itinerary</Button>
+                <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
+                    <ModalBody>
+                        <Label for="itinerarySearch">Search Itinerary</Label>
+                        <Input
+                            type="search"
+                            name="search"
+                            id="itinerarySearch"
+                            placeholder="this doesn't actually do anything rn"
+                        />
+                    </ModalBody>
+                </Modal>
+            </Form>
+        )
+    }
+
     renderSelect(id, opt1, opt2, opt3) {
         return (
             <FormGroup>
@@ -306,6 +245,8 @@ export default class Atlas extends Component {
     }
 
     displayOptPopover() { this.setState({showOpt : !this.state.showOpt});}
+
+    displaySIPopover() { this.setState({showSI : !this.state.showSI});}
 
     connectOneTwoOrThreeOpt(){
         let response = document.getElementById('response').value;
@@ -325,6 +266,7 @@ export default class Atlas extends Component {
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip.bind(this)}>{UNICODE_REVERSE_SYMBOL}</Button>
                     <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
+                    {this.renderSearchItineraryButton()}
                 </ButtonGroup>
             )
         }
