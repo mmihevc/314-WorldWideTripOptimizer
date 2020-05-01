@@ -141,7 +141,7 @@ export default class Atlas extends Component {
             //this.setState({numInputs: this.state.numInputs-1, this.handleInputChange});
             //this.handleInputChange();
         this.setState({numInputs: 0}, this.handleInputChange);
-        this.setState({showStartBox: !this.state.showStartBox})
+        this.setState({showStartBox: false})
         // clear itinerary too?
     }
 
