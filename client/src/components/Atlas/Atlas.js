@@ -52,6 +52,8 @@ export default class Atlas extends Component {
         this.getInput = this.getInput.bind(this);
         this.connectOneTwoOrThreeOpt = this.connectOneTwoOrThreeOpt.bind(this);
         this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
+        this.handleDeleteEntireItinerary = this.handleDeleteEntireItinerary.bind(this);
+
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -100,7 +102,7 @@ export default class Atlas extends Component {
 
                         </ButtonGroup>
                         {this.renderModifyButtons()}
-                        <Button className="ml-1" onClick={this.handleDeleteEntireItinerary()}>Delete All️</Button>
+                        <Button className="ml-1" onClick={this.handleDeleteEntireItinerary}>Delete All️</Button>
                         {this.renderLoadTrip()}
                     </Col>
                 </Row>
@@ -136,7 +138,9 @@ export default class Atlas extends Component {
     }
 
     handleDeleteEntireItinerary() {
-            //this.setState({numInputs: thissta}, this.handleInputChange);
+            //this.setState({numInputs: this.state.numInputs-1, this.handleInputChange});
+            //this.handleInputChange();
+        this.setState({numInputs: 0}, this.handleInputChange);
         // clear itinerary too?
     }
 
