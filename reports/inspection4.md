@@ -18,4 +18,5 @@
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
 | twopointoptimixation.java, line 25 | manual array copy | low | Jackie | |
-|  | | | | |
+| threePointOptimization.java.58 | if statement can be simplified | low | Maddie | |
+| threePointOptimization.java.10 | mannual array copy | low | Maddie | |
