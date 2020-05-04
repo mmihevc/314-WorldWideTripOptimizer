@@ -11,11 +11,11 @@
 | Name | Preparation Time |
 | ---- | ---- |
 | Maddie Mihevc | 30 min. |
-|  |  |
+| Jackie Clotfelter | 30min |
 
 ### Problems found
 
 | file:line | problem | hi/med/low | who found | github#  |
 | --- | --- | :---: | :---: | --- |
-|  | | | | |
+| twopointoptimixation.java, line 25 | manual array copy | low | Jackie | |
 |  | | | | |
