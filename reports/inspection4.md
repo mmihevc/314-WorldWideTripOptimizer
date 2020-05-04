@@ -13,6 +13,7 @@
 | Kai Griem | 30 min |
 | Maddie Mihevc | 30 min. |
 | Jackie Clotfelter | 30min |
+| Kevin Schroeder | 20m |
 
 ### Problems found
 
@@ -26,5 +27,7 @@
 | threePointOptimization.java.10 | mannual array copy | low | Maddie | |
 | threePointOptimization.java.10 | mannual array copy | low | Maddie | |
 | threePointOptimization.java, line 10 | If statement can be simplified | low | Jackie | |
-| threePointOptimization.java.96-109 | duplicate code | low | Maddie 
-
+| threePointOptimization.java.96-109 | duplicate code | low | Maddie | |
+| threePointOptimization.java.64 | nothing to check if there's enough places to 3-opt | med | Kevin | |
+| threePointOptimization.java.7 | swapping mechanism could be more in-place | low | Kevin | |
+| NearestNeighbor.java.60 | could return a thread pool w/ zero threads if there is only 1 processor on the system | med | Kevin | |
