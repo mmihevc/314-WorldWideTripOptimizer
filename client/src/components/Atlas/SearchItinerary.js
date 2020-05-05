@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Input, Label, ModalBody} from "reactstrap";
+import {Button, Input, Label, ModalBody} from "reactstrap";
 
 
 export default class SearchFind extends Component {
@@ -23,13 +23,21 @@ export default class SearchFind extends Component {
                     placeholder="Search a place in the itinerary"
                     onChange={this.handleTermChange}
                 />
+                {this.renderGetMatchesButton()}
             </ModalBody>
         );
     }
 
-    handleTermChange(e) {
-        //console.log(e.target.value)
-        this.props.handleSearchItinerary(e.target.value)
+    renderGetMatchesButton(){
+        return(
+            <div>
+            <Button onClick={() => {this.props.handleSearchItinerary(this.state.searchTerm)}} className="ml-1">Search Itinerary for Matches</Button>
+            </div>
+        )
+    }
+
+    handleTermChange(e){
+        this.setState({ searchTerm: e.target.value});
     }
 
 }

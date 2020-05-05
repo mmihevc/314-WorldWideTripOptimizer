@@ -256,7 +256,8 @@ export default class Atlas extends Component {
                     <img src={SearchIcon} alt="Search Icon"/>
                 </Button>
                 <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
-               <SearchItinerary handleSearchItinerary = {this.handleSearchItinerary.bind(this)} />
+               <SearchItinerary
+                   handleSearchItinerary = {this.handleSearchItinerary.bind(this)} />
                 </Modal>
             </div>
         )
@@ -538,13 +539,18 @@ export default class Atlas extends Component {
         this.handleInputChange();
     }
 
-    handleSearchItinerary(searchTerm){
-        //if itinerary search enacted, delete all those without the placename/show only those that match the placename
+    handleSearchItinerary(searchTerm) {
+        console.log("TERM:" + searchTerm); //this is good to go
         let oldDestinations = this.getOldDestinations(0);
-        for (let i=0; i < this.state.numInputs; i++) {
-            if(this.state.destinations[i].name === searchTerm){
-                console.log(searchTerm)
+        for (let i = 0; i < this.state.numInputs; i++) {
+            console.log("NAME" + oldDestinations[i].name);
+            if (oldDestinations[i].name !== searchTerm) {
+                console.log("not a match\n")
+               this.handleDeleteFunction(i);
+//ISSUE HRER
             }
+            this.setState({numInputs: this.state.numInputs - 1});
+            this.handleInputChange();
         }
     }
 
