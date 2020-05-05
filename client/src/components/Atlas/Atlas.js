@@ -42,7 +42,10 @@ export default class Atlas extends Component {
         this.setInput = this.setInput.bind(this);
         this.getInput = this.getInput.bind(this);
         this.connectOneTwoOrThreeOpt = this.connectOneTwoOrThreeOpt.bind(this);
+
         this.displaySIPopover = this.displaySIPopover.bind(this);
+        this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
+        this.handleDeleteEntireItinerary = this.handleDeleteEntireItinerary.bind(this);
 
         this.state = {
             userLocation: null,
@@ -76,6 +79,29 @@ export default class Atlas extends Component {
                 <Row>
                     <Col sm={12} md={{size: 6, offset: 3}}>
                         {this.renderLeafletMap()}
+
+                        {this.renderOptimizationOptions()}
+                        <FormGroup>
+                            <Label for="semanticSearch">Search Place</Label>
+                            <Input
+                                type="search"
+                                name="search"
+                                id="semanticSearch"
+                                placeholder="Place name, municipality, region, and/or country"
+                            />
+                        </FormGroup>
+                        <Itinerary destinations={this.state.destinations}/>
+                        {this.renderRoundTripDistance()}
+                        {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
+                        {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
+                        <ButtonGroup>
+                            <Button onClick={() => {this.addInputBox()}}>+</Button>
+                            <Button className="ml-1" onClick={this.displayStartBox}>Start</Button>
+
+                        </ButtonGroup>
+                        {this.renderModifyButtons()}
+                        <Button className="ml-1" onClick={this.handleDeleteEntireItinerary}>Delete All️</Button>
+                        {this.renderLoadTrip()}
                         {this.renderTabs()}
                         <Input innerRef={input => {this.tripInput = input;}} type='file' name='file' onChange={this.loadFile.bind(this)}/>
                     </Col>
@@ -119,6 +145,11 @@ export default class Atlas extends Component {
                     <img src={UploadIcon} alt="Load Trip Icon"/>
                 </Button>
         )
+    }
+
+    handleDeleteEntireItinerary() {
+        this.setState({numInputs: 0}, this.handleInputChange);
+        this.setState({showStartBox: false})
     }
 
     renderRoundTripDistance() {
