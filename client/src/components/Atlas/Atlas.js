@@ -240,7 +240,8 @@ export default class Atlas extends Component {
                     <Label for="improvement">Improvement</Label>
                     <Input type="select" id="improvement" onChange={this.connectOneTwoOrThreeOpt}>
                         <option>none</option><option>2opt</option><option>3opt</option>
-                    </Input>
+                    </Input><br/>
+                    <Button onClick={this.handleInputChange}>Apply</Button>
                 </FormGroup>
             </div>
         )
