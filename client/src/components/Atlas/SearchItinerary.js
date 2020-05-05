@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Button, Input, Label, ModalBody} from "reactstrap";
+import Itinerary from "./Itinerary";
 
 
 export default class SearchFind extends Component {
@@ -32,6 +33,7 @@ export default class SearchFind extends Component {
         return(
             <div>
             <Button onClick={() => {this.props.handleSearchItinerary(this.state.searchTerm)}} className="ml-1">Search Itinerary for Matches</Button>
+                <Itinerary destinations={this.props.destinations}/>
             </div>
         )
     }

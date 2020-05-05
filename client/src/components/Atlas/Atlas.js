@@ -249,7 +249,7 @@ export default class Atlas extends Component {
         )
     }
 
-    renderSearchItineraryButton(){
+    renderSearchItineraryButton(dests){
         return(
             <div>
                 <Button onClick={this.displaySIPopover} className="leaflet-button">
@@ -257,6 +257,7 @@ export default class Atlas extends Component {
                 </Button>
                 <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
                <SearchItinerary
+                   destinations = {this.state.destinations}
                    handleSearchItinerary = {this.handleSearchItinerary.bind(this)} />
                 </Modal>
             </div>
@@ -541,17 +542,25 @@ export default class Atlas extends Component {
 
     handleSearchItinerary(searchTerm) {
         console.log("TERM:" + searchTerm); //this is good to go
-        let oldDestinations = this.getOldDestinations(0);
+        let searchedDestinations = [];
+        let sDlength = 0;
         for (let i = 0; i < this.state.numInputs; i++) {
-            console.log("NAME" + oldDestinations[i].name);
-            if (oldDestinations[i].name !== searchTerm) {
-                console.log("not a match\n")
-               this.handleDeleteFunction(i);
-//ISSUE HRER
+            console.log("NAME" + this.state.inputNames[i]);
+            if (this.state.inputNames[i] === searchTerm) {
+                console.log("match\n")
+                console.log("destinations:"+ this.state.destinations[i].name + "\n")
+                console.log("Cur dest:"+ this.getInput(i).name + this.getInput(i).coord + "\n")
+                searchedDestinations[sDlength] = {
+                    lat: this.state.destinations[i].lat,
+                    lng: this.state.destinations[i].lng,
+                    name: this.state.destinations[i].name,
+                };
+                sDlength++;
             }
-            this.setState({numInputs: this.state.numInputs - 1});
-            this.handleInputChange();
         }
+        console.log("SD: "+ searchedDestinations.toString())
+        this.setState({destinations: searchedDestinations})
+       // this.setState({destinations: searchedDestinations, numInputs: searchedDestinations.length} )
     }
 
     handleDeleteEntireItinerary() {
