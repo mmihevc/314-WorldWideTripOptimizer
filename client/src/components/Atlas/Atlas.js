@@ -205,6 +205,7 @@ export default class Atlas extends Component {
                                 placeholder="Place name, municipality, region, and/or country"
                             />
                         </FormGroup>
+                        <Button onClick={this.handleAddToItinerary} className="ml-1">Add To Itinerary️</Button>
                     </TabPane>
                     <TabPane tabId="Settings" className="mt-1">
                         {this.renderOptimizationOptions()}
@@ -302,7 +303,7 @@ export default class Atlas extends Component {
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip.bind(this)}>{UNICODE_REVERSE_SYMBOL}</Button>
                     <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
-                    <Button className="ml-1" onClick={this.handleDeleteEntireItinerary}>Delete All️</Button>
+                    <Button onClick={this.handleDeleteEntireItinerary} className="ml-1">Delete All️</Button>
                     {this.renderSearchItineraryButton()}
                 </ButtonGroup>
             )
@@ -552,6 +553,10 @@ export default class Atlas extends Component {
         this.setState({numInputs: 0}, this.handleInputChange);
         this.setState({showStartBox: false});
         this.state.roundTripDistance = 0;
+    }
+
+    handleAddToItinerary(){
+        //implement functionality for adding a place to itinerary here
     }
 
     handleOnChange(evt) {
