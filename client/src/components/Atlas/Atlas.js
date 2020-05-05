@@ -48,6 +48,8 @@ export default class Atlas extends Component {
         this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
         this.handleDeleteEntireItinerary = this.handleDeleteEntireItinerary.bind(this);
         this.handleAddToItinerary = this.handleAddToItinerary.bind(this);
+        this.handleSearchItinerary = this.handleSearchItinerary.bind(this);
+
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -254,7 +256,7 @@ export default class Atlas extends Component {
                     <img src={SearchIcon} alt="Search Icon"/>
                 </Button>
                 <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
-               <SearchItinerary/>
+               <SearchItinerary handleSearchItinerary = {this.handleSearchItinerary.bind(this)} />
                 </Modal>
             </div>
         )
@@ -534,6 +536,16 @@ export default class Atlas extends Component {
         }
         this.setState({numInputs: this.state.numInputs - 1});
         this.handleInputChange();
+    }
+
+    handleSearchItinerary(searchTerm){
+        //if itinerary search enacted, delete all those without the placename/show only those that match the placename
+        let oldDestinations = this.getOldDestinations(0);
+        for (let i=0; i < this.state.numInputs; i++) {
+            if(this.state.destinations[i].name === searchTerm){
+                console.log(searchTerm)
+            }
+        }
     }
 
     handleDeleteEntireItinerary() {
