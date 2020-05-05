@@ -20,6 +20,7 @@ import WhereAmIIcon from "./images/where_am_i.png";
 import DownloadIcon from "./images/download.png";
 import UploadIcon from "./images/upload.png";
 import SearchIcon from "./images/search.png";
+import SearchFind from "./SearchFind";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -45,7 +46,7 @@ export default class Atlas extends Component {
         this.displaySIPopover = this.displaySIPopover.bind(this);
         this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
         this.handleDeleteEntireItinerary = this.handleDeleteEntireItinerary.bind(this);
-
+        this.handleAddToItinerary = this.handleAddToItinerary.bind(this);
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -59,7 +60,6 @@ export default class Atlas extends Component {
             numInputs: 0,
             showItinerary: false,
             saveDropdownOpen: false,
-            showStartBox: false,
             showOpt: false,
             showSI: false,
             response: '',
@@ -104,9 +104,7 @@ export default class Atlas extends Component {
                     {this.renderSaveButton()}
                 </Control>
                 <Control position="topright">
-                    <Button className="leaflet-button">
-                        <img src={SearchIcon} alt="Search Icon"/>
-                    </Button>
+                    {this.renderSearchItineraryButton()}
                 </Control>
             </Map>
         )
@@ -196,16 +194,7 @@ export default class Atlas extends Component {
                         {this.renderTripTab()}
                     </TabPane>
                     <TabPane tabId="Find" className="mt-1">
-                        <FormGroup>
-                            <Label for="semanticSearch">Search Place</Label>
-                            <Input
-                                type="search"
-                                name="search"
-                                id="semanticSearch"
-                                placeholder="Place name, municipality, region, and/or country"
-                            />
-                        </FormGroup>
-                        <Button onClick={this.handleAddToItinerary} className="ml-1">Add To Itinerary️</Button>
+                        {this.renderFindTab()}
                     </TabPane>
                     <TabPane tabId="Settings" className="mt-1">
                         {this.renderOptimizationOptions()}
@@ -215,17 +204,23 @@ export default class Atlas extends Component {
         )
     }
 
+    renderFindTab(){
+        return (
+            <div>
+            <SearchFind handleAddToItinerary = {this.handleAddToItinerary.bind(this)}/>
+            </div>
+        )
+    }
+
+
     renderTripTab() {
         return (
             <div>
-
             <Itinerary destinations={this.state.destinations}/>
             {this.renderRoundTripDistance()}
-            {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
             {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
             <ButtonGroup>
                 <Button onClick={() => {this.addInputBox()}}>+</Button>
-                <Button className="ml-1" onClick={this.displayStartBox.bind(this)}>Start</Button>
             </ButtonGroup>
             {this.renderModifyButtons()}
             </div>
@@ -254,7 +249,9 @@ export default class Atlas extends Component {
     renderSearchItineraryButton(){
         return(
             <div>
-                <Button onClick={this.displaySIPopover} className="ml-1">Search Itinerary</Button>
+                <Button onClick={this.displaySIPopover} className="leaflet-button">
+                    <img src={SearchIcon} alt="Search Icon"/>
+                </Button>
                 <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
                     <ModalBody>
                         <Label for="itinerarySearch">Search Itinerary</Label>
@@ -302,15 +299,12 @@ export default class Atlas extends Component {
             return (
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip.bind(this)}>{UNICODE_REVERSE_SYMBOL}</Button>
-                    <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
                     <Button onClick={this.handleDeleteEntireItinerary} className="ml-1">Delete All️</Button>
-                    {this.renderSearchItineraryButton()}
                 </ButtonGroup>
             )
         }
     }
 
-    displayStartBox() { this.setState({showStartBox: !this.state.showStartBox})}
 
     renderMultiple(numRenders, renderFunction) {
         let components = [];
@@ -320,7 +314,7 @@ export default class Atlas extends Component {
     }
 
     addToTripButton() {
-        return ( <Button onClick={this.addUserMarker.bind(this)} color="primary" size="sm">Add to trip</Button> )
+        return ( <Button onClick={this.addUserMarker.bind(this)} color="primary" size="sm">Add to Trip</Button> )
     }
 
     addUserMarker() {
@@ -551,12 +545,18 @@ export default class Atlas extends Component {
 
     handleDeleteEntireItinerary() {
         this.setState({numInputs: 0}, this.handleInputChange);
-        this.setState({showStartBox: false});
         this.state.roundTripDistance = 0;
     }
 
-    handleAddToItinerary(){
-        //implement functionality for adding a place to itinerary here
+    handleAddToItinerary(placename, searchCoords){
+        //need to eventually update with actual location from find functionality
+        this.addInputBox(() => {
+            this.setInput(this.state.numInputs-1, {
+                coord: searchCoords,
+                name: placename
+            });
+            this.handleInputChange();
+        });
     }
 
     handleOnChange(evt) {
