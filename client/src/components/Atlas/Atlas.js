@@ -552,7 +552,7 @@ export default class Atlas extends Component {
         //need to eventually update with actual location from find functionality
         this.addInputBox(() => {
             this.setInput(this.state.numInputs-1, {
-                coord: latLngToString(0.0, 0.0),
+                coord: searchCoords,
                 name: placename
             });
             this.handleInputChange();

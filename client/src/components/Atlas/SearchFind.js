@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Button, Form, FormGroup, Input, Label} from "reactstrap";
+import {latLngToString} from "../../utils/input";
 
 
 export default class SearchFind extends Component {
@@ -10,7 +11,7 @@ export default class SearchFind extends Component {
 
         this.state = {
             searchTerm: "placeholder",
-            searchCoords: ""
+            searchCoords: latLngToString(0.0, 0.0)
         };
     }
 
@@ -46,7 +47,7 @@ export default class SearchFind extends Component {
     }
 
     handleTermChange(e){
-        this.setState({ searchTerm: e.target.value });
+        this.setState({ searchTerm: e.target.value , searchCoords: latLngToString(0.0, 0.0)});
         this.handleSearch();
     }
 
