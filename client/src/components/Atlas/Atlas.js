@@ -60,7 +60,6 @@ export default class Atlas extends Component {
             numInputs: 0,
             showItinerary: false,
             saveDropdownOpen: false,
-            showStartBox: false,
             showOpt: false,
             showSI: false,
             response: '',
@@ -221,7 +220,6 @@ export default class Atlas extends Component {
             <div>
             <Itinerary destinations={this.state.destinations}/>
             {this.renderRoundTripDistance()}
-            {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
             {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
             <ButtonGroup>
                 <Button onClick={() => {this.addInputBox()}}>+</Button>
