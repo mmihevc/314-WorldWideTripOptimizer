@@ -17,8 +17,4 @@ public class Option {
         this.title=title;
         this.optimization=new Optimization(response, construction, improvement);
     }
-    Option(String earthRadius, String response, String type, String where){
-        this.earthRadius=earthRadius;
-        this.filter=new Filter(response, type, where);
-    }
 }
