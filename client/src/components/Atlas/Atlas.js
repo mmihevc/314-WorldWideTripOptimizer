@@ -225,7 +225,6 @@ export default class Atlas extends Component {
             {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
             <ButtonGroup>
                 <Button onClick={() => {this.addInputBox()}}>+</Button>
-                <Button className="ml-1" onClick={this.displayStartBox.bind(this)}>Start</Button>
             </ButtonGroup>
             {this.renderModifyButtons()}
             </div>
@@ -302,7 +301,6 @@ export default class Atlas extends Component {
             return (
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip.bind(this)}>{UNICODE_REVERSE_SYMBOL}</Button>
-                    <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
                     <Button onClick={this.handleDeleteEntireItinerary} className="ml-1">Delete All️</Button>
                     {this.renderSearchItineraryButton()}
                 </ButtonGroup>
@@ -310,7 +308,6 @@ export default class Atlas extends Component {
         }
     }
 
-    displayStartBox() { this.setState({showStartBox: !this.state.showStartBox})}
 
     renderMultiple(numRenders, renderFunction) {
         let components = [];
@@ -551,7 +548,6 @@ export default class Atlas extends Component {
 
     handleDeleteEntireItinerary() {
         this.setState({numInputs: 0}, this.handleInputChange);
-        this.setState({showStartBox: false});
         this.state.roundTripDistance = 0;
     }
 
