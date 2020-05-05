@@ -43,6 +43,8 @@ export default class Atlas extends Component {
         this.getInput = this.getInput.bind(this);
         this.connectOneTwoOrThreeOpt = this.connectOneTwoOrThreeOpt.bind(this);
         this.displaySIPopover = this.displaySIPopover.bind(this);
+        this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
+        this.handleDeleteEntireItinerary = this.handleDeleteEntireItinerary.bind(this);
 
         this.state = {
             userLocation: null,
@@ -225,6 +227,7 @@ export default class Atlas extends Component {
                 <Button className="ml-1" onClick={this.displayStartBox.bind(this)}>Start</Button>
             </ButtonGroup>
             {this.renderModifyButtons()}
+            <Button className="ml-1" onClick={this.handleDeleteEntireItinerary}>Delete All️</Button>
             </div>
         )
     }
@@ -543,6 +546,11 @@ export default class Atlas extends Component {
         }
         this.setState({numInputs: this.state.numInputs - 1});
         this.handleInputChange();
+    }
+
+    handleDeleteEntireItinerary() {
+        this.setState({numInputs: 0}, this.handleInputChange);
+        this.setState({showStartBox: false})
     }
 
     handleOnChange(evt) {
