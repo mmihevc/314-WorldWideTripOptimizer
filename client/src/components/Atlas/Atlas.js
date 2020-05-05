@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Row, Nav, NavItem, NavLink, TabContent, TabPane, Modal, ModalBody} from 'reactstrap';
+import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Row, Nav, NavItem, NavLink, TabContent, TabPane, Modal} from 'reactstrap';
 import Control from 'react-leaflet-control';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -49,6 +49,7 @@ export default class Atlas extends Component {
         this.handleDeleteEntireItinerary = this.handleDeleteEntireItinerary.bind(this);
         this.handleAddToItinerary = this.handleAddToItinerary.bind(this);
         this.handleSearchItinerary = this.handleSearchItinerary.bind(this);
+        this.resetItineraryDestinations = this.resetItineraryDestinations.bind(this);
 
         this.state = {
             userLocation: null,
@@ -59,6 +60,7 @@ export default class Atlas extends Component {
             inputError: [],
             inputSubmitted: [],
             destinations: [],
+            savedDests: [],
             markerArray: [],
             numInputs: 0,
             showItinerary: false,
@@ -249,7 +251,7 @@ export default class Atlas extends Component {
         )
     }
 
-    renderSearchItineraryButton(dests){
+    renderSearchItineraryButton(){
         return(
             <div>
                 <Button onClick={this.displaySIPopover} className="leaflet-button">
@@ -257,6 +259,7 @@ export default class Atlas extends Component {
                 </Button>
                 <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
                <SearchItinerary
+                   resetItineraryDestinations = {this.resetItineraryDestinations.bind(this)}
                    destinations = {this.state.destinations}
                    handleSearchItinerary = {this.handleSearchItinerary.bind(this)} />
                 </Modal>
@@ -541,15 +544,17 @@ export default class Atlas extends Component {
     }
 
     handleSearchItinerary(searchTerm) {
+        let oldDestinations = this.state.destinations;
         console.log("TERM:" + searchTerm); //this is good to go
         let searchedDestinations = [];
         let sDlength = 0;
         for (let i = 0; i < this.state.numInputs; i++) {
             console.log("NAME" + this.state.inputNames[i]);
             if (this.state.inputNames[i] === searchTerm) {
-                console.log("match\n")
-                console.log("destinations:"+ this.state.destinations[i].name + "\n")
-                console.log("Cur dest:"+ this.getInput(i).name + this.getInput(i).coord + "\n")
+                //console.log("match\n")
+                //console.log("destinations:"+ this.state.destinations[i].name + "\n")
+                //console.log("Cur dest:"+ this.getInput(i).name + this.getInput(i).coord + "\n")
+                //var coordsArray = this.getInput(i).coord.split(',');
                 searchedDestinations[sDlength] = {
                     lat: this.state.destinations[i].lat,
                     lng: this.state.destinations[i].lng,
@@ -558,9 +563,13 @@ export default class Atlas extends Component {
                 sDlength++;
             }
         }
-        console.log("SD: "+ searchedDestinations.toString())
-        this.setState({destinations: searchedDestinations})
-       // this.setState({destinations: searchedDestinations, numInputs: searchedDestinations.length} )
+        //console.log("SD: "+ searchedDestinations.toString())
+        if(searchedDestinations.length!==0)
+            this.setState({destinations: searchedDestinations, savedDests: oldDestinations})
+    }
+
+    resetItineraryDestinations(){
+        this.setState({destinations: this.state.savedDests})
     }
 
     handleDeleteEntireItinerary() {

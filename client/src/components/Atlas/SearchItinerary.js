@@ -33,6 +33,7 @@ export default class SearchFind extends Component {
         return(
             <div>
             <Button onClick={() => {this.props.handleSearchItinerary(this.state.searchTerm)}} className="ml-1">Search Itinerary for Matches</Button>
+                <Button onClick={() => {this.props.resetItineraryDestinations()}} className="ml-1">Reset Destinations</Button>
                 <Itinerary destinations={this.props.destinations}/>
             </div>
         )
