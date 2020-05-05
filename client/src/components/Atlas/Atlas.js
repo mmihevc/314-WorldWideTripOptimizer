@@ -20,6 +20,7 @@ import WhereAmIIcon from "./images/where_am_i.png";
 import DownloadIcon from "./images/download.png";
 import UploadIcon from "./images/upload.png";
 import SearchIcon from "./images/search.png";
+import SearchFind from "./SearchFind";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -45,7 +46,7 @@ export default class Atlas extends Component {
         this.displaySIPopover = this.displaySIPopover.bind(this);
         this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
         this.handleDeleteEntireItinerary = this.handleDeleteEntireItinerary.bind(this);
-
+        this.handleAddToItinerary = this.handleAddToItinerary.bind(this);
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -196,16 +197,7 @@ export default class Atlas extends Component {
                         {this.renderTripTab()}
                     </TabPane>
                     <TabPane tabId="Find" className="mt-1">
-                        <FormGroup>
-                            <Label for="semanticSearch">Search Place</Label>
-                            <Input
-                                type="search"
-                                name="search"
-                                id="semanticSearch"
-                                placeholder="Place name, municipality, region, and/or country"
-                            />
-                        </FormGroup>
-                        <Button onClick={this.handleAddToItinerary} className="ml-1">Add To Itinerary️</Button>
+                        {this.renderFindTab()}
                     </TabPane>
                     <TabPane tabId="Settings" className="mt-1">
                         {this.renderOptimizationOptions()}
@@ -215,10 +207,18 @@ export default class Atlas extends Component {
         )
     }
 
+    renderFindTab(){
+        return (
+            <div>
+            <SearchFind handleAddToItinerary = {this.handleAddToItinerary.bind(this)}/>
+            </div>
+        )
+    }
+
+
     renderTripTab() {
         return (
             <div>
-
             <Itinerary destinations={this.state.destinations}/>
             {this.renderRoundTripDistance()}
             {this.state.showStartBox && this.renderInputBox(this.state.numInputs)}
@@ -320,7 +320,7 @@ export default class Atlas extends Component {
     }
 
     addToTripButton() {
-        return ( <Button onClick={this.addUserMarker.bind(this)} color="primary" size="sm">Add to trip</Button> )
+        return ( <Button onClick={this.addUserMarker.bind(this)} color="primary" size="sm">Add to Trip</Button> )
     }
 
     addUserMarker() {
@@ -555,8 +555,15 @@ export default class Atlas extends Component {
         this.state.roundTripDistance = 0;
     }
 
-    handleAddToItinerary(){
-        //implement functionality for adding a place to itinerary here
+    handleAddToItinerary(placename, searchCoords){
+        //need to eventually update with actual location from find functionality
+        this.addInputBox(() => {
+            this.setInput(this.state.numInputs-1, {
+                coord: latLngToString(0.0, 0.0),
+                name: placename
+            });
+            this.handleInputChange();
+        });
     }
 
     handleOnChange(evt) {
