@@ -104,9 +104,7 @@ export default class Atlas extends Component {
                     {this.renderSaveButton()}
                 </Control>
                 <Control position="topright">
-                    <Button className="leaflet-button">
-                        <img src={SearchIcon} alt="Search Icon"/>
-                    </Button>
+                    {this.renderSearchItineraryButton()}
                 </Control>
             </Map>
         )
@@ -251,7 +249,9 @@ export default class Atlas extends Component {
     renderSearchItineraryButton(){
         return(
             <div>
-                <Button onClick={this.displaySIPopover} className="ml-1">Search Itinerary</Button>
+                <Button onClick={this.displaySIPopover} className="leaflet-button">
+                    <img src={SearchIcon} alt="Search Icon"/>
+                </Button>
                 <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
                     <ModalBody>
                         <Label for="itinerarySearch">Search Itinerary</Label>
@@ -300,7 +300,6 @@ export default class Atlas extends Component {
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip.bind(this)}>{UNICODE_REVERSE_SYMBOL}</Button>
                     <Button onClick={this.handleDeleteEntireItinerary} className="ml-1">Delete All️</Button>
-                    {this.renderSearchItineraryButton()}
                 </ButtonGroup>
             )
         }
