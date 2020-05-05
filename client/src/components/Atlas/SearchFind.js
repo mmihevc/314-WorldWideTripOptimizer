@@ -35,5 +35,30 @@ export default class SearchFind extends Component {
     );
     }
 
+    renderAddToItineraryButton(){
+        return(
+            <Button onClick={() => {this.props.handleAddToItinerary(this.state.searchTerm, this.state.searchCoords)}} className="ml-1">Add To Itinerary️</Button>
+        )
+    }
+
+    handleSubmit(){
+        //implement submit
+    }
+
+    handleTermChange(e){
+        this.setState({ searchTerm: e.target.value });
+        this.handleSearch();
+    }
+
+    handleSearch(e){
+        //implement search
+    }
+
+    handleEnter(e){
+        if (e.key === 13) {
+            // this.handleSearch();
+            this.handleTermChange(e);
+        }
+    }
 
 }
