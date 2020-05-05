@@ -227,7 +227,6 @@ export default class Atlas extends Component {
                 <Button className="ml-1" onClick={this.displayStartBox.bind(this)}>Start</Button>
             </ButtonGroup>
             {this.renderModifyButtons()}
-            <Button className="ml-1" onClick={this.handleDeleteEntireItinerary}>Delete All️</Button>
             </div>
         )
     }
@@ -303,6 +302,7 @@ export default class Atlas extends Component {
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip.bind(this)}>{UNICODE_REVERSE_SYMBOL}</Button>
                     <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
+                    <Button className="ml-1" onClick={this.handleDeleteEntireItinerary}>Delete All️</Button>
                     {this.renderSearchItineraryButton()}
                 </ButtonGroup>
             )
