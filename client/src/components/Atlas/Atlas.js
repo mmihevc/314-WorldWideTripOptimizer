@@ -21,6 +21,7 @@ import DownloadIcon from "./images/download.png";
 import UploadIcon from "./images/upload.png";
 import SearchIcon from "./images/search.png";
 import SearchFind from "./SearchFind";
+import SearchItinerary from "./SearchItinerary";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -253,15 +254,7 @@ export default class Atlas extends Component {
                     <img src={SearchIcon} alt="Search Icon"/>
                 </Button>
                 <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
-                    <ModalBody>
-                        <Label for="itinerarySearch">Search Itinerary</Label>
-                        <Input
-                            type="search"
-                            name="search"
-                            id="itinerarySearch"
-                            placeholder="this doesn't actually do anything rn"
-                        />
-                    </ModalBody>
+               <SearchItinerary/>
                 </Modal>
             </div>
         )
@@ -549,7 +542,6 @@ export default class Atlas extends Component {
     }
 
     handleAddToItinerary(placename, searchCoords){
-        //need to eventually update with actual location from find functionality
         this.addInputBox(() => {
             this.setInput(this.state.numInputs-1, {
                 coord: searchCoords,
