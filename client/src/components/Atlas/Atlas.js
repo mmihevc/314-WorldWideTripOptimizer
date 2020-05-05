@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Row, Nav, NavItem, NavLink, TabContent, TabPane, Form, Modal, ModalBody} from 'reactstrap';
+import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Row, Nav, NavItem, NavLink, TabContent, TabPane, Modal, ModalBody} from 'reactstrap';
 import Control from 'react-leaflet-control';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -43,6 +43,8 @@ export default class Atlas extends Component {
         this.getInput = this.getInput.bind(this);
         this.connectOneTwoOrThreeOpt = this.connectOneTwoOrThreeOpt.bind(this);
         this.displaySIPopover = this.displaySIPopover.bind(this);
+        this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
+        this.handleDeleteEntireItinerary = this.handleDeleteEntireItinerary.bind(this);
 
         this.state = {
             userLocation: null,
@@ -300,6 +302,7 @@ export default class Atlas extends Component {
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip.bind(this)}>{UNICODE_REVERSE_SYMBOL}</Button>
                     <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
+                    <Button className="ml-1" onClick={this.handleDeleteEntireItinerary}>Delete All️</Button>
                     {this.renderSearchItineraryButton()}
                 </ButtonGroup>
             )
@@ -543,6 +546,11 @@ export default class Atlas extends Component {
         }
         this.setState({numInputs: this.state.numInputs - 1});
         this.handleInputChange();
+    }
+
+    handleDeleteEntireItinerary() {
+        this.setState({numInputs: 0}, this.handleInputChange);
+        this.setState({showStartBox: false})
     }
 
     handleOnChange(evt) {
