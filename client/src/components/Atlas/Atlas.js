@@ -551,6 +551,7 @@ export default class Atlas extends Component {
     handleDeleteEntireItinerary() {
         this.setState({numInputs: 0}, this.handleInputChange);
         this.setState({showStartBox: false})
+        this.state.roundTripDistance = 0;
     }
 
     handleOnChange(evt) {
