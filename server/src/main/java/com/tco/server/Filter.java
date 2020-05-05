@@ -2,17 +2,14 @@ package com.tco.server;
 
 public class Filter {
 
-    protected String response;
-    protected String type;
-    protected String where;
+    protected String[] type;
+    protected String[] where;
 
     Filter(){
-        this.response="1";
-        this.type="airport";
-        this.where="country";
+        this.type= new String[]{"airport", "heliport", "balloonport"};
+        this.where= new String[]{"more..."};
     }
-    Filter(String response, String type, String where){
-        this.response=response;
+    Filter(String[] type, String[] where){
         this.type=type;
         this.where=where;
     }

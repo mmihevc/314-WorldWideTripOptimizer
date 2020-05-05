@@ -1,6 +1,7 @@
 package com.tco.server;
 
 import com.google.gson.Gson;
+import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,8 @@ import java.util.List;
 public class RequestConfig extends RequestHeader {
   private String serverName;
   private String[] supportedRequests;
+  private OptimizationConfig optimization;
+  private Filter filter;
 
   private final static String[] SUPPORTED_REQUESTS = {"config", "distance", "trip", "find"};
 
@@ -39,6 +42,8 @@ public class RequestConfig extends RequestHeader {
   public void buildResponse() {
     this.serverName = "t11 [hip, hip]";
     this.buildSupportedRequests();
+    this.optimization = new OptimizationConfig();
+    this.filter = new Filter();
     log.trace("buildResponse -> {}", this);
   }
 
@@ -60,4 +65,9 @@ public class RequestConfig extends RequestHeader {
   }
 
   String[] getSupportedRequests() { return this.supportedRequests; }
+}
+
+class OptimizationConfig {
+    protected String[] construction = new String[]{"none", "one", "some"};
+    protected String[] improvement = new String[]{"none", "2opt", "3opt"};
 }
