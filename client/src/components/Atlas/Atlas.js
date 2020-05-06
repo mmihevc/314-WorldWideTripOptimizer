@@ -63,6 +63,7 @@ export default class Atlas extends Component {
             savedDests: [],
             markerArray: [],
             numInputs: 0,
+            showReset: false,
             showItinerary: false,
             saveDropdownOpen: false,
             showOpt: false,
@@ -221,8 +222,10 @@ export default class Atlas extends Component {
     renderTripTab() {
         return (
             <div>
-            <Itinerary destinations={this.state.destinations}/>
-            {this.renderRoundTripDistance()}
+            <Itinerary destinations={this.state.destinations}
+                       resetItineraryDestinations = {this.resetItineraryDestinations.bind(this)}/>
+                {this.renderResetButton()}
+                {this.renderRoundTripDistance()}
             {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
             <ButtonGroup>
                 <Button onClick={() => {this.addInputBox()}}>+</Button>
@@ -259,8 +262,6 @@ export default class Atlas extends Component {
                 </Button>
                 <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
                <SearchItinerary
-                   resetItineraryDestinations = {this.resetItineraryDestinations.bind(this)}
-                   destinations = {this.state.destinations}
                    handleSearchItinerary = {this.handleSearchItinerary.bind(this)} />
                 </Modal>
             </div>
@@ -544,17 +545,12 @@ export default class Atlas extends Component {
     }
 
     handleSearchItinerary(searchTerm) {
+        this.setState({showSI: false, showItinerary: true});
         let oldDestinations = this.state.destinations;
-        console.log("TERM:" + searchTerm); //this is good to go
         let searchedDestinations = [];
         let sDlength = 0;
         for (let i = 0; i < this.state.numInputs; i++) {
-            console.log("NAME" + this.state.inputNames[i]);
             if (this.state.inputNames[i] === searchTerm) {
-                //console.log("match\n")
-                //console.log("destinations:"+ this.state.destinations[i].name + "\n")
-                //console.log("Cur dest:"+ this.getInput(i).name + this.getInput(i).coord + "\n")
-                //var coordsArray = this.getInput(i).coord.split(',');
                 searchedDestinations[sDlength] = {
                     lat: this.state.destinations[i].lat,
                     lng: this.state.destinations[i].lng,
@@ -563,13 +559,22 @@ export default class Atlas extends Component {
                 sDlength++;
             }
         }
-        //console.log("SD: "+ searchedDestinations.toString())
         if(searchedDestinations.length!==0)
-            this.setState({destinations: searchedDestinations, savedDests: oldDestinations})
+            this.setState({ destinations: searchedDestinations, savedDests: oldDestinations, showReset: true})
     }
 
     resetItineraryDestinations(){
-        this.setState({destinations: this.state.savedDests})
+        this.setState({destinations: this.state.savedDests, showReset: false})
+    }
+
+    renderResetButton(){
+        if(this.state.showReset) {
+            return (
+                <Button onClick={() => {
+                    this.resetItineraryDestinations()
+                }} className="ml-1">Clear Itinerary Search</Button>
+            )
+        }
     }
 
     handleDeleteEntireItinerary() {
