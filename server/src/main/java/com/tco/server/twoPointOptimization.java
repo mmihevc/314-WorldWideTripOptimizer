@@ -34,15 +34,20 @@ public class twoPointOptimization {
         return route;
     }
 
-    public static void optimize(Place[] places) {
+    public static Place[] optimize(Place[] places, long[][] distanceMatrix, long time) {
+        long start = System.nanoTime();
         int[] route = newRoute(places);
-        long[][] distanceMatrix = routeDistanceMatrix(places);
+        //long[][] distanceMatrix = routeDistanceMatrix(places);
         int n = places.length;
         boolean improvement = true;
         while (improvement) {
             improvement = false;
             for (int i = 0; i <= n-3; i++) {  // assert n>4
                 for (int k = i + 2; k <= n-1; k++) {
+                    if(time < System.nanoTime()-start){
+                        useRoute(route, places);
+                        return places;
+                    }
                     long curDist = distanceMatrix[route[i]][route[i+1]] + distanceMatrix[route[k]][route[k+1]];
                     long newDist = distanceMatrix[route[i]][route[k]] + distanceMatrix[route[i+1]][route[k+1]];
                     if (newDist < curDist) { //improvement?
@@ -53,5 +58,6 @@ public class twoPointOptimization {
             }
         }
         useRoute(route, places);
+        return places;
     }
 }

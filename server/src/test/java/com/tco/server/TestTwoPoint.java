@@ -26,7 +26,7 @@ public class TestTwoPoint {
         btrip[3]=atrip[5];
         btrip[4]=atrip[3];
         btrip[5]=atrip[2];
-        twoPointOptimization.optimize(atrip);
+        twoPointOptimization.optimize(atrip, NearestNeighbor.buildDistanceMatrix(atrip), Long.MAX_VALUE);
         assertArrayEquals("msg", atrip, btrip);
     }
 

@@ -22,7 +22,7 @@ public class TestThreePoint {
         expected[3]=places[3];
         expected[4]=places[2];
         expected[5]=places[4];
-        threePointOptimization.optimize(places);
+        threePointOptimization.optimize(places, NearestNeighbor.buildDistanceMatrix(places), Long.MAX_VALUE);
         assertArrayEquals("msg", places, expected);
     }
 
