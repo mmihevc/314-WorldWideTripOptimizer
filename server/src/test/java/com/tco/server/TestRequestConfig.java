@@ -41,22 +41,4 @@ public class TestRequestConfig {
     assertArrayEquals(assertMessage, new String[]{"config", "distance", "trip", "find"}, supportedRequests);
   }
 
-  @Test
-  public void testFilterType() {
-    String[] filterType = conf.getFilterType();
-    assertArrayEquals(new String[]{"airport", "heliport", "balloonport"}, filterType);
-  }
-
-  @Test
-  public void testImprovement() {
-    String[] improvement = conf.getImprovement();
-    assertArrayEquals(new String[]{"none", "2opt", "3opt"}, improvement);
-  }
-
-  @Test
-  public void testConstruction() {
-    String[] construction = conf.getConstruction();
-    assertArrayEquals(new String[]{"none", "one", "some"}, construction);
-  }
-
 }

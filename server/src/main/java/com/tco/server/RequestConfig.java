@@ -46,30 +46,22 @@ public class RequestConfig extends RequestHeader {
   public void buildResponse() {
     this.serverName = "t11 [hip, hip]";
     this.buildSupportedRequests();
-    this.optimization = new OptimizationConfig();
-    this.filters = new Filter();
-    if (filters != null) {
-      this.filterType = filters.type;
-      //this.filterWhere = buildWhere();
-    }
-    if (optimization != null) {
-      this.construction = optimization.construction;
-      this.improvement = optimization.improvement;
-    }
+    this.optimization = new OptimizationConfig(new String[]{"none", "one", "some"}, new String[]{"none", "2opt", "3opt"});
+    this.filters = new Filter(new String[]{"airport", "heliport", "balloonport"}, buildWhere());
     log.trace("buildResponse -> {}", this);
   }
 
   //access the dbHandler class in this method to search the database
   private String[] buildWhere() {
     DbHandler query = new DbHandler();
-    ArrayList<String> where = new ArrayList<>();
+    /*ArrayList<String> where = new ArrayList<>();
 
     //need to fill these with the data from the table using query
     String[] countries = query.getQuery("SELECT name FROM country", "name");
     where.addAll(Arrays.asList(countries));
     String[] regions = query.getQuery("SELECT name FROM region", "name");
     where.addAll(Arrays.asList(regions));
-    String[] municipalities = query.getQuery("SELECT municipality FROM country", "municipality");
+    String[] municipalities = query.getQuery("SELECT municipality FROM country", "municipality");*/
 
 
     //return where.toArray(new String[0]); //??
@@ -94,17 +86,23 @@ public class RequestConfig extends RequestHeader {
 
   String[] getSupportedRequests() { return this.supportedRequests; }
 
-  String[] getFilterType() { return this.filterType; }
+  Filter getFilter() { return this.filters; }
 
-  String[] getFilterWhere() { return this.filterWhere; }
-
-  String[] getImprovement() { return this.improvement; }
-
-  String[] getConstruction() { return this.construction; }
+  OptimizationConfig getOptimization() { return this.optimization; }
 
 }
 
 class OptimizationConfig {
-    protected String[] construction = new String[]{"none", "one", "some"};
-    protected String[] improvement = new String[]{"none", "2opt", "3opt"};
+    protected String[] construction;
+    protected String[] improvement;
+
+    OptimizationConfig() {
+      this.construction = new String[]{"none", "one", "some"};
+      this.improvement  = new String[]{"none", "2opt", "3opt"};
+    }
+
+    OptimizationConfig(String[] construction, String[] improvement){
+      this.construction=construction;
+      this.improvement=improvement;
+    }
 }
