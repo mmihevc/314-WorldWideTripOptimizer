@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Row, Nav, NavItem, NavLink, TabContent, TabPane, Modal, ModalBody} from 'reactstrap';
+import {Alert, Button, ButtonGroup, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Row, Nav, NavItem, NavLink, TabContent, TabPane, Modal} from 'reactstrap';
 import Control from 'react-leaflet-control';
 import {Map, TileLayer} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -21,6 +21,7 @@ import DownloadIcon from "./images/download.png";
 import UploadIcon from "./images/upload.png";
 import SearchIcon from "./images/search.png";
 import SearchFind from "./SearchFind";
+import SearchItinerary from "./SearchItinerary";
 
 const MAP_BOUNDS = [[-90, -180], [90, 180]];
 const MAP_CENTER_DEFAULT = [0, 0];
@@ -47,6 +48,9 @@ export default class Atlas extends Component {
         this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
         this.handleDeleteEntireItinerary = this.handleDeleteEntireItinerary.bind(this);
         this.handleAddToItinerary = this.handleAddToItinerary.bind(this);
+        this.handleSearchItinerary = this.handleSearchItinerary.bind(this);
+        this.resetItineraryDestinations = this.resetItineraryDestinations.bind(this);
+
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -56,8 +60,10 @@ export default class Atlas extends Component {
             inputError: [],
             inputSubmitted: [],
             destinations: [],
+            savedDests: [],
             markerArray: [],
             numInputs: 0,
+            showReset: false,
             showItinerary: false,
             saveDropdownOpen: false,
             showOpt: false,
@@ -216,8 +222,10 @@ export default class Atlas extends Component {
     renderTripTab() {
         return (
             <div>
-            <Itinerary destinations={this.state.destinations}/>
-            {this.renderRoundTripDistance()}
+            <Itinerary destinations={this.state.destinations}
+                       resetItineraryDestinations = {this.resetItineraryDestinations.bind(this)}/>
+                {this.renderResetButton()}
+                {this.renderRoundTripDistance()}
             {this.renderMultiple(this.state.numInputs, this.renderInputBox)}
             <ButtonGroup>
                 <Button onClick={() => {this.addInputBox()}}>+</Button>
@@ -254,15 +262,8 @@ export default class Atlas extends Component {
                     <img src={SearchIcon} alt="Search Icon"/>
                 </Button>
                 <Modal isOpen={this.state.showSI} toggle={this.displaySIPopover}>
-                    <ModalBody>
-                        <Label for="itinerarySearch">Search Itinerary</Label>
-                        <Input
-                            type="search"
-                            name="search"
-                            id="itinerarySearch"
-                            placeholder="this doesn't actually do anything rn"
-                        />
-                    </ModalBody>
+               <SearchItinerary
+                   handleSearchItinerary = {this.handleSearchItinerary.bind(this)} />
                 </Modal>
             </div>
         )
@@ -544,13 +545,45 @@ export default class Atlas extends Component {
         this.handleInputChange();
     }
 
+    handleSearchItinerary(searchTerm) {
+        this.setState({showSI: false, showItinerary: true});
+        let oldDestinations = this.state.destinations;
+        let searchedDestinations = [];
+        let sDlength = 0;
+        for (let i = 0; i < this.state.numInputs; i++) {
+            if (this.state.inputNames[i] === searchTerm) {
+                searchedDestinations[sDlength] = {
+                    lat: this.state.destinations[i].lat,
+                    lng: this.state.destinations[i].lng,
+                    name: this.state.destinations[i].name,
+                };
+                sDlength++;
+            }
+        }
+        if(searchedDestinations.length!==0)
+            this.setState({ destinations: searchedDestinations, savedDests: oldDestinations, showReset: true})
+    }
+
+    resetItineraryDestinations(){
+        this.setState({destinations: this.state.savedDests, showReset: false})
+    }
+
+    renderResetButton(){
+        if(this.state.showReset) {
+            return (
+                <Button onClick={() => {
+                    this.resetItineraryDestinations()
+                }} className="ml-1">Clear Itinerary Search</Button>
+            )
+        }
+    }
+
     handleDeleteEntireItinerary() {
         this.setState({numInputs: 0}, this.handleInputChange);
         this.state.roundTripDistance = 0;
     }
 
     handleAddToItinerary(placename, searchCoords){
-        //need to eventually update with actual location from find functionality
         this.addInputBox(() => {
             this.setInput(this.state.numInputs-1, {
                 coord: searchCoords,

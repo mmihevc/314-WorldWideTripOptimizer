@@ -50,6 +50,8 @@ export default class Itinerary extends Component {
         }
     }
 
+
+
     populateRows() {
         if (this.props.destinations.length >= 2) {
             let rows = [];

@@ -14,12 +14,45 @@ public class RequestTrip extends RequestHeader {
     @Override
     public void buildResponse() {
         //if 3opt return 400
+        long start = System.nanoTime();
+        long[][] distanceMatrix = NearestNeighbor.buildDistanceMatrix(places);
+        long time = Long.parseLong(this.options.optimization.response) * (long)Math.pow(10, 9);
+        this.distances = new Long[places.length];
+        double index = Math.pow((double)this.places.length/70, 1.25);
+        int response = Integer.parseInt(this.options.optimization.response);
+        if(response < index){
+            this.expired();
+            return;
+        }
         if (this.options.optimization.construction.equals("one"))
-            this.places = NearestNeighbor.nearestNeighbor(this.places);
+            this.places = NearestNeighbor.nearestNeighbor(this.places, distanceMatrix, getTime(time, start));
+            if(getTime(time, start)<0){
+                this.expired();
+                return;
+            }
         if (this.options.optimization.improvement.equals("2opt"))
-            twoPointOptimization.optimize(this.places);
-        else if (this.options.optimization.improvement.equals("3opt"))
-            threePointOptimization.optimize(this.places);
+            this.places = twoPointOptimization.optimize(this.places, distanceMatrix, getTime(time, start));
+            if(getTime(time, start)<0){
+                this.expired();
+                return;
+            }
+
+        else if (this.options.optimization.improvement.equals("3opt")) {
+                this.places = threePointOptimization.optimize(this.places, distanceMatrix, getTime(time, start));
+                if (getTime(time, start) < 0) {
+                    this.expired();
+                    return;
+                }
+            }
+        this.expired();
+    }
+
+    long getTime(long time, long start){
+        long myTime = time - (System.nanoTime() - start);
+        return (long) (myTime * 0.75);
+    }
+
+    void expired(){
         this.distances = new Long[places.length];
         double radius = Double.parseDouble(options.earthRadius);
         for (int i = 1; i < places.length; i++)

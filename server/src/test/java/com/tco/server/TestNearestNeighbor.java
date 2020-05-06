@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.Assert.*;
 
 public class TestNearestNeighbor {
@@ -19,7 +21,7 @@ public class TestNearestNeighbor {
         places[3] = new Place("40.585258", "-105.084419", "Fort Collins");
         places[4] = new Place("39.76", "-105.23", "Golden");
         places[5] = new Place("40.41", "-104.71", "Greeley");
-        Place[] sortedPlaces = NearestNeighbor.nearestNeighbor(places);
+        Place[] sortedPlaces = NearestNeighbor.nearestNeighbor(places, NearestNeighbor.buildDistanceMatrix(places), Long.MAX_VALUE);
         long totalDistance = 0;
         long expectedDistance = 145;
         for (int i = 0; i < places.length-1; i++)
