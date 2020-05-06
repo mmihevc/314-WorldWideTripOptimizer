@@ -7,26 +7,23 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class NearestNeighbor {
 
     private static final Logger log = LoggerFactory.getLogger(NearestNeighbor.class);
 
-    public static Place[] nearestNeighbor(Place[] places) {
+    public static Place[] nearestNeighbor(Place[] places, long[][] distanceMatrix, long time) {
         if (places.length <= 3)
             return places;
-        long[][] distanceMatrix = buildDistanceMatrix(places);
+        //long[][] distanceMatrix = buildDistanceMatrix(places);
         ExecutorService executorService = getThreadExecutor();
         Set<Callable<TourResult>> tasks = new HashSet<>();
         for (int placeIndex=0; placeIndex < places.length; placeIndex++)
             tasks.add(new Tour(places.length, placeIndex, distanceMatrix));
         List<Future<TourResult>> results;
         try {
-            results = executorService.invokeAll(tasks);
+            results = executorService.invokeAll(tasks, time - (time/10), TimeUnit.NANOSECONDS);
         } catch (InterruptedException ie) {
             log.error("Error running nearestNeighbor threads\n" + ie.getMessage());
             return places;

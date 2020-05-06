@@ -60,21 +60,27 @@ public class threePointOptimization {
         return false;
     }
 
-    public static void optimize(Place[] places) {
+    public static Place[] optimize(Place[] places, long[][] distanceMatrix, long time) {
+        long start = System.nanoTime();
         int[] route = twoPointOptimization.newRoute(places);
-        long[][] distanceMatrix = twoPointOptimization.routeDistanceMatrix(places);
+        //long[][] distanceMatrix = twoPointOptimization.routeDistanceMatrix(places);
         int n = places.length;
         boolean improvement = true;
         while (improvement) {
             for (int i = 0; i <= n - 5; i++) {
                 for (int j = i + 2; j <= n - 3; j++) {
                     for (int k = j + 2; k <= n - 1; k++) {
+                        if(time < System.nanoTime()-start){
+                            twoPointOptimization.useRoute(route, places);
+                            return places;
+                        }
                         improvement = reverseSegmentIfBetter(distanceMatrix, route, new Segments(i, j, k));
                     }
                 }
             }
         }
         twoPointOptimization.useRoute(route, places);
+        return places;
     }
 
 };
