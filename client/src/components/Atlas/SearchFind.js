@@ -76,8 +76,6 @@ export default class SearchFind extends Component {
     }
 
     handleSearch(e){
-        alert(this.state.limit);
-        alert(this.state.searchTerm);
         //implement search
     }
 
