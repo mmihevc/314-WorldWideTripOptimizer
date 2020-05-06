@@ -26,20 +26,20 @@ public class RequestTrip extends RequestHeader {
         }
         if (this.options.optimization.construction.equals("one"))
             this.places = NearestNeighbor.nearestNeighbor(this.places, distanceMatrix, getTime(time, start));
-            if(getTime(time, start)<0){
+            if(getTime(time, start)<1){
                 this.expired();
                 return;
             }
         if (this.options.optimization.improvement.equals("2opt"))
             this.places = twoPointOptimization.optimize(this.places, distanceMatrix, getTime(time, start));
-            if(getTime(time, start)<0){
+            if(getTime(time, start)<1){
                 this.expired();
                 return;
             }
 
         else if (this.options.optimization.improvement.equals("3opt")) {
                 this.places = threePointOptimization.optimize(this.places, distanceMatrix, getTime(time, start));
-                if (getTime(time, start) < 0) {
+                if (getTime(time, start) < 1) {
                     this.expired();
                     return;
                 }
