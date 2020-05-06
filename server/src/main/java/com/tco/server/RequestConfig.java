@@ -1,10 +1,10 @@
 package com.tco.server;
 
 import com.google.gson.Gson;
-import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,8 +24,12 @@ import java.util.List;
 public class RequestConfig extends RequestHeader {
   private String serverName;
   private String[] supportedRequests;
+  private String[] filterType;
+  private String[] filterWhere;
+  private String[] construction;
+  private String[] improvement;
   private OptimizationConfig optimization;
-  private Filter filter;
+  private Filter filters;
 
   private final static String[] SUPPORTED_REQUESTS = {"config", "distance", "trip", "find"};
 
@@ -35,6 +39,9 @@ public class RequestConfig extends RequestHeader {
   RequestConfig() {
     this.requestType = "config";
     this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
+
+    this.construction = optimization.construction;
+    this.improvement = optimization.improvement;
   }
 
 
@@ -43,14 +50,33 @@ public class RequestConfig extends RequestHeader {
     this.serverName = "t11 [hip, hip]";
     this.buildSupportedRequests();
     this.optimization = new OptimizationConfig();
-    this.filter = new Filter();
+    this.filters = new Filter();
+    if (filters != null) {
+      this.filterType = filters.type;
+      this.filterWhere = buildWhere();
+    }
     log.trace("buildResponse -> {}", this);
+  }
+
+  //access the dbHandler class in this method to search the database
+  private String[] buildWhere() {
+    DbHandler query = new DbHandler();
+    ArrayList<String> where = new ArrayList<>();
+
+    //need to fill these with the data from the table using query
+    String[] countries = query.getQuery("SELECT name FROM country", "name");
+    where.addAll(Arrays.asList(countries));
+    String[] regions = query.getQuery("SELECT name FROM region", "name");
+    where.addAll(Arrays.asList(regions));
+    String[] municipalities = query.getQuery("SELECT municipality FROM country", "municipality");
+
+
+    return where.toArray(new String[0]); //??
   }
 
   private void buildSupportedRequests() {
       this.supportedRequests = SUPPORTED_REQUESTS;
   }
-
 
   String getServerName() {
     return this.serverName;
@@ -65,6 +91,11 @@ public class RequestConfig extends RequestHeader {
   }
 
   String[] getSupportedRequests() { return this.supportedRequests; }
+
+  String[] getFilterType() { return this.filterType; }
+
+  String[] getFilterWhere() { return this.filterWhere; }
+
 }
 
 class OptimizationConfig {

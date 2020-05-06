@@ -40,4 +40,10 @@ public class TestRequestConfig {
     String assertMessage = "config supportedRequests";
     assertArrayEquals(assertMessage, new String[]{"config", "distance", "trip", "find"}, supportedRequests);
   }
+
+  /*@Test
+  public void testFilterType() {
+    String[] filterType = conf.getFilterType();
+    assertArrayEquals(new String[]{"airport", "heliport", "balloonport"}, filterType);
+  }*/
 }
