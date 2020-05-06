@@ -39,9 +39,6 @@ public class RequestConfig extends RequestHeader {
   RequestConfig() {
     this.requestType = "config";
     this.requestVersion = RequestHeader.CURRENT_SUPPORTED_VERSION;
-
-    this.construction = optimization.construction;
-    this.improvement = optimization.improvement;
   }
 
 
@@ -53,7 +50,11 @@ public class RequestConfig extends RequestHeader {
     this.filters = new Filter();
     if (filters != null) {
       this.filterType = filters.type;
-      this.filterWhere = buildWhere();
+      //this.filterWhere = buildWhere();
+    }
+    if (optimization != null) {
+      this.construction = optimization.construction;
+      this.improvement = optimization.improvement;
     }
     log.trace("buildResponse -> {}", this);
   }
@@ -71,7 +72,8 @@ public class RequestConfig extends RequestHeader {
     String[] municipalities = query.getQuery("SELECT municipality FROM country", "municipality");
 
 
-    return where.toArray(new String[0]); //??
+    //return where.toArray(new String[0]); //??
+    return null;
   }
 
   private void buildSupportedRequests() {
@@ -95,6 +97,10 @@ public class RequestConfig extends RequestHeader {
   String[] getFilterType() { return this.filterType; }
 
   String[] getFilterWhere() { return this.filterWhere; }
+
+  String[] getImprovement() { return this.improvement; }
+
+  String[] getConstruction() { return this.construction; }
 
 }
 
