@@ -49,7 +49,7 @@ public class RequestTrip extends RequestHeader {
 
     long getTime(long time, long start){
         long myTime = time - (System.nanoTime() - start);
-        return myTime - (myTime/10);
+        return (long) (myTime * 0.75);
     }
 
     void expired(){
