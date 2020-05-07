@@ -24,12 +24,8 @@ import java.util.List;
 public class RequestConfig extends RequestHeader {
   private String serverName;
   private String[] supportedRequests;
-  private String[] filterType;
-  private String[] filterWhere;
-  private String[] construction;
-  private String[] improvement;
   private OptimizationConfig optimization;
-  private Filter filters;
+  private Filter filter;
 
   private final static String[] SUPPORTED_REQUESTS = {"config", "distance", "trip", "find"};
 
@@ -46,26 +42,9 @@ public class RequestConfig extends RequestHeader {
   public void buildResponse() {
     this.serverName = "t11 [hip, hip]";
     this.buildSupportedRequests();
-    this.optimization = new OptimizationConfig(new String[]{"none", "one", "some"}, new String[]{"none", "2opt", "3opt"});
-    this.filters = new Filter(new String[]{"airport", "heliport", "balloonport"}, buildWhere());
+    this.optimization = new OptimizationConfig();
+    this.filter = new Filter();
     log.trace("buildResponse -> {}", this);
-  }
-
-  //access the dbHandler class in this method to search the database
-  private String[] buildWhere() {
-    DbHandler query = new DbHandler();
-    /*ArrayList<String> where = new ArrayList<>();
-
-    //need to fill these with the data from the table using query
-    String[] countries = query.getQuery("SELECT name FROM country", "name");
-    where.addAll(Arrays.asList(countries));
-    String[] regions = query.getQuery("SELECT name FROM region", "name");
-    where.addAll(Arrays.asList(regions));
-    String[] municipalities = query.getQuery("SELECT municipality FROM country", "municipality");*/
-
-
-    //return where.toArray(new String[0]); //??
-    return null;
   }
 
   private void buildSupportedRequests() {
@@ -85,10 +64,6 @@ public class RequestConfig extends RequestHeader {
   }
 
   String[] getSupportedRequests() { return this.supportedRequests; }
-
-  Filter getFilter() { return this.filters; }
-
-  OptimizationConfig getOptimization() { return this.optimization; }
 
 }
 
