@@ -176,7 +176,7 @@ export default class Atlas extends Component {
                         <DropdownItem header>Save Itinerary</DropdownItem>
                         <DropdownItem divider/>
                         <DropdownItem onClick={() => {saveJSON(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.state.response, this.state.construction, this.state.improvement, JSON)}}>JSON</DropdownItem>
-                        <DropdownItem onClick={() =>{saveCSV(this.state.destinations)}}>CSV</DropdownItem>
+                        <DropdownItem onClick={() =>{saveCSV(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.state.response, this.state.construction, this.state.improvement, JSON)}}>CSV</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
         )
