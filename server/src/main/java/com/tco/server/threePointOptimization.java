@@ -7,8 +7,7 @@ public class threePointOptimization {
     public static void swap(int[] route, int i1, int j, int k) {
         int[] first = Arrays.copyOfRange(route, j+1, k+1);
         int[] second = Arrays.copyOfRange(route, i1, j+1);
-        for (int n=0; n < first.length; n++)
-            route[n+i1] = first[n];
+        System.arraycopy(first, 0, route, i1, first.length);
         for (int n=0; n < second.length; n++)
             route[n+i1+first.length] = second[n];
     }
@@ -55,9 +54,7 @@ public class threePointOptimization {
         long d0 = segs.getOriginalDistance(distanceMatrix, route);
         if (check3Opt(distanceMatrix, route, d0, segs))
             return true;
-        else if (check2Opt(distanceMatrix, route, d0, segs))
-            return true;
-        return false;
+        else return check2Opt(distanceMatrix, route, d0, segs);
     }
 
     public static Place[] optimize(Place[] places, long[][] distanceMatrix, long time) {
@@ -83,7 +80,7 @@ public class threePointOptimization {
         return places;
     }
 
-};
+}
 
 class Segments {
     int i;
