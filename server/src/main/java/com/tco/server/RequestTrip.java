@@ -18,28 +18,28 @@ public class RequestTrip extends RequestHeader {
         long[][] distanceMatrix = NearestNeighbor.buildDistanceMatrix(places);
         long time = Long.parseLong(this.options.optimization.response) * (long)Math.pow(10, 9);
         this.distances = new Long[places.length];
-        double index = Math.pow((double)this.places.length/70, 1.25);
+        double index = Math.pow((double)this.places.length/60, 1.25);
         int response = Integer.parseInt(this.options.optimization.response);
         if(response < index){
             this.expired();
             return;
-        }
+        } 
         if (this.options.optimization.construction.equals("one"))
-            this.places = NearestNeighbor.nearestNeighbor(this.places, distanceMatrix, getTime(time, start));
-            if(getTime(time, start)<0){
+            this.places = NearestNeighbor.nearestNeighbor(this.places, distanceMatrix, (long)(getTime(time, start)*0.75));
+            if(getTime(time, start) < response * 0.25){
                 this.expired();
                 return;
             }
         if (this.options.optimization.improvement.equals("2opt"))
-            this.places = twoPointOptimization.optimize(this.places, distanceMatrix, getTime(time, start));
-            if(getTime(time, start)<0){
+            this.places = twoPointOptimization.optimize(this.places, distanceMatrix, (long)(getTime(time, start)*0.75));
+            if(getTime(time, start) < response * 0.25){
                 this.expired();
                 return;
             }
 
         else if (this.options.optimization.improvement.equals("3opt")) {
-                this.places = threePointOptimization.optimize(this.places, distanceMatrix, getTime(time, start));
-                if (getTime(time, start) < 0) {
+                this.places = threePointOptimization.optimize(this.places, distanceMatrix, (long)(getTime(time, start)*0.75));
+                if (getTime(time, start) < response * 0.25) {
                     this.expired();
                     return;
                 }
@@ -48,8 +48,8 @@ public class RequestTrip extends RequestHeader {
     }
 
     long getTime(long time, long start){
-        long myTime = time - (System.nanoTime() - start);
-        return (long) (myTime * 0.75);
+        long MyTime= time - (System.nanoTime() - start);
+        return MyTime;
     }
 
     void expired(){
