@@ -1,13 +1,15 @@
 package com.tco.server;
 
 import org.junit.Test;
+import java.util.Random;
+import java.nio.charset.Charset;
 
 import static org.junit.Assert.assertArrayEquals;
 
 public class TestThreePoint {
 
     @Test
-    public void testTwoPoint() {
+    public void testThreePoint() {
         Place[] places = new Place[6];
         Place[] expected = new Place[6];
         places[0] = new Place("39.7392", "-104.9903", "Denver");
@@ -25,7 +27,26 @@ public class TestThreePoint {
         threePointOptimization.optimize(places, NearestNeighbor.buildDistanceMatrix(places), Long.MAX_VALUE);
         assertArrayEquals("msg", places, expected);
     }
-
+    @Test
+    public void longerTest(){
+        Random r = new Random();
+        Place[] places = new Place[200];
+        for(int i=0;i<places.length;i++){
+            double latitude = -90 + 180 * r.nextDouble();
+            double longitude = -180 + 360 * r.nextDouble();
+            latitude=Math.round(latitude*100.0)/100.0;
+            longitude=Math.round(longitude*100.0)/100.0;
+            byte[] array = new byte[7]; // length is bounded by 7
+            new Random().nextBytes(array);
+            String name = new String(array, Charset.forName("UTF-8"));
+            places[i]=new Place(Double.toString(latitude), Double.toString(longitude), name);
+        }
+        long[][] distances = NearestNeighbor.buildDistanceMatrix(places);
+        threePointOptimization.optimize(places, distances, Long.MAX_VALUE);
+        threePointOptimization.optimize(places, distances, 0);
+        twoPointOptimization.optimize(places, twoPointOptimization.routeDistanceMatrix(places), Long.MAX_VALUE);
+        NearestNeighbor.nearestNeighbor(places, distances, Long.MAX_VALUE);
+    }
     @Test
     public void testSwap() {
         int[] route = {5, 6, 7, 8, 9, 10, 11, 12, 17};
