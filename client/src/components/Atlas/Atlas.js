@@ -185,15 +185,9 @@ export default class Atlas extends Component {
         return (
             <div className="mt-1">
                 <Nav tabs>
-                    <NavItem>
-                        <NavLink active={this.state.activeTab === "Trip"} onClick={_ => this.setState({activeTab: "Trip"})}>Trip</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink active={this.state.activeTab === "Find"} onClick={_ => this.setState({activeTab: "Find"})}>Find</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink active={this.state.activeTab === "Settings"} onClick={_ => this.setState({activeTab: "Settings"})}>Optimization</NavLink>
-                    </NavItem>
+                    {this.renderTab("Trip")}
+                    {this.renderTab("Find")}
+                    {this.renderTab("Optimization")}
                 </Nav>
                 <TabContent activeTab={this.state.activeTab}>
                     <TabPane tabId="Trip" className="mt-1">
@@ -202,12 +196,20 @@ export default class Atlas extends Component {
                     <TabPane tabId="Find" className="mt-1">
                         {this.renderFindTab()}
                     </TabPane>
-                    <TabPane tabId="Settings" className="mt-1">
+                    <TabPane tabId="Optimization" className="mt-1">
                         {this.renderOptimizationOptions()}
                     </TabPane>
                 </TabContent>
             </div>
         )
+    }
+
+    renderTab(name) {
+        return (
+            <NavItem>
+                <NavLink active={this.state.activeTab === name} onClick={_ => this.setState({activeTab: name})}>{name}</NavLink>
+            </NavItem>
+        );
     }
 
     renderFindTab(){
