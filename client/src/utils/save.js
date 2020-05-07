@@ -1,6 +1,7 @@
 import tokml from 'tokml';
 import {downloadFile} from "./fileIO";
 import {getLines} from "./dateline";
+import {tripToJSON} from "./tripCalls";
 
 const SVG_HEADER = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC ' +
                     '"-//W3C//DTD SVG 1.1//EN"   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
@@ -72,15 +73,63 @@ function parseElementTransform(element) {
     }
 }
 
-export function saveJSON(destinations){
-    let JSON = destinations;
-    downloadFile(JSON_MIME_TYPE, 'itinerary.json', JSON);
+export function saveJSON(destinations, rad, response, construction, improvement, JSON){
+    let trip = tripToJSON(destinations, rad, response, construction, improvement);
+    let json = JSON.stringify(trip);
+    downloadFile(JSON_MIME_TYPE, 'itinerary.json', json);
+    return json;
 }
-export function saveCSV(destinations){
-    let CSV = destinations;
-    downloadFile(CSV_MIME_TYPE, 'itinerary.csv', CSV)
+
+export function saveCSV(destinations, rad, response, construction, improvement, JSON){
+    let trip = tripToJSON(destinations, rad, response, construction, improvement);
+    let csv = obj2csv(trip)
+    downloadFile(CSV_MIME_TYPE, 'itinerary.csv', csv)
+    return csv;
 }
-//add a similar function but for csv and json so i can still use the download file function from fileio
+
+function obj2csv(obj, opt) {
+    if (typeof obj !== 'object') return null;
+    opt = opt || {};
+    let scopechar = opt.scopechar || '/';
+    let delimeter = opt.delimeter || ',';
+    if (Array.isArray(obj) === false) obj = [obj];
+    let curs, name, rownum, key, queue, values = [], rows = [], headers = {}, headersArr = [];
+    for (rownum = 0; rownum < obj.length; rownum++) {
+        queue = [obj[rownum], ''];
+        rows[rownum] = {};
+        while (queue.length > 0) {
+            name = queue.pop();
+            curs = queue.pop();
+            if (curs !== null && typeof curs === 'object') {
+                for (key in curs) {
+                    if (curs.hasOwnProperty(key)) {
+                        queue.push(curs[key]);
+                        queue.push(name + (name ? scopechar : '') + key);
+                    }
+                }
+            } else {
+                if (headers[name] === undefined) headers[name] = true;
+                rows[rownum][name] = curs;
+            }
+        }
+        values[rownum] = [];
+    }
+    // create csv text
+    for (key in headers) {
+        if (headers.hasOwnProperty(key)) {
+            headersArr.push(key);
+            for (rownum = 0; rownum < obj.length; rownum++) {
+                values[rownum].push(rows[rownum][key] === undefined
+                    ? ''
+                    : JSON.stringify(rows[rownum][key]));
+            }
+        }
+    }
+    for (rownum = 0; rownum < obj.length; rownum++) {
+        values[rownum] = values[rownum].join(delimeter);
+    }
+    return '"' + headersArr.join('"' + delimeter + '"') + '"\n' + values.join('\n');
+}
 
 export function getGeoJSON(destinations) {
     let features = [];

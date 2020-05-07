@@ -50,6 +50,7 @@ export default class Atlas extends Component {
         this.handleAddToItinerary = this.handleAddToItinerary.bind(this);
         this.handleSearchItinerary = this.handleSearchItinerary.bind(this);
         this.resetItineraryDestinations = this.resetItineraryDestinations.bind(this);
+        this.renderSaveButton = this.renderSaveButton.bind(this);
 
         this.state = {
             userLocation: null,
@@ -174,8 +175,8 @@ export default class Atlas extends Component {
                         <DropdownItem divider/>
                         <DropdownItem header>Save Itinerary</DropdownItem>
                         <DropdownItem divider/>
-                        <DropdownItem onClick={() => {saveJSON(this.state.destinations)}}>JSON</DropdownItem>
-                        <DropdownItem onClick={() =>{saveCSV(this.state.destinations)}}>CSV</DropdownItem>
+                        <DropdownItem onClick={() => {saveJSON(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.state.response, this.state.construction, this.state.improvement, JSON)}}>JSON</DropdownItem>
+                        <DropdownItem onClick={() =>{saveCSV(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.state.response, this.state.construction, this.state.improvement, JSON)}}>CSV</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
         )
