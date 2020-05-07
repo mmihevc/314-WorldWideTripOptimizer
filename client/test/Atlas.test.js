@@ -19,6 +19,26 @@ function testInitialAppState() {
 }
 test("Testing Atlas's Initial State", testInitialAppState);
 
+function testStateChanges() {
+  const app = shallow(<Atlas />);
+
+  let userLocation = app.state().userLocation;
+  let expectedUserLocation = null;
+
+  expect(userLocation).toEqual(expectedUserLocation);
+
+}
+test("Testing Atlas State Changes", testStateChanges);
+
+function testGetInput() {
+  const app = shallow(<Atlas />);
+  const instance = app.instance();
+  let getInput = instance.getInput();
+  let expected = {"coord": undefined, "name": undefined};
+
+  expect(getInput).toEqual(expected);
+}
+test("Testing Get Input", testGetInput);
 
 function testChangeStartingLocation() {
   const app = shallow(<Atlas/>);

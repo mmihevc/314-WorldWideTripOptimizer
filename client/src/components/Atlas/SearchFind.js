@@ -21,36 +21,30 @@ export default class SearchFind extends Component {
             <div>
             <Form className={"searchbox"} onSubmit={this.handleSubmit}>
                 <Row form>
-                    <Col md={3}>
-                        <FormGroup>
-                            <Label for="limit">Limit</Label>
-                            <Input id="limit"
-                                   type="search"
-                                   name="search"
-                                   placeholder="optional"
-                                   onChange={this.handleTermChange}
-                                   onKeyDown={this.handleEnter}
-                            />
-                        </FormGroup>
-                    </Col>
-                    <Col md={9}>
-                        <FormGroup>
-                            <Label for="semanticSearch">Search Place</Label>
-                            <Input
-                                type="search"
-                                name="search"
-                                id="semanticSearch"
-                                placeholder="Place name, municipality, region, and/or country"
-                                onChange={this.handleTermChange}
-                                onKeyDown={this.handleEnter}
-                            />
-                        </FormGroup>
-                    </Col>
+                    {this.renderSearchAndLimit(3, "limit",  "optional")}
+                    {this.renderSearchAndLimit(9, "semanticSearch", "Place name, municipality, region, and/or country")}
                 </Row>
             </Form>
                 {this.renderAddToItineraryButton()}
             </div>
         );
+    }
+
+    renderSearchAndLimit(num, id, placeholder) {
+        return (
+            <Col md={num}>
+                <FormGroup>
+                    <Label for={id}>Limit</Label>
+                    <Input id={id}
+                           type="search"
+                           name="search"
+                           placeholder={placeholder}
+                           onChange={this.handleTermChange}
+                           onKeyDown={this.handleEnter}
+                    />
+                </FormGroup>
+            </Col>
+        )
     }
 
     renderAddToItineraryButton(){

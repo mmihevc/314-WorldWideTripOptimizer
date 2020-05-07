@@ -241,14 +241,8 @@ export default class Atlas extends Component {
                 <FormGroup>
                     <Label for="response">Response Time</Label>
                     <Input id="response" placeholder="Enter desired response time: 1-60" onChange={this.connectOneTwoOrThreeOpt}/><br/>
-                    <Label for="construction">Construction</Label>
-                    <Input type="select" id="construction" onChange={this.connectOneTwoOrThreeOpt}>
-                        <option>none</option><option>one</option><option>some</option>
-                    </Input><br/>
-                    <Label for="improvement">Improvement</Label>
-                    <Input type="select" id="improvement" onChange={this.connectOneTwoOrThreeOpt}>
-                        <option>none</option><option>2opt</option><option>3opt</option>
-                    </Input><br/>
+                    {this.renderSelect("Construction","none", "one", "some")}
+                    {this.renderSelect("Improvement", "none", "2opt", "3opt")}
                     <Button onClick={this.handleInputChange}>Apply</Button>
                 </FormGroup>
             </div>
@@ -291,8 +285,8 @@ export default class Atlas extends Component {
         }
         this.setState({
             response:  response,
-            construction: document.getElementById('construction').value,
-            improvement: document.getElementById('improvement').value
+            construction: document.getElementById('Construction').value,
+            improvement: document.getElementById('Improvement').value
         })
     }
 
