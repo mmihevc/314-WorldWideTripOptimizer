@@ -4,9 +4,22 @@ import * as tripSchema from "../../schemas/TripResponse";
 import * as distanceSchema from "../../schemas/DistanceResponse";
 import {goToDestinations} from "../components/Atlas/Atlas"
 export function tripCall(destinations, rad, port, callback, response , construction, improvement){
-    if(response.length==0) response="1";
-    if(construction.length==0) construction="none";
-    if(improvement.length==0) improvement="none";
+    let values = tripToJSON(destinations, rad, response, construction, improvement);
+    let d1 = new Date();
+    sendServerRequestWithBody('trip', values, port).then(
+        atrip => processTripResponse(atrip, callback)).then(
+        function(){let d2=new Date();
+            let seconds = d2.getSeconds()-d1.getSeconds();
+            let ms=d2.getMilliseconds()-d1.getMilliseconds();
+            //alert(seconds*1000 + ms);
+            });
+
+}
+
+export function tripToJSON(destinations, rad, response, construction, improvement) {
+    if(response.length == 0) response="1";
+    if(construction.length == 0) construction="none";
+    if(improvement.length == 0) improvement="none";
     let values = {
         requestVersion: PROTOCOL_VERSION,
         requestType: 'trip',
@@ -20,15 +33,8 @@ export function tripCall(destinations, rad, port, callback, response , construct
             longitude: destinations[i].lng.toString(),
         }
     }
-    let d1 = new Date();
-    sendServerRequestWithBody('trip', values, port).then(
-        atrip => processTripResponse(atrip, callback)).then(
-        function(){let d2=new Date();
-            let seconds = d2.getSeconds()-d1.getSeconds();
-            let ms=d2.getMilliseconds()-d1.getMilliseconds();
-            //alert(seconds*1000 + ms);
-            });
 
+    return values;
 }
 
 function processTripResponse(atrip, callback){

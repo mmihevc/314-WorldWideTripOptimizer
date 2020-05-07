@@ -1,6 +1,7 @@
 import tokml from 'tokml';
 import {downloadFile} from "./fileIO";
 import {getLines} from "./dateline";
+import {tripToJSON} from "./tripCalls";
 
 const SVG_HEADER = '<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC ' +
                     '"-//W3C//DTD SVG 1.1//EN"   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">';
@@ -72,15 +73,17 @@ function parseElementTransform(element) {
     }
 }
 
-export function saveJSON(destinations){
-    let JSON = destinations;
-    downloadFile(JSON_MIME_TYPE, 'itinerary.json', JSON);
+export function saveJSON(destinations, rad, response, construction, improvement, JSON){
+    let trip = tripToJSON(destinations, rad, response, construction, improvement);
+    let json = JSON.stringify(trip);
+    downloadFile(JSON_MIME_TYPE, 'itinerary.json', json);
+    return json;
 }
+
 export function saveCSV(destinations){
     let CSV = destinations;
     downloadFile(CSV_MIME_TYPE, 'itinerary.csv', CSV)
 }
-//add a similar function but for csv and json so i can still use the download file function from fileio
 
 export function getGeoJSON(destinations) {
     let features = [];
