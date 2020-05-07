@@ -40,4 +40,5 @@ public class TestRequestConfig {
     String assertMessage = "config supportedRequests";
     assertArrayEquals(assertMessage, new String[]{"config", "distance", "trip", "find"}, supportedRequests);
   }
+
 }
