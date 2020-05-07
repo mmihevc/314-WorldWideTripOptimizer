@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class DbHandler {
 
@@ -22,8 +23,29 @@ public class DbHandler {
 
 
     public static String[] getQuery(String query, String name) {
+        try (
+                Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+                Statement statement = conn.createStatement();
+                ResultSet results = statement.executeQuery(query)
+        ){
+            int count = 0;
+            ArrayList<String> result = new ArrayList<>();
+            while (results.next()) {
+                System.out.printf(results.getString(name));
+                result.add(count, results.getString(name));
+            }
 
+            String[] array = new String[result.size()];
 
+            for (int i = 0; i < result.size(); i++) {
+                array[i] = result.get(i);
+            }
+
+            return array;
+
+        } catch (Exception e) {
+            System.err.println("Exception: " + e.getMessage());
+        }
         return null;
     }
 

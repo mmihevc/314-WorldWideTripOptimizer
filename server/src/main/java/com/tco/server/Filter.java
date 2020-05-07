@@ -13,4 +13,12 @@ public class Filter {
         this.type=type;
         this.where=where;
     }
+
+    public String[] getType() {
+        return this.type;
+    }
+
+    public String[] getWhere() {
+        return this.where;
+    }
 }
