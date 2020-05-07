@@ -22,8 +22,6 @@ public class twoPointOptimization {
         Place[] newPlaces = new Place[places.length];
         for (int i=0; i < places.length; i++)
             newPlaces[i] = places[route[i]];
-        for (int i=0; i < places.length; i++)
-            places[i] = newPlaces[i];
     }
 
     public static int[] newRoute(Place[] places) {
