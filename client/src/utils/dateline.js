@@ -1,7 +1,8 @@
 
 export function getLines(start, finish) {
     let lines = [];
-    checkStartFinish(start, finish, lines);
+    if (!start || !finish || start === finish)
+        return lines;
     let line = [start, finish];
     if (!lineCrossesMeridian(line)) {
         lines = [line];
@@ -9,11 +10,6 @@ export function getLines(start, finish) {
        lines = updateLines(lines, start, finish);
     }
     return lines;
-}
-
-function checkStartFinish(lines, start, finish) {
-    if (!start || !finish || start === finish)
-        return lines;
 }
 
 function updateLines(lines, start, finish) {
