@@ -172,3 +172,25 @@ function testAddInputBox(){
   expect(app.state().numInputs).toEqual(1);
 }
 test("Testing addInputBox", testAddInputBox);
+
+function testUpdateRoundTrip() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let json = {
+    requestVersion: 5,
+    requestType: "trip",
+    options: {
+      title: "Test JSON Data",
+      earthRadius: 6371.0,
+    },
+    places: [ {name: "Courchevel Tourisme", latitude: "45.415498", longitude: "6.634682"},
+      {name: "Home", latitude: "32.8908", longitude: "98.601"}],
+    distances: [20, 30]
+  }
+  instance.loadTripData(json, "json");
+  instance.updateRoundTripDistance(json);
+  app.update();
+  let rtd = app.state().roundTripDistance;
+  expect(rtd).toBeGreaterThan(0);
+}
+test("Testing updateRoundTripDist", testUpdateRoundTrip);
