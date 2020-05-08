@@ -229,3 +229,28 @@ function testDeleteFunc() {
   expect(numInputs).toEqual(2);
 }
 test("Testing testDeleteFunc", testDeleteFunc);
+
+function testhandleSearch() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let json = {
+    requestVersion: 5,
+    requestType: "trip",
+    options: {
+      title: "Test JSON Data",
+      earthRadius: 6371.0,
+    },
+    places: [ {name: "Courchevel Tourisme", latitude: "45.415498", longitude: "6.634682"},
+      {name: "Home", latitude: "32.8908", longitude: "98.601"},
+      {name: "Random", latitude: "39.9", longitude: "96.4"}],
+    distances: [20, 30]
+  }
+  instance.loadTripData(json, "json");
+  instance.updateRoundTripDistance(json);
+  app.update();
+  instance.handleSearchItinerary("Home");
+  app.update();
+  let numInputs = app.state().destinations.length;
+  expect(numInputs).toEqual(1);
+}
+test("Testing testHandleSearch", testhandleSearch);
