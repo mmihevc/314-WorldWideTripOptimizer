@@ -73,15 +73,15 @@ function parseElementTransform(element) {
     }
 }
 
-export function saveJSON(destinations, rad, response, construction, improvement, JSON){
-    let trip = tripToJSON(destinations, rad, response, construction, improvement);
+export function saveJSON(destinations, rad, optOptions, JSON){
+    let trip = tripToJSON(destinations, rad, optOptions);
     let json = JSON.stringify(trip);
     downloadFile(JSON_MIME_TYPE, 'itinerary.json', json);
     return json;
 }
 
-export function saveCSV(destinations, rad, response, construction, improvement, JSON){
-    let trip = tripToJSON(destinations, rad, response, construction, improvement);
+export function saveCSV(destinations, rad, optOptions, JSON){
+    let trip = tripToJSON(destinations, rad, optOptions);
     let csv = obj2csv(trip)
     downloadFile(CSV_MIME_TYPE, 'itinerary.csv', csv)
     return csv;
