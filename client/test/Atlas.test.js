@@ -97,6 +97,52 @@ function testDetermineOldTrip() {
 }
 test("Testing determineOldTrip", testDetermineOldTrip);
 
+function testLoadTripDataJSON() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let jsonData = {
+    requestVersion: 5,
+    requestType: "trip",
+    options: {
+      title: "Test JSON Data",
+      earthRadius: 6371.0,
+    },
+    places: [ {name: "Courchevel Tourisme", latitude: "45.415498", longitude: "6.634682"} ]
+  }
+  instance.loadTripData(jsonData, "json");
+  app.update();
+  let destinations = app.state().destinations;
+  let expectedDestinations = [{
+    name: "Courchevel Tourisme",
+    lat: 45.415498,
+    lng: 6.634682
+  } ]
+  let numInputs = app.state().numInputs;
+  expect(destinations).toEqual(expectedDestinations);
+  expect(numInputs).toEqual(1);
+}
+test("Testing loadTripDataJSON", testLoadTripDataJSON);
+
+function testLoadTripDataCSV() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let csvData = {
+    data: [ {requestVersion: PROTOCOL_VERSION.toString(), places__name: "Courchevel Tourisme", places__latitude: "45.415498", places__longitude: "6.634682"}, {} ]
+  }
+  instance.loadTripData(csvData, "csv");
+  app.update();
+  let destinations = app.state().destinations;
+  let expectedDestinations = [{
+    name: "Courchevel Tourisme",
+    lat: 45.415498,
+    lng: 6.634682
+  } ]
+  let numInputs = app.state().numInputs;
+  expect(destinations).toEqual(expectedDestinations);
+  expect(numInputs).toEqual(1);
+}
+test("Testing loadTripDataCSV", testLoadTripDataCSV);
+
 /*function testLoadFile(){
   const mockFn = jest.fn();
  const inputFile = shallow(<Input onChange={mockFn} /> );
