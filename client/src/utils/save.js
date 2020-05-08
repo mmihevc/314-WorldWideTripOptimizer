@@ -87,8 +87,12 @@ export function saveCSV(saveInfo){
     return csv;
 }
 
-function obj2csv(obj, opt) {
+function checkNull(obj) {
     if (typeof obj !== 'object') return null;
+}
+
+function obj2csv(obj, opt) {
+    checkNull(obj);
     opt = opt || {};
     let scopechar = opt.scopechar || '/';
     let delimeter = opt.delimeter || ',';
@@ -101,7 +105,9 @@ function obj2csv(obj, opt) {
             name = queue.pop();
             curs = queue.pop();
             if (curs !== null && typeof curs === 'object') {
-                reduce(key,curs,queue, scopechar)
+                for (key in curs) {
+                    reduce(key,curs,queue, scopechar)
+                }
             } else {
                 if (headers[name] === undefined) headers[name] = true;
                 rows[rownum][name] = curs;
@@ -110,7 +116,12 @@ function obj2csv(obj, opt) {
         values[rownum] = [];
     }
     // create csv text
-    createCSVText(key, headersArr, rownum, values, obj);
+    for (key in headers) {
+        if (headers.hasOwnProperty(key)) {
+            headersArr.push(key);
+            createCSVText(key, rownum, values, obj);
+        }
+    }
     join(rownum, obj, values, delimeter);
     return '"' + headersArr.join('"' + delimeter + '"') + '"\n' + values.join('\n');
 }
@@ -122,24 +133,16 @@ function join(rownum, obj, values, delimeter) {
 }
 
 function reduce(key, curs, queue, scopechar) {
-    for (key in curs) {
-        if (curs.hasOwnProperty(key)) {
-            queue.push(curs[key]);
-            queue.push(name + (name ? scopechar : '') + key);
-        }
+    if (curs.hasOwnProperty(key)) {
+        queue.push(curs[key]);
+        queue.push(name + (name ? scopechar : '') + key);
     }
 }
 
-function createCSVText(key, headersArr, rownum, values, obj) {
-    for (key in headers) {
-        if (headers.hasOwnProperty(key)) {
-            headersArr.push(key);
-            for (rownum = 0; rownum < obj.length; rownum++) {
-                values[rownum].push(rows[rownum][key] === undefined
-                    ? ''
-                    : JSON.stringify(rows[rownum][key]));
-            }
-        }
+function createCSVText(key, rownum, values, obj) {
+    for (rownum = 0; rownum < obj.length; rownum++) {
+        values[rownum].push(rows[rownum][key] === undefined
+            ? '' : JSON.stringify(rows[rownum][key]));
     }
 }
 
