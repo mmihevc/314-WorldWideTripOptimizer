@@ -72,9 +72,9 @@ Through this task we plan on improving out UI in order to make it easier for the
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *7* | *count* |
-| Tasks |  *27*   | *count* | 
-| Story Points |  *29*  | *sum* | 
+| Epics | *7* | *5* |
+| Tasks |  *27*   | *43* | 
+| Story Points |  *29*  | *48* | 
 
 
 ## Scrums
