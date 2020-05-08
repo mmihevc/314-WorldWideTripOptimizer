@@ -82,53 +82,55 @@ export function saveJSON(destinations, rad, response, construction, improvement,
 
 export function saveCSV(destinations, rad, response, construction, improvement, JSON){
     let trip = tripToJSON(destinations, rad, response, construction, improvement);
-    let csv = obj2csv(trip)
+    let csv = tripToCSV([trip], JSON)
     downloadFile(CSV_MIME_TYPE, 'itinerary.csv', csv)
     return csv;
 }
 
-function obj2csv(obj, opt) {
-    if (typeof obj !== 'object') return null;
-    opt = opt || {};
-    let scopechar = opt.scopechar || '/';
-    let delimeter = opt.delimeter || ',';
-    if (Array.isArray(obj) === false) obj = [obj];
-    let curs, name, rownum, key, queue, values = [], rows = [], headers = {}, headersArr = [];
-    for (rownum = 0; rownum < obj.length; rownum++) {
-        queue = [obj[rownum], ''];
-        rows[rownum] = {};
-        while (queue.length > 0) {
-            name = queue.pop();
-            curs = queue.pop();
-            if (curs !== null && typeof curs === 'object') {
-                for (key in curs) {
-                    if (curs.hasOwnProperty(key)) {
-                        queue.push(curs[key]);
-                        queue.push(name + (name ? scopechar : '') + key);
-                    }
-                }
-            } else {
-                if (headers[name] === undefined) headers[name] = true;
-                rows[rownum][name] = curs;
+function tripToCSV(obj, JSON) {
+    let values = []
+    let rows = [];
+    let headers = {};
+    for (let row = 0; row < obj.length; row++) {
+        let queue = [obj[row], ''];
+        rows[row] = {};
+        while (queue.length > 0)
+            processProperty(queue, headers, rows, row);
+        values[row] = [];
+    }
+    let headersArr = getHeaders(obj, values, rows, headers, JSON);
+    for (let row = 0; row < obj.length; row++)
+        values[row] = values[row].join(',');
+    return '"' + headersArr.join('","') + '"\n' + values.join('\n');
+}
+
+function processProperty(queue, headers, rows, row) {
+    let curs;
+    let name = queue.pop();
+    curs = queue.pop();
+    if (curs && typeof curs === 'object') {
+        for (let key in curs) {
+            if (curs.hasOwnProperty(key)) {
+                queue.push(curs[key]);
+                queue.push(name + (name ? '/' : '') + key);
             }
         }
-        values[rownum] = [];
+    } else {
+        if (headers[name] === undefined)
+            headers[name] = true;
+        rows[row][name] = curs;
     }
-    // create csv text
-    for (key in headers) {
+}
+
+function getHeaders(obj, values, rows, headers, JSON) {
+    let headersArr = [];
+    for (let key in headers)
         if (headers.hasOwnProperty(key)) {
             headersArr.push(key);
-            for (rownum = 0; rownum < obj.length; rownum++) {
-                values[rownum].push(rows[rownum][key] === undefined
-                    ? ''
-                    : JSON.stringify(rows[rownum][key]));
-            }
+            for (let row = 0; row < obj.length; row++)
+                values[row].push(rows[row][key] === undefined ? '' : JSON.stringify(rows[row][key]));
         }
-    }
-    for (rownum = 0; rownum < obj.length; rownum++) {
-        values[rownum] = values[rownum].join(delimeter);
-    }
-    return '"' + headersArr.join('"' + delimeter + '"') + '"\n' + values.join('\n');
+    return headersArr;
 }
 
 export function getGeoJSON(destinations) {
