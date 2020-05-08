@@ -4,6 +4,7 @@ import {mount, shallow} from 'enzyme';
 
 import Atlas from '../src/components/Atlas/Atlas';
 import {simulateOnClick} from "./buttonClick";
+import {PROTOCOL_VERSION} from "../src/components/Constants";
 //import {Input} from "reactstrap";
 //import Papa from "papaparse";
 
@@ -75,6 +76,26 @@ function testUpdateRoundTripDistance() {
   //simulateOnClick(app.find('Button[children="Add to trip"]'), app);
 }
 test("Testing updateRoundTripDistance", testUpdateRoundTripDistance);
+
+function testDetermineOldTrip() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let jsonOld = { requestVersion: 4 };
+  let jsonNew = { requestVersion: PROTOCOL_VERSION };
+  let csvOld = {  data: [ {requestVersion: "3"} ] };
+  let csvNew = {  data: [ {requestVersion: PROTOCOL_VERSION.toString()} ] };
+
+  let jsonOldResult = instance.determineOldTrip("json", jsonOld);
+  let jsonNewResult = instance.determineOldTrip("json", jsonNew);
+  let csvOldResult = instance.determineOldTrip("csv", csvOld);
+  let csvNewResult = instance.determineOldTrip("csv", csvNew);
+
+  expect(jsonOldResult).toBe(true);
+  expect(jsonNewResult).toBe(false);
+  expect(csvOldResult).toBe(true);
+  expect(csvNewResult).toBe(false);
+}
+test("Testing determineOldTrip", testDetermineOldTrip);
 
 /*function testLoadFile(){
   const mockFn = jest.fn();

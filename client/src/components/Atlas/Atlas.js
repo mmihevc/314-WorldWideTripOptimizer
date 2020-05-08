@@ -367,16 +367,20 @@ export default class Atlas extends Component {
 
     determineOldTrip(format, tripData) {
         let data = format === 'json' ? tripData.places : tripData.data;
+        let oldTrip = false;
         if (format === 'csv') {
             if (data[0].requestVersion !== PROTOCOL_VERSION.toString()) {
                 alert("Old trip version")
+                oldTrip = true;
             }
         }
         else {
             if (tripData.requestVersion !== PROTOCOL_VERSION){
                 alert("Old trip version")
+                oldTrip = true;
             }
         }
+        return oldTrip;
     }
 
     loadTripData(tripData, format) {
