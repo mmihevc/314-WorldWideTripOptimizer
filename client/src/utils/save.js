@@ -101,12 +101,7 @@ function obj2csv(obj, opt) {
             name = queue.pop();
             curs = queue.pop();
             if (curs !== null && typeof curs === 'object') {
-                for (key in curs) {
-                    if (curs.hasOwnProperty(key)) {
-                        queue.push(curs[key]);
-                        queue.push(name + (name ? scopechar : '') + key);
-                    }
-                }
+                reduce(key,curs,queue, scopechar)
             } else {
                 if (headers[name] === undefined) headers[name] = true;
                 rows[rownum][name] = curs;
@@ -115,6 +110,27 @@ function obj2csv(obj, opt) {
         values[rownum] = [];
     }
     // create csv text
+    createCSVText(key, headersArr, rownum, values, obj);
+    join(rownum, obj, values, delimeter);
+    return '"' + headersArr.join('"' + delimeter + '"') + '"\n' + values.join('\n');
+}
+
+function join(rownum, obj, values, delimeter) {
+    for (rownum = 0; rownum < obj.length; rownum++) {
+        values[rownum] = values[rownum].join(delimeter);
+    }
+}
+
+function reduce(key, curs, queue, scopechar) {
+    for (key in curs) {
+        if (curs.hasOwnProperty(key)) {
+            queue.push(curs[key]);
+            queue.push(name + (name ? scopechar : '') + key);
+        }
+    }
+}
+
+function createCSVText(key, headersArr, rownum, values, obj) {
     for (key in headers) {
         if (headers.hasOwnProperty(key)) {
             headersArr.push(key);
@@ -125,10 +141,6 @@ function obj2csv(obj, opt) {
             }
         }
     }
-    for (rownum = 0; rownum < obj.length; rownum++) {
-        values[rownum] = values[rownum].join(delimeter);
-    }
-    return '"' + headersArr.join('"' + delimeter + '"') + '"\n' + values.join('\n');
 }
 
 export function getGeoJSON(destinations) {
