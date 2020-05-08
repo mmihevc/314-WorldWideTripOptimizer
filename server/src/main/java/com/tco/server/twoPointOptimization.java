@@ -36,7 +36,6 @@ public class twoPointOptimization {
     public static Place[] optimize(Place[] places, long[][] distanceMatrix, long time) {
         long start = System.nanoTime();
         int[] route = newRoute(places);
-        //long[][] distanceMatrix = routeDistanceMatrix(places);
         int n = places.length;
         boolean improvement = true;
         while (improvement) {
