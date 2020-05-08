@@ -180,5 +180,9 @@ User is now able to change to order of their trip by clicking on buttons.
 ### New User Interface 
 ![base](images/IMG_0109.PNG)
 
+This is what we planned on having our UI look like when we started the sprint. 
+
 ### New User Interface 
 ![base](images/lastpic.PNG)
+
+This is what our user interface looks like at the end of the sprint. We have added several several buttons onto the map. There is one button to bring the user back to their starting location. There are two buttons that deal with loading a file and saving the itinerary/map. There is one last button is used for searching the itinerary. We then created tabs for the itinerary, find, and optimize in order to simplify what is on the screen.
