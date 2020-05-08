@@ -35,6 +35,24 @@ const UNICODE_REVERSE_SYMBOL = '\u21B9';
 export default class Atlas extends Component {
     constructor(props) {
         super(props);
+        this.bindingMethod();
+        this.state = { userLocation: null, markerPosition: null, centerPosition: MAP_CENTER_DEFAULT,
+            inputCoords: [], inputNames: [], inputError: [], inputSubmitted: [], destinations: [], savedDests: [], markerArray: [],
+            numInputs: 0,
+            showReset: false, showItinerary: false, saveDropdownOpen: false, showOpt: false, showSI: false,
+            optOptions: {
+                response: '',
+                construction: '',
+                improvement: ''
+            },
+            activeTab: "Trip",
+        };
+        getCurrentLocation(this.setUserLocation.bind(this), () => {
+            this.setState({userLocation: false})
+        });
+    }
+
+    bindingMethod() {
         this.goToUserLocation = this.goToUserLocation.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.goToDestinations = this.goToDestinations.bind(this);
@@ -51,34 +69,6 @@ export default class Atlas extends Component {
         this.handleSearchItinerary = this.handleSearchItinerary.bind(this);
         this.resetItineraryDestinations = this.resetItineraryDestinations.bind(this);
         this.renderSaveButton = this.renderSaveButton.bind(this);
-
-        this.state = {
-            userLocation: null,
-            markerPosition: null,
-            centerPosition: MAP_CENTER_DEFAULT,
-            inputCoords: [],
-            inputNames: [],
-            inputError: [],
-            inputSubmitted: [],
-            destinations: [],
-            savedDests: [],
-            markerArray: [],
-            numInputs: 0,
-            showReset: false,
-            showItinerary: false,
-            saveDropdownOpen: false,
-            showOpt: false,
-            showSI: false,
-            optOptions: {
-                response: '',
-                construction: '',
-                improvement: ''
-            },
-            activeTab: "Trip",
-        };
-        getCurrentLocation(this.setUserLocation.bind(this), () => {
-            this.setState({userLocation: false})
-        });
     }
 
     render() {
@@ -308,6 +298,7 @@ export default class Atlas extends Component {
             return (
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip.bind(this)}>{UNICODE_REVERSE_SYMBOL}</Button>
+                    <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
                     <Button onClick={this.handleDeleteEntireItinerary} className="ml-1">Delete All️</Button>
                 </ButtonGroup>
             )

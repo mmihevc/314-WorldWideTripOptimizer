@@ -5,8 +5,6 @@ import {mount, shallow} from 'enzyme';
 import Atlas from '../src/components/Atlas/Atlas';
 import {simulateOnClick} from "./buttonClick";
 import {PROTOCOL_VERSION} from "../src/components/Constants";
-//import {Input} from "reactstrap";
-//import Papa from "papaparse";
 
 function testInitialAppState() {
   const app = shallow(<Atlas />);
@@ -63,19 +61,6 @@ function testGoToUserLocation() {
   expect(app.state('userLocation')).toBe(position);
 }
 test("Testing Atlas goToUserLocation", testGoToUserLocation);
-
-function testUpdateRoundTripDistance() {
-  const app = mount(<Atlas/>);
-  const instance = app.instance();
-  let position = {
-    latitude: 5,
-    longitude: 6
-  };
-  instance.setUserLocation(position);
-  app.update();
-  //simulateOnClick(app.find('Button[children="Add to trip"]'), app);
-}
-test("Testing updateRoundTripDistance", testUpdateRoundTripDistance);
 
 function testDetermineOldTrip() {
   const app = mount(<Atlas/>);
@@ -143,7 +128,7 @@ function testLoadTripDataCSV() {
 }
 test("Testing loadTripDataCSV", testLoadTripDataCSV);
 
-function testReverseTrip() {
+/*function testReverseTrip() {
   const app = mount(<Atlas/>);
   const instance = app.instance();
   let jsonData = {
@@ -159,14 +144,31 @@ function testReverseTrip() {
   instance.loadTripData(jsonData, "json");
   app.update();
 }
-test("Testing testReverseTrip", testReverseTrip);
+test("Testing testReverseTrip", testReverseTrip);*/
 
-/*function testLoadFile(){
-  const mockFn = jest.fn();
- const inputFile = shallow(<Input onChange={mockFn} /> );
- //expect(inputFile).toEqual('application/json');
- inputFile.find('Input').simulate('change');
- expect(Papa.parseJSON).toBeCalled();
+function testLoadTripDataCSV() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let csvData = {
+    data: [ {requestVersion: PROTOCOL_VERSION.toString(), places__name: "Courchevel Tourisme", places__latitude: "45.415498", places__longitude: "6.634682"}, {} ]
+  }
+  instance.loadTripData(csvData, "csv");
+  app.update();
+  let destinations = app.state().destinations;
+  let expectedDestinations = [{
+    name: "Courchevel Tourisme",
+    lat: 45.415498,
+    lng: 6.634682
+  } ]
+  let numInputs = app.state().numInputs;
+  expect(destinations).toEqual(expectedDestinations);
+  expect(numInputs).toEqual(1);
 }
-test("test load file", testLoadFile);
-*/
+test("Testing loadTripDataCSV", testLoadTripDataCSV);
+
+function testAddInputBox(){
+  const app = mount(<Atlas/>);
+  simulateOnClick(app.find('Button[children="+"]'), app);
+  expect(app.state().numInputs).toEqual(1);
+}
+test("Testing addInputBox", testAddInputBox);
