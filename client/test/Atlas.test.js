@@ -128,7 +128,7 @@ function testLoadTripDataCSV() {
 }
 test("Testing loadTripDataCSV", testLoadTripDataCSV);
 
-/*function testReverseTrip() {
+function testReverseTrip() {
   const app = mount(<Atlas/>);
   const instance = app.instance();
   let jsonData = {
@@ -139,12 +139,22 @@ test("Testing loadTripDataCSV", testLoadTripDataCSV);
       earthRadius: 6371.0,
     },
     places: [ {name: "Courchevel Tourisme", latitude: "45.415498", longitude: "6.634682"},
-      {name: "Place 2", latitude: "6.88", longitude: "6.77"} ]
+      {name: "Place 2", latitude: "6.88", longitude: "6.77"},
+      {name: "Place 3", latitude: "9.88", longitude: "12.77"} ]
   }
   instance.loadTripData(jsonData, "json");
+  instance.reverseTrip();
   app.update();
+
+  let destinations = app.state().destinations;
+  let expectedDestinations = [
+    {name: "Place 3", lat: 9.88, lng: 12.77},
+  {name: "Place 2", lat: 6.88, lng: 6.77},
+    {name: "Courchevel Tourisme", lat: 45.415498, lng: 6.634682},
+   ]
+  expect(destinations).toEqual(expectedDestinations);
 }
-test("Testing testReverseTrip", testReverseTrip);*/
+test("Testing testReverseTrip", testReverseTrip);
 
 function testLoadTripDataCSV() {
   const app = mount(<Atlas/>);
