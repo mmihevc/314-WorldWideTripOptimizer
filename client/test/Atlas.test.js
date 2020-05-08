@@ -4,6 +4,8 @@ import {mount, shallow} from 'enzyme';
 
 import Atlas from '../src/components/Atlas/Atlas';
 import {simulateOnClick} from "./buttonClick";
+//import {Input} from "reactstrap";
+//import Papa from "papaparse";
 
 function testInitialAppState() {
   const app = shallow(<Atlas />);
@@ -73,3 +75,13 @@ function testUpdateRoundTripDistance() {
   //simulateOnClick(app.find('Button[children="Add to trip"]'), app);
 }
 test("Testing updateRoundTripDistance", testUpdateRoundTripDistance);
+
+/*function testLoadFile(){
+  const mockFn = jest.fn();
+ const inputFile = shallow(<Input onChange={mockFn} /> );
+ //expect(inputFile).toEqual('application/json');
+ inputFile.find('Input').simulate('change');
+ expect(Papa.parseJSON).toBeCalled();
+}
+test("test load file", testLoadFile);
+*/
