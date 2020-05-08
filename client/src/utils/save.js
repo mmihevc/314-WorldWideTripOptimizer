@@ -92,22 +92,16 @@ function checkNull(obj) {
 }
 
 function obj2csv(obj, opt) {
-    checkNull(obj);
-    opt = opt || {};
-    let scopechar = opt.scopechar || '/';
-    let delimeter = opt.delimeter || ',';
+    checkNull(obj); opt = opt || {};
+    let scopechar = opt.scopechar || '/'; let delimeter = opt.delimeter || ',';
     if (Array.isArray(obj) === false) obj = [obj];
     let curs, name, rownum, key, queue, values = [], rows = [], headers = {}, headersArr = [];
     for (rownum = 0; rownum < obj.length; rownum++) {
-        queue = [obj[rownum], ''];
-        rows[rownum] = {};
+        queue = [obj[rownum], '']; rows[rownum] = {};
         while (queue.length > 0) {
-            name = queue.pop();
-            curs = queue.pop();
+            name = queue.pop(); curs = queue.pop();
             if (curs !== null && typeof curs === 'object') {
-                for (key in curs) {
-                    reduce(key,curs,queue, scopechar)
-                }
+                for (key in curs) { reduce(key,curs,queue, scopechar) }
             } else {
                 if (headers[name] === undefined) headers[name] = true;
                 rows[rownum][name] = curs;
@@ -115,7 +109,6 @@ function obj2csv(obj, opt) {
         }
         values[rownum] = [];
     }
-    // create csv text
     for (key in headers) {
         if (headers.hasOwnProperty(key)) {
             headersArr.push(key);
