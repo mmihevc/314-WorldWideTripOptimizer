@@ -143,6 +143,24 @@ function testLoadTripDataCSV() {
 }
 test("Testing loadTripDataCSV", testLoadTripDataCSV);
 
+function testReverseTrip() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let jsonData = {
+    requestVersion: PROTOCOL_VERSION,
+    requestType: "trip",
+    options: {
+      title: "Test JSON Data",
+      earthRadius: 6371.0,
+    },
+    places: [ {name: "Courchevel Tourisme", latitude: "45.415498", longitude: "6.634682"},
+      {name: "Place 2", latitude: "6.88", longitude: "6.77"} ]
+  }
+  instance.loadTripData(jsonData, "json");
+  app.update();
+}
+test("Testing testReverseTrip", testReverseTrip);
+
 /*function testLoadFile(){
   const mockFn = jest.fn();
  const inputFile = shallow(<Input onChange={mockFn} /> );
