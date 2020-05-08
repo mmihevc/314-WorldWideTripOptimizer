@@ -48,19 +48,14 @@ public class twoPointOptimization {
                     }
                     long curDist = distanceMatrix[route[i]][route[i+1]] + distanceMatrix[route[k]][route[k+1]];
                     long newDist = distanceMatrix[route[i]][route[k]] + distanceMatrix[route[i+1]][route[k+1]];
-                    improvement = check(newDist, curDist, route, i+1, k);
+                    if (newDist < curDist) {
+                        optReverse(route, i+1, k);
+                        improvement = true;
+                    }
                 }
             }
         }
         useRoute(route, places);
         return places;
-    }
-
-    public static boolean check(long newDist, long curDist, int[] route, int i, int k) {
-        if (newDist < curDist) {
-            optReverse(route, i, k);
-            return true;
-        }
-        return false;
     }
 }
