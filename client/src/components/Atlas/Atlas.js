@@ -35,23 +35,7 @@ const UNICODE_REVERSE_SYMBOL = '\u21B9';
 export default class Atlas extends Component {
     constructor(props) {
         super(props);
-        this.goToUserLocation = this.goToUserLocation.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.goToDestinations = this.goToDestinations.bind(this);
-        this.renderInputBox = this.renderInputBox.bind(this);
-        this.parseJSON = this.parseJSON.bind(this);
-        this.displayOptPopover = this.displayOptPopover.bind(this);
-        this.setInput = this.setInput.bind(this);
-        this.getInput = this.getInput.bind(this);
-        this.connectOneTwoOrThreeOpt = this.connectOneTwoOrThreeOpt.bind(this);
-        this.displaySIPopover = this.displaySIPopover.bind(this);
-        this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
-        this.handleDeleteEntireItinerary = this.handleDeleteEntireItinerary.bind(this);
-        this.handleAddToItinerary = this.handleAddToItinerary.bind(this);
-        this.handleSearchItinerary = this.handleSearchItinerary.bind(this);
-        this.resetItineraryDestinations = this.resetItineraryDestinations.bind(this);
-        this.renderSaveButton = this.renderSaveButton.bind(this);
-
+        this.bindingMethod();
         this.state = {
             userLocation: null,
             markerPosition: null,
@@ -79,6 +63,25 @@ export default class Atlas extends Component {
         getCurrentLocation(this.setUserLocation.bind(this), () => {
             this.setState({userLocation: false})
         });
+    }
+
+    bindingMethod() {
+        this.goToUserLocation = this.goToUserLocation.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.goToDestinations = this.goToDestinations.bind(this);
+        this.renderInputBox = this.renderInputBox.bind(this);
+        this.parseJSON = this.parseJSON.bind(this);
+        this.displayOptPopover = this.displayOptPopover.bind(this);
+        this.setInput = this.setInput.bind(this);
+        this.getInput = this.getInput.bind(this);
+        this.connectOneTwoOrThreeOpt = this.connectOneTwoOrThreeOpt.bind(this);
+        this.displaySIPopover = this.displaySIPopover.bind(this);
+        this.handleDeleteFunction = this.handleDeleteFunction.bind(this);
+        this.handleDeleteEntireItinerary = this.handleDeleteEntireItinerary.bind(this);
+        this.handleAddToItinerary = this.handleAddToItinerary.bind(this);
+        this.handleSearchItinerary = this.handleSearchItinerary.bind(this);
+        this.resetItineraryDestinations = this.resetItineraryDestinations.bind(this);
+        this.renderSaveButton = this.renderSaveButton.bind(this);
     }
 
     render() {
