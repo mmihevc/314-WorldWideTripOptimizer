@@ -163,6 +163,12 @@ export default class Atlas extends Component {
     }
 
     renderSaveButton(){
+        let saveInfo = {
+            destinations: this.state.destinations,
+            earthRadius: EARTH_RADIUS_UNITS_DEFAULT,
+            optOptions: this.state.optOptions,
+            JSON: JSON
+        }
         return (
                 <Dropdown direction="up" isOpen={this.state.saveDropdownOpen}
                           toggle={_ => {this.setState({saveDropdownOpen: !this.state.saveDropdownOpen})}}>
@@ -177,8 +183,8 @@ export default class Atlas extends Component {
                         <DropdownItem divider/>
                         <DropdownItem header>Save Itinerary</DropdownItem>
                         <DropdownItem divider/>
-                        <DropdownItem onClick={() => {saveJSON(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.state.optOptions, JSON)}}>JSON</DropdownItem>
-                        <DropdownItem onClick={() =>{saveCSV(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.state.optOptions, JSON)}}>CSV</DropdownItem>
+                        <DropdownItem onClick={() => {saveJSON(saveInfo)}}>JSON</DropdownItem>
+                        <DropdownItem onClick={() => {saveCSV(saveInfo)}}>CSV</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
         )
