@@ -533,16 +533,18 @@ export default class Atlas extends Component {
         let oldDestinations = this.getOldDestinations(0);
         let curDestination = oldDestinations[index];
         if(direction === "up" && (index!==0)){
-            let prevDestination = oldDestinations[index-1];
-            this.setInput(index-1, curDestination);
-            this.setInput(index, prevDestination);
+            this.switchHandle(index-1, oldDestinations, curDestination)
         }
         if(direction === "down" && index!==(this.state.numInputs-1)){
-            let nextDestination = oldDestinations[index+1];
-            this.setInput(index+1, curDestination);
-            this.setInput(index, nextDestination);
+            this.switchHandle(index+1, oldDestinations, curDestination)
         }
         this.handleInputChange();
+    }
+
+    switchHandle(index, oldDestinations, curDestination) {
+        let prevDestination = oldDestinations[index];
+        this.setInput(index, curDestination);
+        this.setInput(index, prevDestination);
     }
 
     handleDeleteFunction(index){
