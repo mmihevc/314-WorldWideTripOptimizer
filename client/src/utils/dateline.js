@@ -7,15 +7,20 @@ export function getLines(start, finish) {
     if (!lineCrossesMeridian(line)) {
         lines = [line];
     } else {
-        let lat2 = calculateWrappingLat(start, finish);
-        let line1 = [start, {lat: lat2, lng: 180}];
-        let line2 = [finish, {lat: lat2, lng: 180}];
-        if (start.lng < 0)
-            line1[1].lng = -180;
-        if (finish.lng < 0)
-            line2[1].lng = -180;
-        lines = [line1, line2];
+       lines = updateLines(lines, start, finish);
     }
+    return lines;
+}
+
+function updateLines(lines, start, finish) {
+    let lat2 = calculateWrappingLat(start, finish);
+    let line1 = [start, {lat: lat2, lng: 180}];
+    let line2 = [finish, {lat: lat2, lng: 180}];
+    if (start.lng < 0)
+        line1[1].lng = -180;
+    if (finish.lng < 0)
+        line2[1].lng = -180;
+    lines = [line1, line2];
     return lines;
 }
 
