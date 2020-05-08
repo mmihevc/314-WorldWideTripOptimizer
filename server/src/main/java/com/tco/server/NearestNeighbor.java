@@ -16,7 +16,6 @@ public class NearestNeighbor {
     public static Place[] nearestNeighbor(Place[] places, long[][] distanceMatrix, long time) {
         if (places.length <= 3)
             return places;
-        //long[][] distanceMatrix = buildDistanceMatrix(places);
         ExecutorService executorService = getThreadExecutor();
         Set<Callable<TourResult>> tasks = new HashSet<>();
         for (int placeIndex=0; placeIndex < places.length; placeIndex++)
@@ -35,6 +34,8 @@ public class NearestNeighbor {
 
     public static int[] processTourResults(List<Future<TourResult>> tourResults) {
         int[] bestTour = new int[tourResults.size()];
+        for (int i=0; i < bestTour.length; i++)
+            bestTour[i] = i;
         long bestDistance = Long.MAX_VALUE;
         for (Future<TourResult> tourResult: tourResults) {
             TourResult tour;
@@ -54,6 +55,8 @@ public class NearestNeighbor {
 
     public static ExecutorService getThreadExecutor() {
         int logicalThreads = Runtime.getRuntime().availableProcessors();
+        if (logicalThreads == 1)
+            logicalThreads = 2;
         return Executors.newFixedThreadPool(logicalThreads/2);
     }
 

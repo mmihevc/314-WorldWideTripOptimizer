@@ -3,23 +3,8 @@ import {HTTP_OK, PROTOCOL_VERSION} from "../components/Constants";
 import * as tripSchema from "../../schemas/TripResponse";
 import * as distanceSchema from "../../schemas/DistanceResponse";
 import {goToDestinations} from "../components/Atlas/Atlas"
-export function tripCall(destinations, rad, port, callback, response , construction, improvement){
-    if(response.length==0) response="1";
-    if(construction.length==0) construction="none";
-    if(improvement.length==0) improvement="none";
-    let values = {
-        requestVersion: PROTOCOL_VERSION,
-        requestType: 'trip',
-        options: { earthRadius: rad, optimization: { response: response, construction: construction, improvement: improvement},},
-        places: [], distances: [],
-    };
-    for (let i=0; i < destinations.length; i++) {
-        values.places[i] = {
-            name: destinations[i].name,
-            latitude: destinations[i].lat.toString(),
-            longitude: destinations[i].lng.toString(),
-        }
-    }
+export function tripCall(destinations, rad, port, callback, optOptions){
+    let values = tripToJSON(destinations, rad, optOptions);
     let d1 = new Date();
     sendServerRequestWithBody('trip', values, port).then(
         atrip => processTripResponse(atrip, callback)).then(
@@ -29,6 +14,31 @@ export function tripCall(destinations, rad, port, callback, response , construct
             //alert(seconds*1000 + ms);
             });
 
+}
+
+export function tripToJSON(destinations, rad, optOptions) {
+    if(optOptions.response.length == 0) optOptions.response="1";
+    if(optOptions.construction.length == 0) optOptions.construction="none";
+    if(optOptions.improvement.length == 0) optOptions.improvement="none";
+    let values = {
+        requestVersion: PROTOCOL_VERSION,
+        requestType: 'trip',
+        options: { earthRadius: rad, optimization: {
+            response: optOptions.response,
+            construction: optOptions.construction,
+            improvement: optOptions.improvement},
+        },
+        places: [], distances: [],
+    };
+    for (let i=0; i < destinations.length; i++) {
+        values.places[i] = {
+            name: destinations[i].name,
+            latitude: destinations[i].lat.toString(),
+            longitude: destinations[i].lng.toString(),
+        }
+    }
+
+    return values;
 }
 
 function processTripResponse(atrip, callback){

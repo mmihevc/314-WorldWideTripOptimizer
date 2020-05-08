@@ -4,6 +4,9 @@ import {mount, shallow} from 'enzyme';
 
 import Atlas from '../src/components/Atlas/Atlas';
 import {simulateOnClick} from "./buttonClick";
+import {PROTOCOL_VERSION} from "../src/components/Constants";
+//import {Input} from "reactstrap";
+//import Papa from "papaparse";
 
 function testInitialAppState() {
   const app = shallow(<Atlas />);
@@ -66,5 +69,72 @@ function testAddInputBox() {
   simulateOnClick(app.find('Button[children="+"]'), app);
   app.update();
   expect(app.state().numInputs).toEqual(1);
+  //simulateOnClick(app.find('Button[children="Add to trip"]'), app);
 }
-test("Testing addInputBox", testAddInputBox);
+test("Testing updateRoundTripDistance", testUpdateRoundTripDistance);
+
+function testDetermineOldTrip() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let jsonOld = { requestVersion: 4 };
+  let jsonNew = { requestVersion: PROTOCOL_VERSION };
+  let csvOld = {  data: [ {requestVersion: "3"} ] };
+  let csvNew = {  data: [ {requestVersion: PROTOCOL_VERSION.toString()} ] };
+
+  let jsonOldResult = instance.determineOldTrip("json", jsonOld);
+  let jsonNewResult = instance.determineOldTrip("json", jsonNew);
+  let csvOldResult = instance.determineOldTrip("csv", csvOld);
+  let csvNewResult = instance.determineOldTrip("csv", csvNew);
+
+  expect(jsonOldResult).toBe(true);
+  expect(jsonNewResult).toBe(false);
+  expect(csvOldResult).toBe(true);
+  expect(csvNewResult).toBe(false);
+}
+test("Testing determineOldTrip", testDetermineOldTrip);
+
+function testLoadTripDataJSON() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let jsonData = {
+    requestVersion: 5,
+    requestType: "trip",
+    options: {
+      title: "Test JSON Data",
+      earthRadius: 6371.0,
+    },
+    places: [ {name: "Courchevel Tourisme", latitude: "45.415498", longitude: "6.634682"} ]
+  }
+  instance.loadTripData(jsonData, "json");
+  app.update();
+  let destinations = app.state().destinations;
+  let expectedDestinations = [{
+    name: "Courchevel Tourisme",
+    lat: 45.415498,
+    lng: 6.634682
+  } ]
+  let numInputs = app.state().numInputs;
+  expect(destinations).toEqual(expectedDestinations);
+  expect(numInputs).toEqual(1);
+}
+test("Testing loadTripDataJSON", testLoadTripDataJSON);
+
+function testLoadTripDataCSV() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let csvData = {
+    data: [ {requestVersion: PROTOCOL_VERSION.toString(), places__name: "Courchevel Tourisme", places__latitude: "45.415498", places__longitude: "6.634682"}, {} ]
+  }
+  instance.loadTripData(csvData, "csv");
+  app.update();
+  let destinations = app.state().destinations;
+  let expectedDestinations = [{
+    name: "Courchevel Tourisme",
+    lat: 45.415498,
+    lng: 6.634682
+  } ]
+  let numInputs = app.state().numInputs;
+  expect(destinations).toEqual(expectedDestinations);
+  expect(numInputs).toEqual(1);
+}
+test("Testing loadTripDataCSV", testLoadTripDataCSV);

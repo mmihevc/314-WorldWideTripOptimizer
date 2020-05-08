@@ -3,6 +3,9 @@ package com.tco.server;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.nio.charset.Charset;
+import java.util.Random;
+
 import static org.junit.Assert.assertEquals;
 
 
@@ -46,5 +49,53 @@ public class TestRequestTrip {
         trip.options = new Option("6371.0", "World Ski Resorts -> 51,794");
         assertEquals("trip requestDistancesT05", 51794, tripDistance);
     }
-
+    @Test
+    public void aLongTest(){
+        Random r = new Random();
+        trip.places = new Place[100];
+        for(int i=0;i<trip.places.length;i++){
+            double latitude = -90 + 180 * r.nextDouble();
+            double longitude = -180 + 360 * r.nextDouble();
+            latitude=Math.round(latitude*100.0)/100.0;
+            longitude=Math.round(longitude*100.0)/100.0;
+            byte[] array = new byte[7]; // length is bounded by 7
+            new Random().nextBytes(array);
+            String name = new String(array, Charset.forName("UTF-8"));
+            trip.places[i]=new Place(Double.toString(latitude), Double.toString(longitude), name);
+        }
+        trip.options = new Option("6371.0","option", "60", "one", "2opt");
+        trip.buildResponse();
+    }
+    @Test public void bLongTest(){
+        Random r = new Random();
+        trip.places = new Place[100];
+        for(int i=0;i<trip.places.length;i++){
+            double latitude = -90 + 180 * r.nextDouble();
+            double longitude = -180 + 360 * r.nextDouble();
+            latitude=Math.round(latitude*100.0)/100.0;
+            longitude=Math.round(longitude*100.0)/100.0;
+            byte[] array = new byte[7]; // length is bounded by 7
+            new Random().nextBytes(array);
+            String name = new String(array, Charset.forName("UTF-8"));
+            trip.places[i]=new Place(Double.toString(latitude), Double.toString(longitude), name);
+        }
+        trip.options = new Option("6371.0", "option", "1", "none", "3opt");
+        trip.buildResponse();
+    }
+    @Test public void cLongTest(){
+        Random r = new Random();
+        trip.places = new Place[100];
+        for(int i=0;i<trip.places.length;i++){
+            double latitude = -90 + 180 * r.nextDouble();
+            double longitude = -180 + 360 * r.nextDouble();
+            latitude=Math.round(latitude*100.0)/100.0;
+            longitude=Math.round(longitude*100.0)/100.0;
+            byte[] array = new byte[7]; // length is bounded by 7
+            new Random().nextBytes(array);
+            String name = new String(array, Charset.forName("UTF-8"));
+            trip.places[i]=new Place(Double.toString(latitude), Double.toString(longitude), name);
+        }
+        trip.options = new Option("6371.0", "option", "2", "none", "3opt");
+        trip.buildResponse();
+    }
 }
