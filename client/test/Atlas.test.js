@@ -64,19 +64,6 @@ function testGoToUserLocation() {
 }
 test("Testing Atlas goToUserLocation", testGoToUserLocation);
 
-function testUpdateRoundTripDistance() {
-  const app = mount(<Atlas/>);
-  const instance = app.instance();
-  let position = {
-    latitude: 5,
-    longitude: 6
-  };
-  instance.setUserLocation(position);
-  app.update();
-  //simulateOnClick(app.find('Button[children="Add to trip"]'), app);
-}
-test("Testing updateRoundTripDistance", testUpdateRoundTripDistance);
-
 function testDetermineOldTrip() {
   const app = mount(<Atlas/>);
   const instance = app.instance();
@@ -143,12 +130,29 @@ function testLoadTripDataCSV() {
 }
 test("Testing loadTripDataCSV", testLoadTripDataCSV);
 
-/*function testLoadFile(){
-  const mockFn = jest.fn();
- const inputFile = shallow(<Input onChange={mockFn} /> );
- //expect(inputFile).toEqual('application/json');
- inputFile.find('Input').simulate('change');
- expect(Papa.parseJSON).toBeCalled();
+function testLoadTripDataCSV() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let csvData = {
+    data: [ {requestVersion: PROTOCOL_VERSION.toString(), places__name: "Courchevel Tourisme", places__latitude: "45.415498", places__longitude: "6.634682"}, {} ]
+  }
+  instance.loadTripData(csvData, "csv");
+  app.update();
+  let destinations = app.state().destinations;
+  let expectedDestinations = [{
+    name: "Courchevel Tourisme",
+    lat: 45.415498,
+    lng: 6.634682
+  } ]
+  let numInputs = app.state().numInputs;
+  expect(destinations).toEqual(expectedDestinations);
+  expect(numInputs).toEqual(1);
 }
-test("test load file", testLoadFile);
-*/
+test("Testing loadTripDataCSV", testLoadTripDataCSV);
+
+function testAddInputBox(){
+  const app = mount(<Atlas/>);
+  simulateOnClick(app.find('Button[children="+"]'), app);
+  expect(app.state().numInputs).toEqual(1);
+}
+test("Testing addInputBox", testAddInputBox);

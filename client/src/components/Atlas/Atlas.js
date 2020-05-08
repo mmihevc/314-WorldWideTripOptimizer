@@ -308,6 +308,7 @@ export default class Atlas extends Component {
             return (
                 <ButtonGroup>
                     <Button className="ml-1" onClick={this.reverseTrip.bind(this)}>{UNICODE_REVERSE_SYMBOL}</Button>
+                    <Button className="ml-1" onClick={this.handleInputChange}>Submit</Button>
                     <Button onClick={this.handleDeleteEntireItinerary} className="ml-1">Delete All️</Button>
                 </ButtonGroup>
             )
