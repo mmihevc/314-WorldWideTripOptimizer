@@ -5,8 +5,6 @@ import {mount, shallow} from 'enzyme';
 import Atlas from '../src/components/Atlas/Atlas';
 import {simulateOnClick} from "./buttonClick";
 import {PROTOCOL_VERSION} from "../src/components/Constants";
-//import {Input} from "reactstrap";
-//import Papa from "papaparse";
 
 function testInitialAppState() {
   const app = shallow(<Atlas />);
@@ -129,6 +127,24 @@ function testLoadTripDataCSV() {
   expect(numInputs).toEqual(1);
 }
 test("Testing loadTripDataCSV", testLoadTripDataCSV);
+
+/*function testReverseTrip() {
+  const app = mount(<Atlas/>);
+  const instance = app.instance();
+  let jsonData = {
+    requestVersion: PROTOCOL_VERSION,
+    requestType: "trip",
+    options: {
+      title: "Test JSON Data",
+      earthRadius: 6371.0,
+    },
+    places: [ {name: "Courchevel Tourisme", latitude: "45.415498", longitude: "6.634682"},
+      {name: "Place 2", latitude: "6.88", longitude: "6.77"} ]
+  }
+  instance.loadTripData(jsonData, "json");
+  app.update();
+}
+test("Testing testReverseTrip", testReverseTrip);*/
 
 function testLoadTripDataCSV() {
   const app = mount(<Atlas/>);
