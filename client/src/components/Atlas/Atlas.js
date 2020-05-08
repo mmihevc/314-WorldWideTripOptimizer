@@ -69,9 +69,11 @@ export default class Atlas extends Component {
             saveDropdownOpen: false,
             showOpt: false,
             showSI: false,
-            response: '',
-            construction: '',
-            improvement: '',
+            optOptions: {
+                response: '',
+                construction: '',
+                improvement: ''
+            },
             activeTab: "Trip",
         };
         getCurrentLocation(this.setUserLocation.bind(this), () => {
@@ -161,6 +163,12 @@ export default class Atlas extends Component {
     }
 
     renderSaveButton(){
+        let saveInfo = {
+            destinations: this.state.destinations,
+            earthRadius: EARTH_RADIUS_UNITS_DEFAULT,
+            optOptions: this.state.optOptions,
+            JSON: JSON
+        }
         return (
                 <Dropdown direction="up" isOpen={this.state.saveDropdownOpen}
                           toggle={_ => {this.setState({saveDropdownOpen: !this.state.saveDropdownOpen})}}>
@@ -175,8 +183,8 @@ export default class Atlas extends Component {
                         <DropdownItem divider/>
                         <DropdownItem header>Save Itinerary</DropdownItem>
                         <DropdownItem divider/>
-                        <DropdownItem onClick={() => {saveJSON(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.state.response, this.state.construction, this.state.improvement, JSON)}}>JSON</DropdownItem>
-                        <DropdownItem onClick={() =>{saveCSV(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.state.response, this.state.construction, this.state.improvement, JSON)}}>CSV</DropdownItem>
+                        <DropdownItem onClick={() => {saveJSON(saveInfo)}}>JSON</DropdownItem>
+                        <DropdownItem onClick={() => {saveCSV(saveInfo)}}>CSV</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
         )
@@ -287,9 +295,11 @@ export default class Atlas extends Component {
             alert("Invalid response time")
         }
         this.setState({
-            response:  response,
-            construction: document.getElementById('Construction').value,
-            improvement: document.getElementById('Improvement').value
+            optOptions: {
+                response: response,
+                construction: document.getElementById('Construction').value,
+                improvement: document.getElementById('Improvement').value
+            }
         })
     }
 
@@ -432,8 +442,9 @@ export default class Atlas extends Component {
             inputError: this.state.inputError
         }, () => {
             this.goToDestinations(this.state.destinations);
-            if(this.state.destinations.length >= 2)
-                tripCall(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.props.serverPort, this.updateRoundTripDistance.bind(this), this.state.response, this.state.construction, this.state.improvement);
+            if(this.state.destinations.length >= 2) {
+                tripCall(this.state.destinations, EARTH_RADIUS_UNITS_DEFAULT.miles, this.props.serverPort, this.updateRoundTripDistance.bind(this), this.state.optOptions);
+            }
         });
     };
 
