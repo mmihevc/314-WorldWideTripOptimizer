@@ -36,23 +36,10 @@ export default class Atlas extends Component {
     constructor(props) {
         super(props);
         this.bindingMethod();
-        this.state = {
-            userLocation: null,
-            markerPosition: null,
-            centerPosition: MAP_CENTER_DEFAULT,
-            inputCoords: [],
-            inputNames: [],
-            inputError: [],
-            inputSubmitted: [],
-            destinations: [],
-            savedDests: [],
-            markerArray: [],
+        this.state = { userLocation: null, markerPosition: null, centerPosition: MAP_CENTER_DEFAULT,
+            inputCoords: [], inputNames: [], inputError: [], inputSubmitted: [], destinations: [], savedDests: [], markerArray: [],
             numInputs: 0,
-            showReset: false,
-            showItinerary: false,
-            saveDropdownOpen: false,
-            showOpt: false,
-            showSI: false,
+            showReset: false, showItinerary: false, saveDropdownOpen: false, showOpt: false, showSI: false,
             optOptions: {
                 response: '',
                 construction: '',
