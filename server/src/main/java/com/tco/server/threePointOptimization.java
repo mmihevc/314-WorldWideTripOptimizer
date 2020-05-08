@@ -92,22 +92,26 @@ class Segments {
         this.k = k;
     }
 
+    private long segment(long[][] distanceMatrix, int[] route, int[] i) {
+        return distanceMatrix[route[i[0]]][route[i[1]]] + distanceMatrix[route[i[2]]][route[i[3]]] + distanceMatrix[route[i[4]]][route[i[5]]];
+    }
+
     public long getOriginalDistance(long[][] distanceMatrix, int[] route) {
-        return distanceMatrix[route[i]][route[i+1]] + distanceMatrix[route[j]][route[j+1]] + distanceMatrix[route[k]][route[k+1]];
+        return segment(distanceMatrix, route, new int[]{i, i+1,  j, j+1,  k, k+1});
     }
 
     public long[] get2optDistances(long[][] distanceMatrix, int[] route) {
-        long d1 = distanceMatrix[route[i]][route[j]] + distanceMatrix[route[i+1]][route[j+1]] + distanceMatrix[route[k]][route[k+1]];
-        long d2 = distanceMatrix[route[i]][route[i+1]] + distanceMatrix[route[j]][route[k]] + distanceMatrix[route[j+1]][route[k+1]];
-        long d3 = distanceMatrix[route[i]][route[k]] + distanceMatrix[route[j+1]][route[j]] + distanceMatrix[route[i+1]][route[k+1]];
+        long d1 = segment(distanceMatrix, route, new int[]{i, j,  i+1, j+1,  k, k+1});
+        long d2 = segment(distanceMatrix, route, new int[]{i, i+1,  j, k,  j+1, k+1});
+        long d3 = segment(distanceMatrix, route, new int[]{i, k,  j+1, j,  i+1, k+1});
         return new long[]{d1, d2, d3};
     }
 
     public long[] get3optDistances(long[][] distanceMatrix, int[] route) {
-        long d4 = distanceMatrix[route[i]][route[j]] + distanceMatrix[route[i+1]][route[k]] + distanceMatrix[route[j+1]][route[k+1]];
-        long d5 = distanceMatrix[route[i]][route[k]] + distanceMatrix[route[j+1]][route[i+1]] + distanceMatrix[route[j]][route[k+1]];
-        long d6 = distanceMatrix[route[i]][route[j+1]] + distanceMatrix[route[k]][route[j]] + distanceMatrix[route[i+1]][route[k+1]];
-        long d7 = distanceMatrix[route[i]][route[j+1]] + distanceMatrix[route[k]][route[i+1]] + distanceMatrix[route[j]][route[k+1]];
+        long d4 = segment(distanceMatrix, route, new int[]{i, j,  i+1, k,  j+1, k+1});
+        long d5 = segment(distanceMatrix, route, new int[]{i, k,  j+1, i+1,  j, k+1});
+        long d6 = segment(distanceMatrix, route, new int[]{i, j+1,  k, j,  i+1, k+1});
+        long d7 = segment(distanceMatrix, route, new int[]{i, j+1,  k, i+1,  j, k+1});
         return new long[]{d4, d5, d6, d7};
     }
 }
