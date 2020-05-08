@@ -190,9 +190,7 @@ function testUpdateRoundTrip() {
   instance.loadTripData(json, "json");
   instance.updateRoundTripDistance(json);
   app.update();
-  let numInputs = app.state().numInputs;
   let rtd = app.state().roundTripDistance;
-  expect(numInputs).toEqual(2);
   expect(rtd).toBeGreaterThan(0);
 }
 test("Testing updateRoundTripDist", testUpdateRoundTrip);
